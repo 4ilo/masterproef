@@ -1,0 +1,63 @@
+Indoor navigation:
+
+    Active-Semantic Localization with a Single Consumer-Grade Camera - Chuho Yi
+        -> Uses Sift
+        -> Logitec quickcam pro 4000
+        -> Destinctive objects:
+            - Deur bordjes
+            - Brandslangen/blussers
+            - Prikborden
+            - Zekeringskast
+
+        -> Objecten worden herkend, daarna word de groote van het object vergeleken met coresponderende features om
+            de afstand tot het object te berekenen met 'visual pattern recognition software'(ViPR).(SIFT)
+
+    Mobile robot navigation in indoor environments using object and character recognition - M. Tomono
+        -> Sony evi-d30 camera (pan & tilt) (640*480 color)
+        -> Edge detect, feature filters, character-template matcher
+        -> Objects:
+            - Shape
+            - Size
+            - Color
+
+    Indoor navigation of a non-holonomic mobile robot using a visual memory - Jonathan Courbon
+        -> Embedded camera
+
+Visual SLAM:
+    Simultaneous localization and mapping
+    -> Concurrent mapping and localization(CML)
+    -> RGB-D camera
+
+Semantic Localization:
+    Semantic Localization and Mapping in Robot Vision - Roy Corrado Anati
+
+Object detection/tracking
+    Yolo: real time object detection
+        You Only Look Once: Unified, Real-Time Object Detection - Joseph Redmon
+
+        -> resize to 448*448 and run single convolutional network
+        -> Snel maar minder accuraat vooral bij kleinere objecten
+        -> Convolutional neural network
+
+    Sift: object recognition: manual 
+        Scale invariant Feature transform
+        Detect local intrest as extrema
+        Compute image correspondence
+
+        paper: 
+            - SIFT-ing through features with ViPR - M.E. Munich
+            - Mobile Robot Localization and Mapping with Uncertainty using Scale-Invariant Visual Landmarks - Stephen Se
+
+    Viola&Jones: detecion of object classes
+
+    Acf: agregate channal features
+        
+
+Object: Detection of objects
+
+Image Features:
+    - Edges                                 -> Canny,Sobel
+    - Corners (interesting points)      
+    - Blobs (region of interesting points)  -> Gaussian curve, FAST, gray level blobs
+    - Ridge
+
