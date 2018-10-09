@@ -1,0 +1,33 @@
+\begin{thebibliography}{1}
+
+\bibitem{semloc}
+Roy Corrado~Anati.
+\newblock Semantic localization and mapping in robot vision.
+\newblock 01 2016.
+
+\bibitem{7780460}
+J.~Redmon, S.~Divvala, R.~Girshick, and A.~Farhadi.
+\newblock You only look once: Unified, real-time object detection.
+\newblock In {\em 2016 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 779--788, June 2016.
+
+\bibitem{Se02mobilerobot}
+Stephen Se, David Lowe, and Jim Little.
+\newblock Mobile robot localization and mapping with uncertainty using
+  scale-invariant visual landmarks, 2002.
+
+\bibitem{844076}
+M.~Tomono and S.~Yuta.
+\newblock Mobile robot navigation in indoor environments using object and
+  character recognition.
+\newblock In {\em Proceedings 2000 ICRA. Millennium Conference. IEEE
+  International Conference on Robotics and Automation. Symposia Proceedings
+  (Cat. No.00CH37065)}, volume~1, pages 313--320 vol.1, April 2000.
+
+\bibitem{Yi2009ActivesemanticLW}
+Chuho Yi, Il~Hong Suh, Gi~Hyun Lim, and Byung-Uk Choi.
+\newblock Active-semantic localization with a single consumer-grade camera.
+\newblock {\em 2009 IEEE International Conference on Systems, Man and
+  Cybernetics}, pages 2161--2166, 2009.
+
+\end{thebibliography}
