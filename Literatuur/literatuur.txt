@@ -81,4 +81,4 @@ Interesante features in de beelden:
     - Exit bordjes
     - Hoogspannings-symbool op deuren
     - Stopcontacten/lichtschakelaar
-    - Kate
+    - Kast
