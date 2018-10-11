@@ -23,6 +23,8 @@ Indoor navigation:
     Indoor navigation of a non-holonomic mobile robot using a visual memory - Jonathan Courbon
         -> Embedded camera
 
+    Object Detection Techniques Applied on Mobile Robot Semantic Navigation - Carlos Astua
+
 Visual SLAM:
     Simultaneous localization and mapping
     -> Concurrent mapping and localization(CML)
@@ -35,6 +37,7 @@ Object detection/tracking
     Yolo: real time object detection
         You Only Look Once: Unified, Real-Time Object Detection - Joseph Redmon
 
+        -> Zeer snel
         -> resize to 448*448 and run single convolutional network
         -> Snel maar minder accuraat vooral bij kleinere objecten
         -> Convolutional neural network
@@ -48,9 +51,8 @@ Object detection/tracking
             - SIFT-ing through features with ViPR - M.E. Munich
             - Mobile Robot Localization and Mapping with Uncertainty using Scale-Invariant Visual Landmarks - Stephen Se
 
-    Viola&Jones: detecion of object classes
-
     Acf: agregate channal features
+        -> Minder relevant
         
 
 Object: Detection of objects
@@ -61,3 +63,22 @@ Image Features:
     - Blobs (region of interesting points)  -> Gaussian curve, FAST, gray level blobs
     - Ridge
 
+
+Interesante features in de beelden:
+    - Hoeken
+    - Liften
+    - Rookmelder (plafont)
+    - Bordjes
+    - Deurklinken
+    - Vloerovergangen
+    - stootbuizen aan de muur
+    - Brandkasten/brandblusser
+    - Prikbord/magneetbord
+    - Stootpaal bij deuren
+    - Radiator
+    - Telefoon aan muur
+    - Buizen (plafont)
+    - Exit bordjes
+    - Hoogspannings-symbool op deuren
+    - Stopcontacten/lichtschakelaar
+    - Kate
