@@ -51,6 +51,14 @@ Object detection/tracking
             - SIFT-ing through features with ViPR - M.E. Munich
             - Mobile Robot Localization and Mapping with Uncertainty using Scale-Invariant Visual Landmarks - Stephen Se
 
+    Sift object tracking:
+        - Define rect on ROI in first frame
+        - Compute color hist + sift features
+        - Zoek op frame 2 rondom originele match naar de features
+
+        paper: Object tracking using SIFT features and mean shift - Zhou, Huiyu
+
+
     Acf: agregate channal features
         -> Minder relevant
         
@@ -68,17 +76,33 @@ Interesante features in de beelden:
     - Hoeken
     - Liften
     - Rookmelder (plafont)
-    - Bordjes
+
+    - Bordjes (pictogrammen)
+    - Exit bordjes
+    - Hoogspannings-symbool op deuren
+        -> Zoeken naar edges/corners + hue features (groen bij exit sign), deze combineren en vergelijken met mogelijke borden
+        -> cnn netwerk aanvullen met alle pictogrammen aanwezig in het gebouw (exit, hoogspanning, brandblusser)
+
     - Deurklinken
+    - Deuren
+        -> 2 verticale randen met daartussen een vlak in andere kleur
+        -> Deurklinken
+        -> [Mobile robot nav - Masahiro Tomono]
+
     - Vloerovergangen
+        -> Edge detector
+        -> Color edge detector
+
     - stootbuizen aan de muur
     - Brandkasten/brandblusser
+        -> Mogelijk met sift features
+
     - Prikbord/magneetbord
     - Stootpaal bij deuren
+        -> rood/wit/rood/wit patroon?
     - Radiator
     - Telefoon aan muur
     - Buizen (plafont)
-    - Exit bordjes
-    - Hoogspannings-symbool op deuren
+    
     - Stopcontacten/lichtschakelaar
     - Kast

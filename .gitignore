@@ -9,3 +9,5 @@
 *.blg
 /Papers
 /Beelden
+/yolo
+**/img
