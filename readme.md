@@ -13,6 +13,7 @@
 | 15/10/18 | Opzoekwerk literatuur voor masterproef |
 | 18/10/18 | Opzoekwerk literatuur voor masterproef |
 | 18/10/18 | Eenvoudige experimenten met SIFT & yolo |
+| 18/10/18 | Skypemeeting met Filip Reniers |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

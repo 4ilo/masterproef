@@ -106,3 +106,10 @@ Interesante features in de beelden:
     
     - Stopcontacten/lichtschakelaar
     - Kast
+
+
+Opmerkingen vergadering 18/10:
+    - Verband tussen sift & localisatie
+    - Sift tracking (beperken zoekrange)
+    - Verder onderzoeken algoritmes(+zoeken nieuwere versies) bordjes/verkeersbord tracking
+    - Zoeken naar image segmentatie voor als er geen 'objecten' zijn
