@@ -113,3 +113,45 @@ Opmerkingen vergadering 18/10:
     - Sift tracking (beperken zoekrange)
     - Verder onderzoeken algoritmes(+zoeken nieuwere versies) bordjes/verkeersbord tracking
     - Zoeken naar image segmentatie voor als er geen 'objecten' zijn
+
+
+
+Traffic sign detection:
+
+Ik denk dat het detecteren van pictogrammen zoals exit bordjes, hoogspannings bordjes,... kan vergeleken worden met het detecteren van verkeersborden.
+De aanpak van [1] is om 2 soorten features in het beeld te onderschijden. In eerste instantie detecteren ze shapes op basis van kleur randen en anderzeids 
+wordt de afbeelding omgezet naar HSI waaruit enkel de hue gebruikt wordt. De hue is de enige belangrijke component omdat er zo geen rekening gehouden wordt met
+de hoeveelheid licht en schaduwen. De hue is ook gebaseerd op wat mensen zien, en pictogramen zijn gemaakt in kleuren die opvallen voor mensen.
+
+Vervolgens worden de shape en hue features gecombineerd en vergeleken om de eventuele plaats van een bord te selecteren.
+De verouderede volgende stap aan dit proccess is het vergelijken van het gedetecteerde object met een reeks van voorgedefinieerde 'afbeeldingen'
+op 1 grootte. Ze rekenen erop dat doordat het voertuig beweegd, de grootte van het verkeersbord op eem bepaald moment wel overeen zal komen met het template.
+Een Kalman filter(lineair kwadratishe schatting over de tijd) samen met de snelheid van het voertuig wordt gebruikt om de locatie in het volgende beeld in te schatten.
+
+[2] Daarintegen pakt het volledig anders aan, ze berekenen Histogram of Oriented Gradients(HOG) features voor heel de afbeelding, en gebruiken deze info in een Support Vector machine.
+Deze SVM detector moet getraind worden, maar na de training kan deze zeer snel en heel accuraat zijn.
+In de recognition stap wordt het gedetecteerde object geresized naar een vaste groote (dezelfde als de templates), en wordt het verschil in kleur berekend in de HSV color space.
+Ook hier wordt de HSV color space gebruikt om invloed van licht te beperken. Het kleurverschil wordt dus berekend voor H,S en V.
+Deze 3 worden dan kwadratish samengevoegd en genormaliseerd. Zo kan er gedetecteerd worden of met een treshold of er een significant kleurverschil is tussen het template en het object.
+Als de waarde onder de treshold valt, is het object genoeg gelijkwaardig aan een template, en wordt dit gebruikt voor de volgende stap.
+Als volgende stap wordt feature matching toegepast d.m.v SIFT. Het template met de meeste SIFT features overeenkomstig is dan het herkende bord.
+
+
+SIFT object tracking:
+
+[3] en [4] maken gebruik van SIFT gecombineerd met een mean-shift algoritme om objecten te volgen. De eerste stap is om manueel een object te detecteren in een afbeelding, hierrond wordt ROI kader getekend.
+Van dit ROI worden er SIFT features en een kleur histogram berekend. Op het volgende frame word er gekeken in dezelfde regio en zijn omgeving, hierop word sum of squared differences(SSD) toegepast om om sift feature-correspondences te berekenen.
+Met een Expectation Maximisation(EM) algoritme wordt een overeenkomstig gebied gevonden en een verschil berekend. Dit wordt herhaald tot het verschil kleiner wordt dan een treshold.
+
+In [4] wordt dit process verder verbeterd, zij maken gebruik van SIFT & RANSAC(RANdom SAmple Consensus) om eem ROI te selecteren.
+Heel dit process heeft als nadeel dat het niet schaalbaar is.
+
+[4] beschrijft hiervoor aan ander algoritme gebaseerd op het Lukas-Kanade (KLT) algoritme, dit algoritme beschrijft een wrapping functie die toelaat een template te aligneren op een input afbeelding.
+Door deze wrapping functie te benaderen bekomen we dat de afbeelding pixel per pixel heel gelijkend wordt aan een template.
+
+
+
+[1]: Road-sign detection and tracking - C. Fang (2003)
+[2]: Detection and recognition of traffic signs inside the attentional visual field of drivers - S. Zabihi (2017)
+[3]: Object tracking using SIFT features and mean shift - H. Zhou (2009)
+[4]: An approach to automatic object tracking system by combination of SIFT and RANSAC with mean shift and KLT - Baheti (2016)
