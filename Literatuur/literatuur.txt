@@ -108,14 +108,7 @@ Interesante features in de beelden:
     - Kast
 
 
-Opmerkingen vergadering 18/10:
-    - Verband tussen sift & localisatie
-    - Sift tracking (beperken zoekrange)
-    - Verder onderzoeken algoritmes(+zoeken nieuwere versies) bordjes/verkeersbord tracking
-    - Zoeken naar image segmentatie voor als er geen 'objecten' zijn
-
-
-
+21/10:
 Traffic sign detection:
 
 Ik denk dat het detecteren van pictogrammen zoals exit bordjes, hoogspannings bordjes,... kan vergeleken worden met het detecteren van verkeersborden.
