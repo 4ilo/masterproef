@@ -17,6 +17,7 @@
 | 21/10/18 | Opzoekwerk literatuur over sign detection & SIFT object tracking |
 | 22/10/18 | Experimenten met gPb algoritme & k-means segmentatie|
 | 22/10/18 | Skypemeeting met Filip Reniers |
+| 25/10/18 | Experiment met sign-detection |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
