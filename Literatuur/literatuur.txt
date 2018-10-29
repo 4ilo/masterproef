@@ -148,3 +148,13 @@ Door deze wrapping functie te benaderen bekomen we dat de afbeelding pixel per p
 [2]: Detection and recognition of traffic signs inside the attentional visual field of drivers - S. Zabihi (2017)
 [3]: Object tracking using SIFT features and mean shift - H. Zhou (2009)
 [4]: An approach to automatic object tracking system by combination of SIFT and RANSAC with mean shift and KLT - Baheti (2016)
+
+
+
+
+29/10:
+Floor/wall segmentation
+
+[1] gebruikt 3 afzonderlijke technieken, ze beginnen met het detecteren van horizontale & verticale lijn segmenten. De gebruiken 3 parameters om te bepalen
+of deze lijnsegmenten een deel zijn van een muur-vloer grens. De gewogen som van deze resultaten wordt d.m.v een treshold gefilterd.
+Dit is gedaan met een canny edge detector en het Douglas-Peucker algiritme.

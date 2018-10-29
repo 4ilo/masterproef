@@ -65,10 +65,10 @@ def sift(img, x, y, w, h):
 
     cv.drawKeypoints(sub, kp, sub)
 
-    sign = cv.imread('img/sign.png')
-    sign_g = cv.cvtColor(sign, cv.COLOR_BGR2GRAY)
-    kp, des = sift.detectAndCompute(sign_g, None)
-    cv.drawKeypoints(sign, kp, sign)
+    # sign = cv.imread('img/sign.png')
+    # sign_g = cv.cvtColor(sign, cv.COLOR_BGR2GRAY)
+    # kp, des = sift.detectAndCompute(sign_g, None)
+    # cv.drawKeypoints(sign, kp, sign)
 
     cv.imshow('cropped', sub)
     cv.imshow('sign', sign)
