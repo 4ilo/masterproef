@@ -17,3 +17,13 @@
 - Algemene doel: Toolbox van meerder detecors/trackers
 - Detectors laten werken als versterking van elkaar:
     - X is gedetecteerd, nu weet ik dat ik op plaats y normaal z zou moeten kunnen zien, dus ik start detector voor z
+
+
+
+### Vergadering Meneer Goedemé
+- Segnet -> 
+- anotatie tools:
+    - openc: cvat/vatic
+    - label-img
+    - brambox
+    - 
