@@ -20,10 +20,14 @@
 
 
 
-### Vergadering Meneer Goedemé
-- Segnet -> 
-- anotatie tools:
+### Vergadering Toon Goedemé
+- Bespreking tot nu toe gericht onderzoek + bekomen resultaten
+- De tot nu toe onderzochte technieken zullen waarschijnlijk niet tot een perfecte oplossing leiden.
+- Er zal meer gekeken moeten worden naar CNN zoals YOLO voor detectie en naar Segnet voor segmentatie van deuren en vloeren.
+- Het is misschien goed om een vergelijking te maken tussen CNN en traditionele technieken ter vergelijking.
+- Yolo trainen voor het zoeken van: pictogrammen, bransblussers, hoeken, deurklinken
+- Alle beelden moeten geannoteerd worden voor een hertraining van bijvoorbeeld YOLO. Tools hiervoor zijn:
     - openc: cvat/vatic
     - label-img
     - brambox
-    - 
+
