@@ -22,6 +22,8 @@
 | 28/10/18 | Onderzoek naar segemetatietechnieken voor indoor |
 | 29/10/18 | Experimenten voor segmentatie |
 | 30/10/18 | Vergadering Toon Goedemé |
+| 30/10/18 | Start anotatie beelden |
+| 31/10/18 | Anotaie beelden + hertrainen yolo |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

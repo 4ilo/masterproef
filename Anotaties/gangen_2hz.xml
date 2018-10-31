@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>1</id>
+      <name>Gangen</name>
+      <size>106</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <flipped>False</flipped>
+      <created>2018-10-30 16:51:40.829894+03:00</created>
+      <updated>2018-10-31 12:08:58.916562+03:00</updated>
+      <source>106 images: hospital_corridors_2Hz-001.png, hospital_corridors_2Hz-002.png, ...</source>
+      <labels>
+        <label>
+          <name>fire_extinquisher</name>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>sign</name>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>corner</name>
+          <attributes>
+          </attributes>
+        </label>
+        <label>
+          <name>door_handle</name>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+      <segments>
+        <segment>
+          <id>1</id>
+          <start>0</start>
+          <stop>105</stop>
+          <url>http://localhost:8080/?id=1</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>olivier</username>
+        <email>oliviervandeneede@hotmail.com</email>
+      </owner>
+    </task>
+    <dumped>2018-10-31 12:09:10.896932+03:00</dumped>
+  </meta>
+  <image id="12" name="hospital_corridors_2Hz-013.png" width="1280" height="720">
+    <box label="door_handle" xtl="752.77" ytl="285.53" xbr="769.88" ybr="295.20" occluded="0" id="0">
+    </box>
+  </image>
+  <image id="13" name="hospital_corridors_2Hz-014.png" width="1280" height="720">
+    <box label="door_handle" xtl="936.98" ytl="228.29" xbr="954.75" ybr="240.13" occluded="0" id="1">
+    </box>
+  </image>
+  <image id="14" name="hospital_corridors_2Hz-015.png" width="1280" height="720">
+    <box label="door_handle" xtl="1063.30" ytl="128.95" xbr="1098.17" ybr="150.66" occluded="0" id="2">
+    </box>
+    <box label="fire_extinquisher" xtl="333.69" ytl="296.65" xbr="356.71" ybr="407.24" occluded="0" id="4">
+    </box>
+    <box label="door_handle" xtl="456.71" ytl="296.06" xbr="473.82" ybr="307.24" occluded="0" id="3">
+    </box>
+  </image>
+  <image id="15" name="hospital_corridors_2Hz-016.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="356.71" ytl="295.33" xbr="395.53" ybr="417.11" occluded="0" id="6">
+    </box>
+    <box label="door_handle" xtl="504.08" ytl="301.98" xbr="519.87" ybr="311.84" occluded="0" id="7">
+    </box>
+    <box label="door_handle" xtl="1238.30" ytl="70.33" xbr="1277.77" ybr="100.00" occluded="0" id="5">
+    </box>
+  </image>
+  <image id="16" name="hospital_corridors_2Hz-017.png" width="1280" height="720">
+    <box label="door_handle" xtl="484.35" ytl="251.32" xbr="504.08" ybr="261.80" occluded="0" id="9">
+    </box>
+    <box label="fire_extinquisher" xtl="254.08" ytl="232.24" xbr="322.50" ybr="401.98" occluded="0" id="8">
+    </box>
+  </image>
+  <image id="17" name="hospital_corridors_2Hz-018.png" width="1280" height="720">
+    <box label="door_handle" xtl="450.79" ytl="223.03" xbr="478.43" ybr="238.16" occluded="0" id="11">
+    </box>
+    <box label="door_handle" xtl="548.82" ytl="280.92" xbr="565.93" ybr="292.11" occluded="0" id="12">
+    </box>
+    <box label="fire_extinquisher" xtl="148.82" ytl="192.76" xbr="242.20" ybr="407.90" occluded="0" id="10">
+    </box>
+  </image>
+  <image id="18" name="hospital_corridors_2Hz-019.png" width="1280" height="720">
+    <box label="door_handle" xtl="457.37" ytl="260.53" xbr="477.11" ybr="271.06" occluded="0" id="14">
+    </box>
+    <box label="sign" xtl="715.27" ytl="249.34" xbr="735.66" ybr="259.21" occluded="0" id="16">
+    </box>
+    <box label="door_handle" xtl="304.74" ytl="165.79" xbr="337.00" ybr="185.50" occluded="0" id="13">
+    </box>
+    <box label="sign" xtl="713.95" ytl="132.90" xbr="743.56" ybr="148.03" occluded="0" id="15">
+    </box>
+  </image>
+  <image id="19" name="hospital_corridors_2Hz-020.png" width="1280" height="720">
+    <box label="door_handle" xtl="356.06" ytl="202.63" xbr="386.98" ybr="219.74" occluded="0" id="18">
+    </box>
+    <box label="door_handle" xtl="446.85" ytl="257.90" xbr="465.93" ybr="270.40" occluded="0" id="19">
+    </box>
+    <box label="sign" xtl="702.11" ytl="65.79" xbr="735.01" ybr="91.45" occluded="0" id="21">
+    </box>
+    <box label="sign" xtl="706.06" ytl="226.98" xbr="723.16" ybr="240.13" occluded="0" id="22">
+    </box>
+    <box label="door_handle" xtl="8.68" ytl="1.25" xbr="63.29" ybr="27.63" occluded="0" id="17">
+    </box>
+    <box label="door_handle" xtl="1000.80" ytl="240.13" xbr="1023.83" ybr="251.98" occluded="0" id="20">
+    </box>
+  </image>
+  <image id="20" name="hospital_corridors_2Hz-021.png" width="1280" height="720">
+    <box label="sign" xtl="629.08" ytl="185.53" xbr="656.06" ybr="199.34" occluded="0" id="25">
+    </box>
+    <box label="door_handle" xtl="1102.77" ytl="126.32" xbr="1136.98" ybr="148.69" occluded="0" id="24">
+    </box>
+    <box label="door_handle" xtl="192.90" ytl="144.67" xbr="222.50" ybr="169.08" occluded="0" id="23">
+    </box>
+  </image>
+  <image id="21" name="hospital_corridors_2Hz-022.png" width="1280" height="720">
+    <box label="door_handle" xtl="167.90" ytl="173.69" xbr="194.87" ybr="193.42" occluded="0" id="34">
+    </box>
+    <box label="sign" xtl="502.11" ytl="134.87" xbr="529.74" ybr="151.98" occluded="0" id="26">
+    </box>
+  </image>
+  <image id="22" name="hospital_corridors_2Hz-023.png" width="1280" height="720">
+    <box label="sign" xtl="497.50" ytl="104.61" xbr="533.69" ybr="123.03" occluded="0" id="27">
+    </box>
+    <box label="door_handle" xtl="48.82" ytl="105.92" xbr="83.70" ybr="133.55" occluded="0" id="35">
+    </box>
+  </image>
+  <image id="23" name="hospital_corridors_2Hz-024.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="692.90" ytl="375.66" xbr="700.80" ybr="407.90" occluded="0" id="28">
+    </box>
+  </image>
+  <image id="24" name="hospital_corridors_2Hz-025.png" width="1280" height="720">
+    <box label="door_handle" xtl="382.37" ytl="272.37" xbr="398.82" ybr="290.79" occluded="0" id="37">
+    </box>
+    <box label="fire_extinquisher" xtl="638.30" ytl="384.21" xbr="648.82" ybr="418.42" occluded="0" id="29">
+    </box>
+    <box label="door_handle" xtl="300.79" ytl="200.00" xbr="334.35" ybr="221.71" occluded="0" id="36">
+    </box>
+  </image>
+  <image id="25" name="hospital_corridors_2Hz-026.png" width="1280" height="720">
+    <box label="door_handle" xtl="169.87" ytl="158.55" xbr="213.29" ybr="181.58" occluded="0" id="38">
+    </box>
+    <box label="door_handle" xtl="306.71" ytl="263.16" xbr="320.53" ybr="278.95" occluded="0" id="39">
+    </box>
+    <box label="fire_extinquisher" xtl="606.72" ytl="387.50" xbr="616.58" ybr="425.66" occluded="0" id="30">
+    </box>
+  </image>
+  <image id="26" name="hospital_corridors_2Hz-027.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="686.32" ytl="375.66" xbr="697.51" ybr="414.48" occluded="0" id="31">
+    </box>
+    <box label="door_handle" xtl="238.29" ytl="182.90" xbr="268.56" ybr="201.98" occluded="0" id="40">
+    </box>
+    <box label="door_handle" xtl="1050.80" ytl="159.87" xbr="1081.72" ybr="177.63" occluded="0" id="41">
+    </box>
+    <box label="door_handle" xtl="530.40" ytl="319.08" xbr="545.53" ybr="332.90" occluded="0" id="42">
+    </box>
+    <box label="sign" xtl="695.98" ytl="287.79" xbr="712.35" ybr="298.04" occluded="0" id="55">
+    </box>
+  </image>
+  <image id="27" name="hospital_corridors_2Hz-028.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="701.45" ytl="370.40" xbr="713.30" ybr="413.16" occluded="0" id="32">
+    </box>
+    <box label="sign" xtl="711.56" ytl="272.19" xbr="729.19" ybr="283.03" occluded="0" id="56">
+    </box>
+    <box label="door_handle" xtl="506.06" ytl="297.37" xbr="523.82" ybr="309.21" occluded="0" id="43">
+    </box>
+  </image>
+  <image id="28" name="hospital_corridors_2Hz-029.png" width="1280" height="720">
+    <box label="door_handle" xtl="402.11" ytl="284.87" xbr="420.53" ybr="299.34" occluded="0" id="44">
+    </box>
+    <box label="sign" xtl="645.82" ytl="271.20" xbr="662.65" ybr="281.15" occluded="0" id="57">
+    </box>
+    <box label="fire_extinquisher" xtl="634.35" ytl="373.69" xbr="647.51" ybr="419.08" occluded="0" id="33">
+    </box>
+  </image>
+  <image id="29" name="hospital_corridors_2Hz-030.png" width="1280" height="720">
+    <box label="door_handle" xtl="377.77" ytl="255.27" xbr="401.45" ybr="272.37" occluded="0" id="45">
+    </box>
+    <box label="sign" xtl="697.01" ytl="262.21" xbr="714.91" ybr="271.39" occluded="0" id="60">
+    </box>
+    <box label="door_handle" xtl="552.77" ytl="341.33" xbr="566.17" ybr="347.94" occluded="0" id="58">
+    </box>
+    <box label="fire_extinquisher" xtl="680.93" ytl="376.03" xbr="697.45" ybr="427.26" occluded="0" id="59">
+    </box>
+  </image>
+  <image id="30" name="hospital_corridors_2Hz-031.png" width="1280" height="720">
+    <box label="door_handle" xtl="584.82" ytl="326.95" xbr="598.57" ybr="333.03" occluded="0" id="61">
+    </box>
+    <box label="fire_extinquisher" xtl="725.21" ytl="367.67" xbr="743.72" ybr="423.19" occluded="0" id="62">
+    </box>
+    <box label="door_handle" xtl="355.40" ytl="208.55" xbr="383.69" ybr="225.00" occluded="0" id="46">
+    </box>
+    <box label="sign" xtl="738.47" ytl="241.66" xbr="764.48" ybr="255.89" occluded="0" id="63">
+    </box>
+  </image>
+  <image id="31" name="hospital_corridors_2Hz-032.png" width="1280" height="720">
+    <box label="sign" xtl="702.84" ytl="214.99" xbr="729.61" ybr="233.04" occluded="0" id="64">
+    </box>
+    <box label="door_handle" xtl="518.90" ytl="303.76" xbr="533.90" ybr="313.16" occluded="0" id="48">
+    </box>
+    <box label="door_handle" xtl="97.50" ytl="69.08" xbr="143.55" ybr="100.00" occluded="0" id="47">
+    </box>
+    <box label="fire_extinquisher" xtl="683.81" ytl="359.93" xbr="705.71" ybr="422.13" occluded="0" id="49">
+    </box>
+  </image>
+  <image id="32" name="hospital_corridors_2Hz-033.png" width="1280" height="720">
+    <box label="door_handle" xtl="751.54" ytl="347.19" xbr="763.86" ybr="352.29" occluded="0" id="65">
+    </box>
+    <box label="fire_extinquisher" xtl="809.12" ytl="357.41" xbr="828.96" ybr="424.79" occluded="0" id="51">
+    </box>
+    <box label="sign" xtl="831.72" ytl="184.72" xbr="864.87" ybr="200.66" occluded="0" id="66">
+    </box>
+    <box label="door_handle" xtl="616.37" ytl="282.63" xbr="633.28" ybr="297.13" occluded="0" id="50">
+    </box>
+  </image>
+  <image id="33" name="hospital_corridors_2Hz-034.png" width="1280" height="720">
+    <box label="sign" xtl="814.71" ytl="150.33" xbr="848.38" ybr="164.41" occluded="0" id="67">
+    </box>
+    <box label="fire_extinquisher" xtl="782.73" ytl="349.79" xbr="805.33" ybr="425.54" occluded="0" id="54">
+    </box>
+    <box label="door_handle" xtl="719.70" ytl="335.57" xbr="736.99" ybr="344.91" occluded="0" id="53">
+    </box>
+    <box label="door_handle" xtl="550.96" ytl="244.99" xbr="577.58" ybr="258.46" occluded="0" id="52">
+    </box>
+  </image>
+  <image id="34" name="hospital_corridors_2Hz-035.png" width="1280" height="720">
+    <box label="sign" xtl="769.06" ytl="47.77" xbr="818.19" ybr="66.05" occluded="0" id="71">
+    </box>
+    <box label="door_handle" xtl="646.50" ytl="314.16" xbr="658.11" ybr="324.11" occluded="0" id="69">
+    </box>
+    <box label="door_handle" xtl="992.16" ytl="296.09" xbr="1007.40" ybr="304.72" occluded="0" id="72">
+    </box>
+    <box label="door_handle" xtl="285.00" ytl="90.79" xbr="332.37" ybr="121.71" occluded="0" id="68">
+    </box>
+    <box label="fire_extinquisher" xtl="725.77" ytl="333.22" xbr="754.38" ybr="431.45" occluded="0" id="70">
+    </box>
+  </image>
+  <image id="35" name="hospital_corridors_2Hz-036.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="690.78" ytl="319.50" xbr="721.63" ybr="427.68" occluded="0" id="75">
+    </box>
+    <box label="door_handle" xtl="603.30" ytl="296.29" xbr="618.36" ybr="306.20" occluded="0" id="74">
+    </box>
+    <box label="door_handle" xtl="990.99" ytl="271.79" xbr="1008.96" ybr="281.99" occluded="0" id="73">
+    </box>
+  </image>
+  <image id="36" name="hospital_corridors_2Hz-037.png" width="1280" height="720">
+    <box label="door_handle" xtl="943.07" ytl="254.33" xbr="961.79" ybr="264.48" occluded="0" id="77">
+    </box>
+    <box label="fire_extinquisher" xtl="598.82" ytl="308.58" xbr="633.09" ybr="435.49" occluded="0" id="78">
+    </box>
+    <box label="door_handle" xtl="490.00" ytl="283.20" xbr="509.67" ybr="294.62" occluded="0" id="76">
+    </box>
+  </image>
+  <image id="37" name="hospital_corridors_2Hz-038.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="487.41" ytl="253.57" xbr="541.47" ybr="441.65" occluded="0" id="79">
+    </box>
+    <box label="door_handle" xtl="649.13" ytl="257.18" xbr="669.69" ybr="270.42" occluded="0" id="82">
+    </box>
+    <box label="door_handle" xtl="326.13" ytl="209.89" xbr="350.37" ybr="224.87" occluded="0" id="80">
+    </box>
+    <box label="door_handle" xtl="1033.82" ytl="153.92" xbr="1071.74" ybr="170.83" occluded="0" id="81">
+    </box>
+  </image>
+  <image id="38" name="hospital_corridors_2Hz-039.png" width="1280" height="720">
+    <box label="door_handle" xtl="603.51" ytl="175.33" xbr="650.66" ybr="196.71" occluded="0" id="85">
+    </box>
+    <box label="fire_extinquisher" xtl="354.08" ytl="140.13" xbr="449.48" ybr="443.43" occluded="0" id="83">
+    </box>
+    <box label="door_handle" xtl="61.29" ytl="46.49" xbr="128.18" ybr="83.77" occluded="0" id="84">
+    </box>
+  </image>
+  <image id="40" name="hospital_corridors_2Hz-041.png" width="1280" height="720">
+    <box label="door_handle" xtl="1240.93" ytl="57.24" xbr="1280.00" ybr="85.53" occluded="0" id="86">
+    </box>
+  </image>
+  <image id="42" name="hospital_corridors_2Hz-043.png" width="1280" height="720">
+    <box label="door_handle" xtl="553.10" ytl="245.54" xbr="576.27" ybr="258.23" occluded="0" id="87">
+    </box>
+  </image>
+  <image id="43" name="hospital_corridors_2Hz-044.png" width="1280" height="720">
+    <box label="door_handle" xtl="403.76" ytl="149.40" xbr="445.26" ybr="173.76" occluded="0" id="88">
+    </box>
+  </image>
+  <image id="44" name="hospital_corridors_2Hz-045.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="702.21" ytl="372.51" xbr="722.61" ybr="423.64" occluded="0" id="89">
+    </box>
+  </image>
+  <image id="45" name="hospital_corridors_2Hz-046.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="632.31" ytl="361.10" xbr="653.61" ybr="416.92" occluded="0" id="90">
+    </box>
+    <box label="door_handle" xtl="736.10" ytl="304.66" xbr="744.92" ybr="311.45" occluded="0" id="91">
+    </box>
+  </image>
+  <image id="46" name="hospital_corridors_2Hz-047.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="583.49" ytl="367.99" xbr="609.14" ybr="427.47" occluded="0" id="92">
+    </box>
+    <box label="door_handle" xtl="696.06" ytl="300.84" xbr="706.52" ybr="309.65" occluded="0" id="93">
+    </box>
+  </image>
+  <image id="47" name="hospital_corridors_2Hz-048.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="668.18" ytl="348.18" xbr="695.47" ybr="418.29" occluded="0" id="95">
+    </box>
+    <box label="door_handle" xtl="822.38" ytl="247.92" xbr="839.51" ybr="262.20" occluded="0" id="94">
+    </box>
+  </image>
+  <image id="48" name="hospital_corridors_2Hz-049.png" width="1280" height="720">
+    <box label="door_handle" xtl="732.50" ytl="320.04" xbr="743.34" ybr="327.26" occluded="0" id="98">
+    </box>
+    <box label="door_handle" xtl="902.96" ytl="193.39" xbr="929.35" ybr="210.60" occluded="0" id="96">
+    </box>
+    <box label="fire_extinquisher" xtl="698.58" ytl="344.27" xbr="728.71" ybr="425.89" occluded="0" id="97">
+    </box>
+  </image>
+  <image id="49" name="hospital_corridors_2Hz-050.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="598.99" ytl="327.51" xbr="636.31" ybr="425.58" occluded="0" id="101">
+    </box>
+    <box label="door_handle" xtl="895.51" ytl="72.39" xbr="926.71" ybr="99.62" occluded="0" id="99">
+    </box>
+    <box label="door_handle" xtl="640.83" ytl="295.68" xbr="651.83" ybr="304.68" occluded="0" id="100">
+    </box>
+  </image>
+  <image id="50" name="hospital_corridors_2Hz-051.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="597.60" ytl="307.93" xbr="639.04" ybr="420.72" occluded="0" id="103">
+    </box>
+    <box label="door_handle" xtl="647.73" ytl="271.15" xbr="657.29" ybr="279.44" occluded="0" id="102">
+    </box>
+  </image>
+  <image id="51" name="hospital_corridors_2Hz-052.png" width="1280" height="720">
+    <box label="door_handle" xtl="854.99" ytl="217.40" xbr="871.29" ybr="229.96" occluded="0" id="104">
+    </box>
+    <box label="fire_extinquisher" xtl="789.14" ytl="271.00" xbr="843.20" ybr="415.68" occluded="0" id="105">
+    </box>
+  </image>
+  <image id="52" name="hospital_corridors_2Hz-053.png" width="1280" height="720">
+    <box label="fire_extinquisher" xtl="762.64" ytl="217.77" xbr="842.24" ybr="418.42" occluded="0" id="106">
+    </box>
+    <box label="door_handle" xtl="673.76" ytl="173.01" xbr="695.34" ybr="189.83" occluded="0" id="108">
+    </box>
+    <box label="door_handle" xtl="861.59" ytl="136.84" xbr="884.12" ybr="155.85" occluded="0" id="107">
+    </box>
+  </image>
+  <image id="53" name="hospital_corridors_2Hz-054.png" width="1280" height="720">
+    <box label="door_handle" xtl="730.40" ytl="70.40" xbr="759.35" ybr="100.66" occluded="0" id="111">
+    </box>
+    <box label="fire_extinquisher" xtl="858.03" ytl="138.82" xbr="976.46" ybr="428.29" occluded="0" id="109">
+    </box>
+    <box label="door_handle" xtl="1015.27" ytl="0.00" xbr="1047.51" ybr="31.58" occluded="0" id="110">
+    </box>
+  </image>
+  <image id="56" name="hospital_corridors_2Hz-057.png" width="1280" height="720">
+    <box label="door_handle" xtl="560.79" ytl="235.31" xbr="577.37" ybr="248.49" occluded="0" id="112">
+    </box>
+  </image>
+  <image id="57" name="hospital_corridors_2Hz-058.png" width="1280" height="720">
+    <box label="door_handle" xtl="99.93" ytl="133.10" xbr="126.70" ybr="151.92" occluded="0" id="113">
+    </box>
+  </image>
+  <image id="58" name="hospital_corridors_2Hz-059.png" width="1280" height="720">
+    <box label="door_handle" xtl="607.53" ytl="298.84" xbr="627.30" ybr="305.00" occluded="0" id="116">
+    </box>
+    <box label="sign" xtl="473.30" ytl="290.15" xbr="490.51" ybr="302.37" occluded="0" id="114">
+    </box>
+  </image>
+  <image id="59" name="hospital_corridors_2Hz-060.png" width="1280" height="720">
+    <box label="door_handle" xtl="685.69" ytl="270.75" xbr="705.78" ybr="278.93" occluded="0" id="115">
+    </box>
+    <box label="sign" xtl="545.56" ytl="278.26" xbr="560.06" ybr="287.06" occluded="0" id="117">
+    </box>
+  </image>
+  <image id="60" name="hospital_corridors_2Hz-061.png" width="1280" height="720">
+    <box label="sign" xtl="659.04" ytl="268.55" xbr="677.43" ybr="279.49" occluded="0" id="119">
+    </box>
+    <box label="door_handle" xtl="823.39" ytl="229.57" xbr="850.01" ybr="243.52" occluded="0" id="118">
+    </box>
+  </image>
+  <image id="61" name="hospital_corridors_2Hz-062.png" width="1280" height="720">
+    <box label="door_handle" xtl="815.71" ytl="111.18" xbr="856.43" ybr="130.74" occluded="0" id="120">
+    </box>
+    <box label="sign" xtl="586.17" ytl="248.20" xbr="608.10" ybr="261.34" occluded="0" id="121">
+    </box>
+    <box label="door_handle" xtl="526.77" ytl="363.29" xbr="534.12" ybr="367.69" occluded="0" id="122">
+    </box>
+  </image>
+  <image id="62" name="hospital_corridors_2Hz-063.png" width="1280" height="720">
+    <box label="sign" xtl="542.96" ytl="229.75" xbr="564.38" ybr="243.98" occluded="0" id="123">
+    </box>
+  </image>
+  <image id="63" name="hospital_corridors_2Hz-064.png" width="1280" height="720">
+    <box label="sign" xtl="505.01" ytl="224.15" xbr="528.58" ybr="239.76" occluded="0" id="124">
+    </box>
+  </image>
+  <image id="64" name="hospital_corridors_2Hz-065.png" width="1280" height="720">
+    <box label="door_handle" xtl="463.04" ytl="316.75" xbr="479.13" ybr="329.97" occluded="0" id="126">
+    </box>
+    <box label="door_handle" xtl="673.92" ytl="316.79" xbr="686.92" ybr="322.30" occluded="0" id="134">
+    </box>
+    <box label="sign" xtl="571.81" ytl="188.53" xbr="597.52" ybr="204.50" occluded="0" id="125">
+    </box>
+    <box label="door_handle" xtl="496.31" ytl="340.76" xbr="509.75" ybr="348.69" occluded="0" id="127">
+    </box>
+  </image>
+  <image id="65" name="hospital_corridors_2Hz-066.png" width="1280" height="720">
+    <box label="door_handle" xtl="431.64" ytl="296.08" xbr="441.31" ybr="302.81" occluded="0" id="129">
+    </box>
+    <box label="door_handle" xtl="193.31" ytl="182.46" xbr="219.83" ybr="201.09" occluded="0" id="133">
+    </box>
+    <box label="door_handle" xtl="487.80" ytl="330.64" xbr="496.61" ybr="336.68" occluded="0" id="130">
+    </box>
+    <box label="sign" xtl="568.14" ytl="151.94" xbr="599.74" ybr="170.54" occluded="0" id="128">
+    </box>
+    <box label="door_handle" xtl="688.83" ytl="296.25" xbr="706.29" ybr="304.02" occluded="0" id="131">
+    </box>
+    <box label="door_handle" xtl="444.62" ytl="304.16" xbr="456.44" ybr="311.62" occluded="0" id="132">
+    </box>
+  </image>
+  <image id="66" name="hospital_corridors_2Hz-067.png" width="1280" height="720">
+    <box label="door_handle" xtl="440.35" ytl="341.95" xbr="450.63" ybr="349.85" occluded="0" id="138">
+    </box>
+    <box label="sign" xtl="527.73" ytl="150.04" xbr="562.10" ybr="167.67" occluded="0" id="140">
+    </box>
+    <box label="door_handle" xtl="390.77" ytl="311.84" xbr="398.85" ybr="319.92" occluded="0" id="137">
+    </box>
+    <box label="door_handle" xtl="48.82" ytl="159.87" xbr="87.63" ybr="177.63" occluded="0" id="135">
+    </box>
+    <box label="door_handle" xtl="372.41" ytl="301.93" xbr="383.43" ybr="310.55" occluded="0" id="136">
+    </box>
+    <box label="door_handle" xtl="655.55" ytl="302.84" xbr="674.27" ybr="311.22" occluded="0" id="139">
+    </box>
+  </image>
+  <image id="67" name="hospital_corridors_2Hz-068.png" width="1280" height="720">
+    <box label="door_handle" xtl="490.67" ytl="307.28" xbr="509.38" ybr="318.70" occluded="0" id="143">
+    </box>
+    <box label="sign" xtl="590.61" ytl="66.69" xbr="636.29" ybr="89.85" occluded="0" id="145">
+    </box>
+    <box label="door_handle" xtl="753.37" ytl="243.19" xbr="777.48" ybr="258.42" occluded="0" id="144">
+    </box>
+    <box label="door_handle" xtl="410.39" ytl="265.08" xbr="426.89" ybr="276.50" occluded="0" id="142">
+    </box>
+    <box label="sign" xtl="538.92" ytl="224.25" xbr="551.62" ybr="239.24" occluded="0" id="146">
+    </box>
+    <box label="door_handle" xtl="378.98" ytl="247.95" xbr="393.90" ybr="259.05" occluded="0" id="141">
+    </box>
+  </image>
+  <image id="68" name="hospital_corridors_2Hz-069.png" width="1280" height="720">
+    <box label="door_handle" xtl="196.81" ytl="190.08" xbr="222.19" ybr="211.97" occluded="0" id="149">
+    </box>
+    <box label="door_handle" xtl="363.69" ytl="280.82" xbr="383.05" ybr="293.83" occluded="0" id="150">
+    </box>
+    <box label="door_handle" xtl="122.56" ytl="153.28" xbr="152.07" ybr="176.12" occluded="0" id="148">
+    </box>
+    <box label="door_handle" xtl="705.28" ytl="168.95" xbr="735.89" ybr="186.77" occluded="0" id="147">
+    </box>
+    <box label="sign" xtl="447.09" ytl="196.66" xbr="467.47" ybr="219.25" occluded="0" id="151">
+    </box>
+  </image>
+  <image id="69" name="hospital_corridors_2Hz-070.png" width="1280" height="720">
+    <box label="sign" xtl="469.46" ytl="152.53" xbr="482.24" ybr="178.31" occluded="0" id="154">
+    </box>
+    <box label="door_handle" xtl="0.39" ytl="46.74" xbr="38.29" ybr="70.42" occluded="0" id="152">
+    </box>
+    <box label="door_handle" xtl="328.03" ytl="225.95" xbr="357.24" ybr="243.32" occluded="0" id="153">
+    </box>
+  </image>
+  <image id="70" name="hospital_corridors_2Hz-071.png" width="1280" height="720">
+    <box label="sign" xtl="413.65" ytl="105.78" xbr="430.04" ybr="137.78" occluded="0" id="156">
+    </box>
+    <box label="door_handle" xtl="169.21" ytl="133.55" xbr="211.32" ybr="163.82" occluded="0" id="155">
+    </box>
+  </image>
+  <image id="71" name="hospital_corridors_2Hz-072.png" width="1280" height="720">
+    <box label="sign" xtl="268.86" ytl="2.70" xbr="287.11" ybr="47.12" occluded="0" id="157">
+    </box>
+  </image>
+  <image id="72" name="hospital_corridors_2Hz-073.png" width="1280" height="720">
+    <box label="sign" xtl="240.77" ytl="1.19" xbr="257.22" ybr="32.26" occluded="0" id="158">
+    </box>
+  </image>
+  <image id="73" name="hospital_corridors_2Hz-074.png" width="1280" height="720">
+    <box label="door_handle" xtl="742.55" ytl="175.26" xbr="762.86" ybr="194.93" occluded="0" id="159">
+    </box>
+  </image>
+  <image id="74" name="hospital_corridors_2Hz-075.png" width="1280" height="720">
+    <box label="door_handle" xtl="1030.99" ytl="0.00" xbr="1065.25" ybr="41.94" occluded="0" id="160">
+    </box>
+  </image>
+</annotations>
