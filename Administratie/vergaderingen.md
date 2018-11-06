@@ -31,3 +31,10 @@
     - label-img
     - brambox
 
+
+### Skype meeting Filip Reniers 6/11
+- Bespreking bevindingen
+- Opstellen van tutorial voor reproductie yolo resultaten
+- Opzoeken over object tracking met yolo
+- Verder bekijken hoe de actuele locatie gebruikt kan worden voor betere detectieresultaten
+- Deze week kijken naar segnet voor segmentatie van muren, vloeren en deuren
