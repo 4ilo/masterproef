@@ -1,0 +1,5 @@
+classes = 3
+train = ../Anotaties/train.txt
+valid = ../Anotaties/test.txt
+names = ../cust.names
+backup = backup/
