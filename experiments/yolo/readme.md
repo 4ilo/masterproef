@@ -1,5 +1,3 @@
-## Recreate results
-
 # Clone this repo
 ```
     git clone https://github.com/4ilo/masterproef
@@ -18,4 +16,6 @@
     ./darknet detector test ../cust.data ../yolov2-tiny-cust.cfg ../yolov2-tiny-cust.weights ../img/hospital_corridors_2Hz-016.png
     
     Replace image path to the location of your images
+
+    Result is by default in predictions.jpg
 ```
