@@ -25,6 +25,7 @@
 | 30/10/18 | Start anotatie beelden |
 | 31/10/18 | Anotaie beelden + hertrainen yolo |
 | 6/11/18 | Skype meeting met Filip Reniers |
+| 8/11/18 | Experimenten met indoor segmentatie|
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

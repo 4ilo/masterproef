@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{graphicx}
+
+\setlength\parindent{0pt}                   % Fix stupid indentation on new line
+\setlength\parskip{\medskipamount}
+
+\title{Activiteitenrapport 1}
+\author{Olivier Van den Eede}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    
+    \section{Reeds uitgevoerde activiteiten}
+        \subsection{Object detection}
+        \begin{itemize}
+            \item Beeldmateriaal analyseren op zoek naar mogelijke objecten om te detecteren.
+            \begin{enumerate}
+                \item Hoeken
+                \item Liften
+                \item Rookmelder (plafont)
+                \item Bordjes (pictogrammen) \label{picto}
+                \item Deurklinken
+                \item Deuren
+                \item Vloerovergangen
+                \item Stootbuizen aan de muur
+                \item Brandkasten/brandblusser \label{blusser}
+                \item Prikbord/magneetbord
+                \item Stootpaal bij deuren
+                \item Radiator
+                \item Telefoon aan muur
+                \item Buizen (plafont)
+                \item Stopcontacten/lichtschakelaar
+                \item Kast
+            \end{enumerate}
+
+            \item Voor~\ref{picto} en~\ref{blusser} zijn er een aantal experimenten gebeurd op basis van kleur tresholding, edge detection en matching via SIFT features.
+            \begin{itemize}
+                    \item Door de grote afwijking in kleuren tussen verschillende beelden is het zeer moeilijk om detecties te doen op basis van de kleuren.
+                    \item Door de lage resolutie van het beeldmateriaal, worden er zeer weinig SIFT features gedetecteerd in de beelden.
+            \end{itemize}
+
+            \item Na overleg met de schoolpromotor over de problemen zijn er andere technieken bekeken.
+            \item YOLO object detection~\cite{7780460}
+            \begin{itemize}
+                \item Annoteren van de dataset voor 3 klassen als experiment
+                \begin{enumerate}
+                    \item Exit sign
+                    \item Deurklink
+                    \item Brandblusser
+                \end{enumerate}
+
+                \item Hertrainen van YOLO model met nieuwe annotaties.
+                \item Deze snel hertrainde versie is nog niet perfect, meer geeft wel al een goed resultaat en zal nog verder worden gebruikt.
+            \end{itemize}
+        \end{itemize}
+
+        \subsection{Image segmentation}
+            \begin{itemize}
+                \item Exprtimenten met eenvoudige segmentatietechnieken zoals k-means.
+                \begin{itemize}
+                    \item Veel last vam schaduwen/overbelichting.
+                \end{itemize}
+
+                \item Experimenten met gPb segmentation~\cite{5557884}.
+                \begin{itemize}
+                    \item Mooie resultaten.
+                    \item Zeer traag, minuten per foto.
+                \end{itemize}
+
+                \item Proberen experimenteren met SegNet image segmentation~\cite{Segnet}.
+                \begin{itemize}
+                    \item Niet gelukt om SegNet te gebruiken op het beeldmateriaal.
+                \end{itemize}
+
+                \item Experimenten met ander tensorflow gebaseerd Indoor-segmentatienetwerk.
+                \begin{itemize}
+                    \item Zonder hertraining geeft het goede resultaten op het beeldmateriaal.
+                \end{itemize}
+                
+            \end{itemize}
+
+    \section{Uit te voeren activiteiten}
+        \begin{itemize}
+            \item Op basis van alle experimenten een duidelijk beeld vormen van welke methoden er gekozen zullen worden.
+            \item Deze methoden en de gemaakte keuzes neerschrijven in een literaatuurstudie.
+            \item Onderzoek over object tracking met YOLO.
+            \item Onderzoek hoe actuele locatie gebruikt kan worden om resultaten te verbeteren.
+            \item Onderzoek over de koppeling met een semantische kaart.
+        \end{itemize}
+
+    \bibliographystyle{plain}
+    \bibliography{literatuur.bib}
+
+\end{document}
