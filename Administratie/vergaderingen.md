@@ -38,3 +38,10 @@
 - Opzoeken over object tracking met yolo
 - Verder bekijken hoe de actuele locatie gebruikt kan worden voor betere detectieresultaten
 - Deze week kijken naar segnet voor segmentatie van muren, vloeren en deuren
+
+
+### Skype meeting Filip Reniers 14/11
+- Onderzoek naar Tracking
+- Voorkennis (niet hele beeld scannen)
+
+
