@@ -23,4 +23,5 @@ Als 2de stap heb ik reeds geprobeerd om in de gedetecteerde area SIFT features t
 
 # 8/11 Experimenten met segmentatie
 - Segnet zeer moeilijk werkend te krijgen
-- Een andere indoor-segmentatie [framework](https://github.com/hellochick/Indoor-segmentation) gebaseerd op tensorflow is een oplossing, en geeft een goed resultaat voor muren en vloeren
+- Een andere indoor-segmentatie [framework](https://github.com/hellochick/Indoor-segmentation) gebaseerd op tensorflow is een oplossing, en geeft een goed resultaat voor muren en vloeren. Dit is gebaseerd op [Deeplab-ResNet](https://github.com/DrSleep/tensorflow-deeplab-resnet)
+-> Eventueel hertrainen met deuren(annotaties moeten nog gemaakt worden)

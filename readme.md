@@ -27,6 +27,7 @@
 | 6/11/18 | Skype meeting met Filip Reniers |
 | 8/11/18 | Experimenten met indoor segmentatie|
 | 12/11/18 | Opstellen activiteitenrapport 1 |
+| 12/11/18 | Verder onderzoek image segmentatie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
