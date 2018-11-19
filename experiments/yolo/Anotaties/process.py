@@ -5,7 +5,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 path_data = 'data/oli/'
 
-percentage_test = 10
+percentage_test = 15
 
 file_train = open('train.txt', 'w')
 file_test = open('test.txt', 'w')

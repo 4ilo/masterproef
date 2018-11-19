@@ -8,7 +8,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument("file")
 args = parser.parse_args()
 
-classes = ['door_handle', 'sign', 'fire_extinquisher']
+classes = []
+
+
+def getLabels(root):
+    labels = root.find('task').find('labels')
+
+    for label in labels:
+        classes.append(label.find('name').text)
+
+    with open('cust.names', 'w') as names:
+        names.write("\n".join(classes))
+
 
 if __name__ == '__main__':
     tree = ET.parse(args.file)
@@ -20,6 +31,9 @@ if __name__ == '__main__':
         os.mkdir('Anotations_yolo')
 
     for child in root:
+        if child.tag == 'meta':
+            getLabels(child)
+
         if child.tag == 'image':
             image = child.get('name')
             w = float(child.get('width'))

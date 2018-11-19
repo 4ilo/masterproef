@@ -1,23 +1,67 @@
 \documentclass[11pt,a4paper]{article}
 
-    \usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
-    \usepackage[dutch]{babel}
-    \usepackage{amsmath}
-    \usepackage{tikz}
-    % \usepackage{graphicx}
+\usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{tikz}
+% \usepackage{graphicx}
+
+\setlength\parindent{0pt}                   % Fix stupid indentation on new line
+\setlength\parskip{\medskipamount}
+
+\title{Literatuurstudie}
+\author{Olivier Van den Eede}
+% \date{}
+
+\begin{document}
+    \maketitle
     
-    \setlength\parindent{0pt}                   % Fix stupid indentation on new line
-    \setlength\parskip{\medskipamount}
-    
-    \title{Literatuurstudie}
-    \author{Olivier Van den Eede}
-    \date{}
-    
-    \begin{document}
-        \maketitle
+    \section{Indoor navigatie \& visie}
+        Op visie gebaseerde navigatie is een onderwerp dat zeer vaak onderzocht wordt.
         
-        \section{indoor navigatie \& visie}
+    \section{Object detection}
+
+        Een belangrijk aspect van dit onderzoek is het detecteren van individuele objecten in het beeld van 1 enkele RGB camera.
+        De te detecteren objecten zijn op voorhand vastgelegd, en zijn afhangkelijk van de ruimte waarin de robot zich bevindt.
+
+        In de logistieke gangen van een ziekenhuis zijn er heel wat objecten te zien die we kunnen detecteren, een kleine selectie van deze objecten zijn.
+
+        \begin{itemize}
+            \item Pictogrammen
+            \item Brandblussers
+            \item Deurklinken
+        \end{itemize}
+
+        Voor deze objecten gaan we kijken naar detectie technieken uit de traditionele beeldverwerking, en naar meer \textit{state of the art} technieken. 
+
+
+        \subsection{Traditionele object detectie}
+            In openbare gebouwen zijn er heel wat pictogrammen te vinden zoals nooduitgang, hoogspanning en brandblusser. Deze pictogrammen hebben steeds een specifieke vorm, kleur en symbool.
+            De literatuur leert ons weinig over pictogramdetectie, maar pictogrammen kunnen wel vergeleken worden met verkeersborden die bijna dezelfde kenmerken hebben.
+            De aanpak van~\cite{Fang2003} is om 2 soorten features in een beeld te onderscheiden. In eerste instantie detecteren ze vormen op basis van kleur randen en anderzijds wordt de
+            afbeelding omgezet naar HSI waaruit enkel de hue gebruikt wordt. De hue is de belangrijkste component voor het onderscheiden van kleuren omdat er zo geen rekening wordt gehouden
+            met de hoeveelheid licht en schaduwen.
+            Een recenter onderzoek~\cite{Zabihi2017} bouwt voort op deze technieken,
+            maar bereken de Histogram of Oriented Gradients (HOG) features van het beeld. Vervolgens wordt er gebruik gemaakt van een Support Vector Machine (SVM) om te bepalen waar er zich een match bevindt.
+
+            Vervolgens kunnen de vorm en kleur features gecombineerd worden om de plaats voor een mogelijke match te vinden. Eens er een mogelijke boundig box gevonden is,
+            kan er geprobeerd worden een template te matchen om het effectieve pictogram te achterhalen. Het grootste probleem bij de techniek van~\cite{Fang2003} is
+            dat hun gebruikte template matching techniek niet robuust is voor schaal invarianties.
+            Bij~\cite{Zabihi2017} maken ze voor de herkenningsfase gebruik van SIFT\cite{Lowe1999} features en kleur informatie. 
+            Hierbij worden de SIFT features van de kandidaat matches en de templates vergeleken, en er wordt een gemiddelde genomen van de verschillen tussen hue, saturation en value.
+            Door middel van RANSAC en een treshold wordt er bepaald welke matches gebruikt worden.
+
+        
+        \subsection{Convolutional neural nework}
+
             
-        
-    
-    \end{document}
+
+
+    \section{Object tracking}
+
+    \section{Image segmentation}
+
+    \bibliographystyle{plain}
+    \bibliography{literatuur.bib}
+
+\end{document}

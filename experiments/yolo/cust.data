@@ -1,4 +1,4 @@
-classes = 3
+classes = 4
 train = ../Anotaties/train.txt
 valid = ../Anotaties/test.txt
 names = ../cust.names
