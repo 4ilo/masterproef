@@ -6,6 +6,11 @@
 *.synctex*
 *.~*
 *.bbl
+*.glsdefs
+*.lof
+*.lot
+*.out
+*.toc
 *.blg
 *.pyc
 /Papers
@@ -14,3 +19,4 @@
 **/img
 /.vscode
 **/.idea
+._*

@@ -1,22 +1,12 @@
-\documentclass[11pt,a4paper]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%                                                                 %
+%                            CHAPTER                              %
+%                                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
-\usepackage[dutch]{babel}
-\usepackage{amsmath}
-\usepackage{tikz}
-% \usepackage{graphicx}
+\chapter{Literatuurstudie}
 
-\setlength\parindent{0pt}                   % Fix stupid indentation on new line
-\setlength\parskip{\medskipamount}
-
-\title{Literatuurstudie}
-\author{Olivier Van den Eede}
-% \date{}
-
-\begin{document}
-    \maketitle
-    
-    \section{Indoor navigatie \& visie}
+\section{Indoor navigatie \& visie}
         Op visie gebaseerde navigatie is een onderwerp dat zeer vaak onderzocht wordt.
         
     \section{Object detection}
@@ -55,16 +45,24 @@
         \subsection{Convolutional neural nework}
             Een convolutional neural network of CNN is een supervised deep learning techniek die gebruikt kan worden om complexere beeldinterpretatie te doen.
             Een CNN kan bestaan uit meerdere lagen die meestal een combinatie zijn van 'convolutional-layers' en 'fully connected-layers'. Elk van deze lagen bevat een aantal neuronen met elk een eigen set van gewichten.
-            Het doel van een CNN is om de gewichten zodanig bij te stellen zodat data die aan de eerste laag gegeven wordt een verwacht resultaat geeft aan de laatste laag.
+            Het doel van een CNN is om de gewichten zodanig bij te stellen zodat data die aan de eerste laag gegeven wordt een verwacht resultaat geeft aan de laatste laag. 
+            Deze laatste laag kan men de classificatielaag noemen, en geeft een representatie van wat het netwerk denkt dat er aan de input staat. In figuur~\ref{fig:yolo_cnn} is een voorbeeld tezien van een CNN met de verschillende soorten lagen.
 
-            \begin{figure}
+            \begin{figure}[!hb]
                 \centering
-                \includegraphics[width=0.75\linewidth]{img/yolo_cnn.jpeg}
+                \includegraphics[width=0.75\linewidth]{yolo_cnn.jpeg}
                 \caption{De lagen van een CNN volgens het YOLO~\cite{Redmon_2016} detection system.}
                 \label{fig:yolo_cnn}
             \end{figure}
-            
 
+            Een 'convolutional-layer' is een laag die een convolutie operatie uitvoert op zijn input, het resultaat van deze operatie is een kleinere dataset die gebruikt wordt als input voor de volgende laag.
+            De convolutie kan toegepast worden op meerdere dimensies in 1 keer waardoor de output een tensor zal worden.
+
+            Om een CNN te gebruiken, dient het 'getraint' te worden. Voor de training van een netwerk zijn er 2 dingen noodzakelijk, veel voorbeeld data en per voorbeeld de verwachte output.
+            De loss functie is een maat van hoe goed een netwerk een voorspelling kan doen van de input data, met andere woorden een vergelijking tussen de input en de output. Het doel van de training van een netwerk is het minimaliserem
+            van deze loss functie. Dit kan gedaan worden d.m.v 'backprogagation'. Backpropagation is het steeds een klein beetje aanpassen van de gewichten in de inwendige neuronen om zo het resultaat te verbeteren en de loss functie te verkleinen.
+            Een netwerk heeft een goede training gehad als de loss functie minimaal is.
+            
 
     \section{Object tracking}
 
@@ -74,8 +72,3 @@
         Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafont omwille van kleur en textuur gelijkenissen.
         Hun regressie gebaseerde labeling techniek blijkt echter een slechte oplossing. Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
         een correcte segmentatie te doen.
-
-    \bibliographystyle{plain}
-    \bibliography{literatuur.bib}
-
-\end{document}
