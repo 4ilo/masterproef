@@ -33,6 +33,7 @@
 | 22/11/18 | Verder onderzoek literatuurstudie |
 | 26/11/18 | Verder schrijven literatuurstudie |
 | 3/12/18 | Verder schrijven literatuurstudie |
+| 6/12/18 | Verder schrijven literatuurstudie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

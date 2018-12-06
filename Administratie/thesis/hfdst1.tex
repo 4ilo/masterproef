@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %                                                                 %
-%                            CHAPTER                              %
+%                       LITERATUURSTUDIE                          %
 %                                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
@@ -9,10 +9,10 @@
 \section{Indoor navigatie \& visie}
         Op visie gebaseerde navigatie is een onderwerp dat zeer vaak onderzocht wordt.
         
-    \section{Object detection}
+    \section{Object detectie}
 
         Een belangrijk aspect van dit onderzoek is het detecteren van individuele objecten in het beeld van 1 enkele RGB camera.
-        De te detecteren objecten zijn op voorhand vastgelegd, en zijn afhangkelijk van de ruimte waarin de robot zich bevindt.
+        De te detecteren objecten zijn op voorhand vastgelegd, en zijn afhankelijk van de ruimte waarin de robot zich bevindt.
 
         In de logistieke gangen van een ziekenhuis zijn er heel wat objecten te zien die we kunnen detecteren, een kleine selectie van deze objecten zijn.
 
@@ -32,17 +32,21 @@
             afbeelding omgezet naar HSI waaruit enkel de hue gebruikt wordt. De hue is de belangrijkste component voor het onderscheiden van kleuren omdat er zo geen rekening wordt gehouden
             met de hoeveelheid licht en schaduwen.
             Een recenter onderzoek~\cite{Zabihi2017} bouwt voort op deze technieken,
-            maar bereken de Histogram of Oriented Gradients (HOG) features van het beeld. Vervolgens wordt er gebruik gemaakt van een Support Vector Machine (SVM) om te bepalen waar er zich een match bevindt.
+            maar berekenen de Histogram of Oriented Gradients (HOG) features van het beeld. Vervolgens wordt er gebruik gemaakt van een Support Vector Machine (SVM) om te bepalen waar er zich een match bevindt.
 
-            Vervolgens kunnen de vorm en kleur features gecombineerd worden om de plaats voor een mogelijke match te vinden. Eens er een mogelijke boundig box gevonden is,
+            De vorm en kleur features kunnen dan gecombineerd worden om de plaats voor een mogelijke match te vinden. Eens er een mogelijke boundig box gevonden is,
             kan er geprobeerd worden een template te matchen om het effectieve pictogram te achterhalen. Het grootste probleem bij de techniek van~\cite{Fang2003} is
-            dat hun gebruikte template matching techniek niet robuust is voor schaal invarianties.
-            Bij~\cite{Zabihi2017} maken ze voor de herkenningsfase gebruik van SIFT\cite{Lowe1999} features en kleur informatie. 
+            dat hun gebruikte template matching techniek niet robuust is voor schaal invariantie.
+            Bij~\cite{Zabihi2017} maken ze voor de herkenningsfase gebruik van SIFT\cite{Lowe1999} features en kleur informatie.
+            Hierdoor is het probleem van schaal invariantie grotendeels opgelost.
             Hierbij worden de SIFT features van de kandidaat matches en de templates vergeleken, en er wordt een gemiddelde genomen van de verschillen tussen hue, saturation en value.
-            Door middel van RANSAC en een treshold wordt er bepaald welke matches gebruikt worden.
+            Door middel van RANSAC en een treshold wordt er bepaald welke matches gebruikt worden. Deze techniek zou gebruikt kunnen worden voor het detecteren van pictogrammen.
 
         
         \subsection{Convolutional neural nework}
+            De laatste jaren in het domein van beeldverwerking wordt er steeds meer gegrepen naar deep learning technieken. Dit is komt omdat rekenkracht steeds beter en beter wordt, en de resultaten die bekomen worden
+            de traditionele manieren overtreffen op verschillende vlakken. Een deep learning techniek die veel gebruikt wordt in de beeldverwerking is een CNN.
+
             Een convolutional neural network of CNN is een supervised deep learning techniek die gebruikt kan worden om complexere beeldinterpretatie te doen.
             Een CNN kan bestaan uit meerdere lagen die meestal een combinatie zijn van 'convolutional-layers' en 'fully connected-layers'. Elk van deze lagen bevat een aantal neuronen met elk een eigen set van gewichten.
             Het doel van een CNN is om de gewichten zodanig bij te stellen zodat data die aan de eerste laag gegeven wordt een verwacht resultaat geeft aan de laatste laag. 
@@ -55,13 +59,20 @@
                 \label{fig:yolo_cnn}
             \end{figure}
 
-            Een 'convolutional-layer' is een laag die een convolutie operatie uitvoert op zijn input, het resultaat van deze operatie is een kleinere dataset die gebruikt wordt als input voor de volgende laag.
-            De convolutie kan toegepast worden op meerdere dimensies in 1 keer waardoor de output een tensor zal worden.
+            Een 'convolutional-layer' is een laag die een convolutie operatie uitvoert op zijn input, de convolutie gebeurd d.m.v een masker dat meestal voorgesteld wordt als een tensor.
+            Door een tensormasker te gebruiken kan de operatie uitgevoerd worden op meerdere inputdimensies tegelijkertijd, denk hierbij aan bijvoorbeeld 3 kleurkanalen.
 
-            Om een CNN te gebruiken, dient het 'getraint' te worden. Voor de training van een netwerk zijn er 2 dingen noodzakelijk, veel voorbeeld data en per voorbeeld de verwachte output.
-            De loss functie is een maat van hoe goed een netwerk een voorspelling kan doen van de input data, met andere woorden een vergelijking tussen de input en de output. Het doel van de training van een netwerk is het minimaliserem
+            Om uiteindelijk een classificatie te verkrijgen moet er een dimensievermindering doorgevoerd te worden, dit wordt gedaan door 'pooling layers' aan het netwerk toe te voegen na elke convolutie laag. 
+
+            Een CNN kan pas gebruikt worden nadat het getraind is. Voor de training van een netwerk zijn er 2 dingen noodzakelijk, veel voorbeeld data en per voorbeeld de verwachte output (label).
+            Bij het trainingsproces wordt alle inputdata aangelegd, en wordt er gekeken wat het netwerk aan zijn output heeft.
+            De loss functie is een maat van hoe goed een netwerk een voorspelling kan doen van de input data, met andere woorden een vergelijking tussen de input en de output. Het doel van de training van een netwerk is het minimaliseren
             van deze loss functie. Dit kan gedaan worden d.m.v 'backprogagation'. Backpropagation is het steeds een klein beetje aanpassen van de gewichten in de inwendige neuronen om zo het resultaat te verbeteren en de loss functie te verkleinen.
             Een netwerk heeft een goede training gehad als de loss functie minimaal is.
+
+            Een voorbeeld van een CNN is het 'YOLO(You Only Look Once) detection system'~\cite{Redmon_2016}. Het YOLO netwerk is opgebouwd uit 24 convolutielagen en 2 fully connected layers.
+            Dit netwerk heeft een uitgebreide training gehad op de ImageNet dataset en kan gebruikt worden om object detectie en classificatie te doen door 1 keer de input afbeelding door het netwerk te laten gaan.
+            Door middel van een hertraining kan deze detector leren om alle objecten te detecteren en te classificeren en dus een mogelijke detector zijn voor onze toepassing.
             
 
     \section{Object tracking}
@@ -69,6 +80,32 @@
     \section{Image segmentation}
         Het correct segmenteren van de beelden zal een belangrijke rol spelen. Niet in elk beeld zal er een destinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
         de muren te kunnen onderscheiden. Een eenvoudige approach zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
-        Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafont omwille van kleur en textuur gelijkenissen.
+        Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafond omwille van kleur en textuur gelijkenissen.
         Hun regressie gebaseerde labeling techniek blijkt echter een slechte oplossing. Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
         een correcte segmentatie te doen.
+        \cite{Li2010} stelt een techniek voor die begint met het detecteren van verticale en horizontale lijn segmenten. Dit doen ze door eerst een Canny edge detector\cite{Canny} toe te passen en vervolgens een line fitting.
+        Een zelf geleerde SVM classifier verdeeld alle lijnsegmenten in 2 categorie\"{e}n namelijk horizontaal en verticaal. De vluchtlijnen van de gang worden hierbij onderverdeeld in de horizontale categorie.
+        Alle lijnstukken krijgen een score via een reeks van operaties waarna enkel de beste lijnen bijgehouden worden. Op basis van de kleur van de vlakken tussen de lijnstukken kan een segmentatie gemaakt worden.
+        Dit geeft een resultaat waarbij de vloer meestal een mooi homogeen geheel is, maar de muren worden in meerdere vlakken gesegmenteerd door eventuele kleurverschillen en objecten aan de muur.
+        
+        Een andere manier om de vloer te segmenteren is voorgesteld in~\cite{Rodriguez-Telles2013}. Zij doen een superpixel segmentatie volgens het SLIC algoritme~\cite{slic}, vervolgens bekijken ze de randen van de superpixels.
+        Na observaties blijkt dat de randen van superpixels onregelmatig worden bij objectovergangen. Door het aanduiden van een paar vloerpixels kan hun algoritme superpixels aanduiden die tot de vloer behoren.
+        Deze aanpak geeft een goede schatting van vrije ruimte op de vloer, maar is minder bruikbaar voor segmentatie van muren.
+
+        Een meer recente technologie om afbeeldingen te segmenteren is gebruik te maken van een CNN. Het netwerk voor segmentatie is verschillend van een traditioneel CNN voor bijvoorbeeld object detectie.
+        Een voorbeeld van een segmentatienetwerk is te zien in figuur~\ref{fig:segnet_cnn}.
+
+        \begin{figure}[!hb]
+            \centering
+            \includegraphics[width=0.75\linewidth]{segnet.png}
+            \caption{Het SegNet~\cite{Badrinarayanan} segmentatie netwerk.}
+            \label{fig:segnet_cnn}
+        \end{figure}
+
+        Het segmentatienetwerk SegNet~\cite{Badrinarayanan} is een combinatie van convolutielagen en pooling layers, er zijn geen fully connected layers aanwezig zoals het geval is bij een classificatie netwerk.
+        De bedoeling van het SegNet netwerk is om als output opnieuw een afbeelding te genereren, daarom zijn de lagen opgebouwd als een zandloper, op deze manier is de output even groot als de oorsprongkelijke afbeelding.
+        Een segmentatienetwerk wordt getraind op gelijkaardige manier aan een traditioneel CNN met als verschil dat de labeling gebeurd op pixelbasis aangezien de output even groot is als de input van het systeem.
+        De output van het systeem is een per pixel gelabelde afbeelding afhangkelijk van het aantal classen waarmee het systeem getraind is.
+
+        Het SegNet netwerk is getraind op de SUN RGB-D~\cite{Song_2015_CVPR} dataset. Deze dataset bevat een groot aantal indoor scenes, waarbij er onder andere segmentatie klassen zijn voor muren, vloeren en plafonts.
+        De training is gebeurd met enkel de RGB gegevens van de dataset. Deze trainingsdata zou uiteraard nuttig kunnen zijn voor dit onderzoek.
