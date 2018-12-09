@@ -23,6 +23,7 @@
 \usepackage{lipsum}
 \usepackage{sectsty}					% aanpassen van de fonts van sections en chapters
 %\usepackage[nottoc,numbib]{tocbibind}	% Bibliography mee in de ToC
+\usepackage[acronym,toc]{glossaries}
 
 \allsectionsfont{\sffamily}
 \chapterfont{\raggedleft\sffamily}
@@ -34,6 +35,10 @@
 %\usepackage{latexsym}
 %\usepackage{amsmath}
 %\usepackage{amssymb}
+
+% Importeer afkortingen
+\input{abbrev.tex}
+\makenoidxglossaries
 
 % MFA: zet zoekpad voor figure
 \graphicspath{{fig/}}
@@ -60,8 +65,8 @@
 %lijst van tabellen toevoegen?
 \listoftablespagetrue
 %lijst van symbolen toevoegen?
-\listofsymbolspagetrue
-\listofsymbols{symbolen}				%.tex file met daarin de lijst van symbolen
+% \listofsymbolspagetrue
+% \listofsymbols{symbolen}				%.tex file met daarin de lijst van symbolen
 %lijst van afkortingen toevoegen?
 \listofabbrevspagetrue
 \listofabbrevs{afkortingen}				%.tex file met daarin de lijst van symbolen

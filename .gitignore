@@ -11,6 +11,9 @@
 *.lot
 *.out
 *.toc
+*.acn
+*.glo
+*.ist
 *.blg
 *.pyc
 /Papers
