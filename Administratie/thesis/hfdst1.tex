@@ -84,13 +84,20 @@
             Door middel van een hertraining kan deze detector leren om alle objecten te detecteren en te classificeren en dus een mogelijke detector zijn voor onze toepassing.
 
             Zoals~\cite{Llopart2017} voorstelt is het niet moeilijk om het '\gls{yolo} detection system' een hertraining te geven om deuren te herkennen. Zo kan dit ook toegevoegd worden aan de lijst met te detecteren kenmerken. 
-            
+
 
     \section{Object tracking}
+        Object tracking of het volgen van objecten heeft als doel het bepalen van de positie van hetzelfde object over meerdere frames heen. In het geval van dit onderzoek kan het een indicatie geven van relatieve posities t.o.v. objecten die zich in de gangen bevinden.
+        Een grote moeilijkheid bij het volgen van objecten stilstaan t.o.v. de camera is dat ze veranderen in grootte, ori\"{e}ntatie en perspectief.
+        \cite{Zhou2009} stelt voor om gebruik te maken van \gls{sift} voor het volgen van objecten. Ze zoeken een \gls{roi} op het eerste frame waarop ze een kleurhistogram en \gls{sift} features berekenen.
+        Op het volgende frame worden dezelfde bewerkingen uitgevoerd in een regio die net iets groter is dan de originele \gls{roi}. Een overeenkomst regio wordt dan berekend door middel van een \gls{em} algoritme.
+        Volgens~\cite{Baheti2016} is het beter om gebruik te maken van het KLT feature algoritme~\cite{tomasi1991detection}. Hiermee wordt er een transformatie berekend waardoor de \gls{roi} tussen de 2 frames gelijkaardig wordt. De initi\"{e}le transformatieparameters worden berekend via \gls{ransac}.
+
+        Schrijf nog over \cite{Ning2017}.
 
     \section{Image segmentation}
-        Het correct segmenteren van de beelden zal een belangrijke rol spelen. Niet in elk beeld zal er een destinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
-        de muren te kunnen onderscheiden. Een eenvoudige approach zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
+        Het correct segmenteren van de beelden zal een belangrijke rol spelen. Niet in elk beeld zal er een distinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
+        de muren te kunnen onderscheiden. Een eenvoudige aanpak zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
         Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafond omwille van kleur en textuur gelijkenissen.
         Hun regressie gebaseerde labeling techniek blijkt echter een slechte oplossing. Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
         een correcte segmentatie te doen.

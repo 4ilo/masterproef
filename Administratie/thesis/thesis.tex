@@ -22,7 +22,7 @@
 \usepackage{pslatex}					% andere lettertype's dan de standaard types
 \usepackage{lipsum}
 \usepackage{sectsty}					% aanpassen van de fonts van sections en chapters
-%\usepackage[nottoc,numbib]{tocbibind}	% Bibliography mee in de ToC
+\usepackage[nottoc,numbib]{tocbibind}	% Bibliography mee in de ToC
 \usepackage[acronym,toc]{glossaries}
 
 \allsectionsfont{\sffamily}
@@ -111,14 +111,14 @@
 % Bibliografie: referenties. De items zitten in bibliografie.bib
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Indien je ook de niet geciteerde werken in je bibliografie wil opnemen, commentarieer dan onderstaande regel uit!
-%\nocite{*}
+% \nocite{*}
 \bibliographystyle{plain}
 \bibliography{bibliografie}
 
 % Eventueel enkele appendices
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\appendix
-\input{bijlage1}
+% \appendix
+% \input{bijlage1}
 
 % Back cover: change according to the correct campus
 \includepdf{private/back_fiiw_denayer.pdf}
