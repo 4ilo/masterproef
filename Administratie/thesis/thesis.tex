@@ -22,8 +22,9 @@
 \usepackage{pslatex}					% andere lettertype's dan de standaard types
 \usepackage{lipsum}
 \usepackage{sectsty}					% aanpassen van de fonts van sections en chapters
-\usepackage[nottoc,numbib]{tocbibind}	% Bibliography mee in de ToC
+% \usepackage[nottoc,numbib]{tocbibind}	% Bibliography mee in de ToC
 \usepackage[acronym,toc]{glossaries}
+\usepackage{listings}
 
 \allsectionsfont{\sffamily}
 \chapterfont{\raggedleft\sffamily}
@@ -50,15 +51,15 @@
 %bijvoorbeeld het weglaten van een voorwoord, lijst met symbolen, ...
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %voorwoord toevoegen?
-\acknowledgementspagetrue
+% \acknowledgementspagetrue
 \acknowledgements{voorwoord}			%.tex file met daarin het voorwoord
 
 %samenvatting toevoegen
-\summarypagetrue
+% \summarypagetrue
 \summary{samenvatting}					%.tex met daarin de samenvatting
 
 %abstract toevoegen?
-\abstractpagetrue
+% \abstractpagetrue
 \abstracts{abstract}					%.tex file met daarin het abstract
 %lijst van figuren toevoegen?
 \listoffigurespagetrue
@@ -107,18 +108,20 @@
 \input{hfdst2}
 \input{hfdst3}
 \input{hfdst4}
-\input{hfdst5}
+% \input{hfdst5}
 % Bibliografie: referenties. De items zitten in bibliografie.bib
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Indien je ook de niet geciteerde werken in je bibliografie wil opnemen, commentarieer dan onderstaande regel uit!
 % \nocite{*}
+
 \bibliographystyle{plain}
 \bibliography{bibliografie}
 
 % Eventueel enkele appendices
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \appendix
-% \input{bijlage1}
+\appendix
+\input{bijlage1}
+
 
 % Back cover: change according to the correct campus
 \includepdf{private/back_fiiw_denayer.pdf}
