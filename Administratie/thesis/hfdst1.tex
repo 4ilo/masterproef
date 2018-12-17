@@ -5,3 +5,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
 \chapter{Probleemstelling}
+
+Ziekenhuizen kampen al langer met personeelstekorten en een hoge werkdruk voor het zorgpersoneel. Een deel van dit probleem ligt erin dat ze ook instaan voor de textiellogistiek en de goederenstroom.
+Dit probleem zou aangepakt kunnen worden door automatisatie van de transporten van textiel, karren en bedden. Deze automatisatie staat momenteel nog niet zo ver, omdat vergeleken met de industrie het niet mogelijk is om de volledige
+infrastructuur aan te passen. Een \gls{agv} zou gebruikt kunnen worden om het transport van karren en bedden zelfstandig te transporteren binnen de logistieke gangen van het ziekenhuis.
+
+Dit voertuig moet zichzelf kunnen navigeren in de gangen van een ziekenhuis en weten waar het zich op elk moment bevind. Om dit te realiseren 
+wordt het voertuig uitgerust met een aantal sensoren en een \gls{rgb} camera om de omgeving te observeren. Voor navigatie beschikt het \gls{agv}
+over een semantische kaart. Dit is een kaart waarop aangeduid staat wat voor objecten er te zien zijn (muren, deuren, bordjes, verlichting, ..) samen met een schatting van afmetingen, positie en ori\"{e}ntatie van deze tags.
+
+
+Het doel van deze masterproef is het onderzoeken welke objecten/features er aanwezig zijn in de logistieke gangen van een ziekenhuis en op basis daarvan
+beeldverwerkingstechnieken te zoeken die geschikt kunnen zijn voor detectie en tracking van deze objecten. Deze detecties kunnen dan gebruikt worden om een lokalisatie te doen op basis van de kaart.
+Vervolgens is het de bedoeling dat de robot vertrekt vanop een gekende locatie en d.m.v. zijn kaart en de objecten die hij detecteert in zijn omgeving zichzelf kan navigeren naar een eindpunt.
