@@ -36,7 +36,7 @@
 
         \subsection{Traditionele object detectie} \label{sec:trad_obj_det}
             In openbare gebouwen zijn er heel wat pictogrammen te vinden zoals nooduitgang, hoogspanning en brandblusser. Deze pictogrammen hebben steeds een specifieke vorm, kleur en symbool.
-            De literatuur leert ons weinig over pictogramdetectie, maar pictogrammen kunnen wel vergeleken worden met verkeersborden die bijna dezelfde kenmerken hebben.
+            De literatuur over pictogramdetectie is schaars. De techniek die voorgesteld wordt door~\cite{swathika2016} gebruikt een zeer eenvoudige edge detectie met ocr om eventuele letters op pictogrammnen te lezen, dit is echter minder relevant omdat niet op elk pictogram text aanwezig is. Pictogrammen kunnen echter wel vergeleken worden met verkeersborden die bijna dezelfde kenmerken hebben.
             De aanpak van~\cite{Fang2003} is om 2 soorten features in een beeld te onderscheiden. In eerste instantie detecteren ze vormen op basis van kleur randen en anderzijds wordt de
             afbeelding omgezet naar \gls{hsi} waaruit enkel de hue gebruikt wordt. De hue is de belangrijkste component voor het onderscheiden van kleuren omdat er zo geen rekening wordt gehouden
             met de hoeveelheid licht en schaduwen.
@@ -56,7 +56,7 @@
             De laatste jaren in het domein van beeldverwerking wordt er steeds meer gegrepen naar deep learning technieken. Dit is komt omdat rekenkracht steeds beter en beter wordt, en de resultaten die bekomen worden
             de traditionele manieren overtreffen op verschillende vlakken. Een deep learning techniek die veel gebruikt wordt in de beeldverwerking is een \gls{cnn}.
 
-            Een \gls{cnn} is een supervised deep learning techniek die gebruikt kan worden om complexere beeldinterpretatie te doen.
+            Een \gls{cnn} is een supervised deep learning techniek die gebruikt kan worden om complexere beeldverwerking te doen.
             Een \gls{cnn} kan bestaan uit meerdere lagen die meestal een combinatie zijn van 'convolutional-layers' en 'fully connected-layers'. Elk van deze lagen bevat een aantal neuronen met elk een eigen set van gewichten.
             Het doel van een \gls{cnn} is om de gewichten zodanig bij te stellen zodat data die aan de eerste laag gegeven wordt een verwacht resultaat geeft aan de laatste laag. 
             Deze laatste laag kan men de classificatielaag noemen, en geeft een representatie van wat het netwerk denkt dat er aan de input staat. In figuur~\ref{fig:yolo_cnn} is een voorbeeld tezien van een \gls{cnn} met de verschillende soorten lagen.
