@@ -36,16 +36,16 @@ en het beschikbare beeldmateriaal. De experimenten zijn onder te verdelen in 2 c
 
 
    In hoofdstuk~\ref{sec:yolo} is reeds beschreven hoe een \gls{cnn} gebruikt kan worden om objecten te detecteren. Hiervoor zijn we begonnen met annoteren van het beeldmateriaal.
-   Voor het tekenen van bounding boxes is er gebruik gemaakt van de opencv tool CVAT\footnote{https://github.com/opencv/cvat}. Als proof of concept is er begonnen met 4 object klassen om te detecteren.
+   Voor het tekenen van bounding boxes is er gebruik gemaakt van de opencv tool CVAT\footnote{https://github.com/opencv/cvat}. Als proof of concept zijn we begonnen met 4 object klassen om te detecteren:
 
    \begin{itemize}
-      \item Brandblusser
-      \item Deurklink
-      \item Pictogram
-      \item Bordje
+      \item Brandblusser;
+      \item Deurklink;
+      \item Pictogram;
+      \item Bordje.
    \end{itemize}
 
-   In elk frame van het beeldmateriaal zijn er voor deze klassen 'bounding boxes' getekend. De output van de CVAT tool is een XML-bestand met voor elke afbeelding de co\"{o}rdinaten van de objecten.
+   In elk frame van het beeldmateriaal zijn er voor deze klassen bounding boxes getekend. De output van de CVAT tool is een XML-bestand met voor elke afbeelding de co\"{o}rdinaten van de objecten.
    Een voorbeeld output voor 1 enkele afbeelding is te zien in listing~\ref{lst:cvat_xml}.
 
    \lstset{language=XML, caption={Voorbeeld CVAT output}, label={lst:cvat_xml}}
@@ -58,7 +58,7 @@ en het beschikbare beeldmateriaal. De experimenten zijn onder te verdelen in 2 c
 </image>     
    \end{lstlisting}
 
-   De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
+   De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
    Het conversiescript bevind zich in bijlage~\ref{bij:convert}. 
    Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
 
@@ -99,4 +99,4 @@ en het beschikbare beeldmateriaal. De experimenten zijn onder te verdelen in 2 c
       \label{fig:resnet_seg}
    \end{figure}
 
-   In de toekomst zal er vergeleken welk van de 2 netwerken het beste resultaat geeft, en zal er een hertraining gebeuren op basis van het beeldmateriaal om te proberen om ook deuren te segmenteren.
+   In de toekomst zal er vergeleken worden welke van de 2 netwerken het beste resultaat geeft, en zal er een hertraining gebeuren op basis van het beeldmateriaal om te proberen om ook deuren te segmenteren.
