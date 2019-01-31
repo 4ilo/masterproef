@@ -1,0 +1,5 @@
+*.sty
+.vscode/
+*.nav
+*.snm
+*.vrb
