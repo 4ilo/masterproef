@@ -38,6 +38,11 @@
 | 10/12/18 | Literatuurstudie |
 | 13/12/18 | Hoofdstuk reeds gerealiseerd |
 | 17/12/18 | Afwerken tussentijds verslag |
+| 1/02/19 | Tussentijdse presentatie |
+| 14/02/19 - 28/02/19 | Annoteren beeldmateriaal |
+| 20/02/19 | Bespreken tussentijdse resultaten met Toon Goedemé |
+| 1/03/19 - 14/03/19 | Hertrainen object detector |
+| 13/03/19 | Bespreken activiteitenrapport2 met Toon Goedemé |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

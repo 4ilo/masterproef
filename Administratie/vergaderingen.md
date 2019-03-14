@@ -45,3 +45,10 @@
 - Voorkennis (niet hele beeld scannen)
 
 
+### Bespreking activiteitenrapport2 met Toon Goedemé 13/03
+- Bespreking nieuwe planning
+- Bespreking huidige resultaten (annotatie & training)
+- Uitdenken strategie voor koppeling tussen object detector & objecten op kaart
+- Methode besproken om pixel-afstanden van objecten tov het perspectiefpunt om te zetten naar hoeken
+- Deze hoeken gebruiken om schatting van locatie te maken op basis van een semantische kaart
+- Wetenschappelijke onderbouwing van paper verbeteren door deze methode te vergelijken met SLAM (ORB-SLAM, PTAM)
