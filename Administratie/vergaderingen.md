@@ -52,3 +52,8 @@
 - Methode besproken om pixel-afstanden van objecten tov het perspectiefpunt om te zetten naar hoeken
 - Deze hoeken gebruiken om schatting van locatie te maken op basis van een semantische kaart
 - Wetenschappelijke onderbouwing van paper verbeteren door deze methode te vergelijken met SLAM (ORB-SLAM, PTAM)
+
+### Skype meeting Filip Reniers 15/03
+- Bespreken resultaten tot nu toe
+- Planning herwerken met nieuw besproken doelen
+- Wiskunde neerschrijven
