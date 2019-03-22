@@ -4,7 +4,7 @@ import numpy as np
 from .ExpantionDetector import ExpantionDetector
 
 
-class HoughDetector(ExpantionDetector):
+class HoughFloor(ExpantionDetector):
     def __init__(self):
         self.lines = []
 
