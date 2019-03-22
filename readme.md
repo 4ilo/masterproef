@@ -44,6 +44,7 @@
 | 1/03/19 - 14/03/19 | Hertrainen object detector |
 | 13/03/19 | Bespreken activiteitenrapport2 met Toon Goedemé |
 | 14/03/19 | Beginnen perspectiefpunt detectie |
+| 15/03/19 | Perspectiefdetectie + Skype meeting Filip |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

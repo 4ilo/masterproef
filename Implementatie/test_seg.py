@@ -1,10 +1,11 @@
 import cv2
 import argparse
 import numpy as np
+import time
 
 from ExpantionDetector.HoughDetector import HoughDetector
 from ExpantionDetector.HighestPixel import HighestPixel
-from segmentation.segmentation import run_segmentation
+from segmentation.segmentation import run_segmentation, Segmentation
 
 
 def get_floor_mask(img, floor_label=4):
@@ -29,8 +30,25 @@ if __name__ == "__main__":
     args = parser.parse_args()
     image_path = args.image_path
 
-    # Run segmentation network on the image
-    preds = run_segmentation(image_path)
+    seg_network = Segmentation(image_path)
+
+    for x in ["img/test.png", "img/video1_0465.png", "img/video1_0656.png"]:
+        start = time.time()
+        preds = seg_network.run(x)
+
+        mask = get_floor_mask(preds)
+
+        img = cv2.imread(x)
+        floor = cv2.bitwise_and(img, img, mask=mask)
+        cv2.imshow("floor_" + x, floor)
+
+        end = time.time()
+        print("Inference time: {}".format(end-start))
+
+    cv2.waitKey(0)
+
+    # # Run segmentation network on the image
+    # preds = run_segmentation(image_path)
 
     # Only select floor pixels
     mask = get_floor_mask(preds)
