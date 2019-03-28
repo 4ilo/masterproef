@@ -45,6 +45,10 @@
 | 13/03/19 | Bespreken activiteitenrapport2 met Toon Goedemé |
 | 14/03/19 | Beginnen perspectiefpunt detectie |
 | 15/03/19 | Perspectiefdetectie + Skype meeting Filip |
+| 22/03/19 | Perspectiefdetectie |
+| 23/03/19 | Visualisatie jsom formaat |
+| 24/03/19 | Experimenten met yolo training |
+| 28/03/19 | Uitdenken + experimenteren wiskunde voor afstanden naar hoeken |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
