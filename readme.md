@@ -49,6 +49,7 @@
 | 23/03/19 | Visualisatie jsom formaat |
 | 24/03/19 | Experimenten met yolo training |
 | 28/03/19 | Uitdenken + experimenteren wiskunde voor afstanden naar hoeken |
+| 29/03/19 | Implementatie berekening hoeken |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
