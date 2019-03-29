@@ -5,7 +5,10 @@ import numpy as np
 from ExpantionDetector.HoughFloor import HoughFloor
 from ExpantionDetector.HighestPixel import HighestPixel
 from segmentation.segmentation import Segmentation
-from ExpantionDetector.HoughVanishing import HoughVanishing
+from ExpantionDetector.HoughVanishing import HoughVanishing, transform
+
+
+from DetectionAngle import *
 
 
 def get_floor_mask(img, floor_label=4):
@@ -19,6 +22,21 @@ def get_floor_mask(img, floor_label=4):
                 mask[j, i] = 1
 
     return mask
+
+
+def draw(img, box, vanishing_point):
+    temp = img.copy()
+    # Draw box
+    temp = box.render(temp, color=(0, 255 - (box.class_id * 50), 0))
+
+    # Draw line to box
+    cv2.line(temp, transform(box.center, img.shape), transform(vanishing_point, img.shape), (255, 0, 0,), 1)
+
+    # draw vanishing point
+    cv2.circle(temp, transform(vanishing_point, img.shape), 10, (0, 0, 255))
+
+    cv2.imshow('temp', temp)
+    cv2.waitKey(0)
 
 
 if __name__ == "__main__":
@@ -55,8 +73,26 @@ if __name__ == "__main__":
 
     vanishing = HoughVanishing()
     intersections = vanishing.detect(img)
-    img = vanishing.render(img)
-    cv2.imshow("HoughVanishing", img)
+    img2 = img.copy()
+    img2 = vanishing.render(img2)
+    cv2.imshow("HoughVanishing", img2)
+
+    boxes = []
+
+    filename = image_path.split('.')[0]
+    for line in open(filename+'.detect', 'r'):
+        box = BoundingBox()
+        data = [float(x) for x in line.rstrip().split(' ')]
+
+        box.from_yolo(*data)
+        boxes.append(box)
+
+    for box in boxes:
+        angle = DetectionAngle(intersections[0])
+        ang = angle.calculate(box)
+        print(ang)
+
+        draw(img, box, intersections[0])
 
     if args.output_path:
         cv2.imwrite(args.output_path, img)

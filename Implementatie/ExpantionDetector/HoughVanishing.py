@@ -5,7 +5,7 @@ from .ExpantionDetector import ExpantionDetector
 
 def transform(point: tuple, shape: tuple) -> tuple:
     """ Transform point in relative coordinates to absolute coordinates """
-    return tuple((point * np.array(shape[:2])).astype(int))
+    return tuple((point * np.flip(shape[:2])).astype(int))
 
 
 class HoughVanishing(ExpantionDetector):
@@ -76,7 +76,7 @@ class HoughVanishing(ExpantionDetector):
                     x0 = costheta1 * rho1
                     y0 = sintheta1 * rho1
 
-                    width, height, _ = img.shape
+                    height, width, _ = img.shape
                     pt1 = ((x0 + 1000 * (-sintheta1)) / width, (y0 + 1000 * costheta1) / height)
                     pt2 = ((x0 - 1000 * (-sintheta1)) / width, (y0 - 1000 * costheta1) / height)
 
@@ -104,6 +104,6 @@ class HoughVanishing(ExpantionDetector):
     def render(self, img: np.ndarray) -> np.ndarray:
         """ Render the vanishing points onto the given frame """
         for point in self.intersections:
-            cv2.circle(img, transform(point, img.shape), 10, (0, 0, 255))
+            cv2.circle(img, transform(point, img.shape ), 10, (0, 0, 255))
 
         return img
