@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,left=3.5cm, right=2.5cm, top=3.5cm, bottom=3.5cm]{geometry}
+\usepackage[dutch]{babel}
+\usepackage{amsmath}
+\usepackage{tikz}
+% \usepackage{graphicx}
+\usetikzlibrary{angles,quotes,intersections}
+\usetikzlibrary{babel}
+
+\setlength\parindent{0pt}                   % Fix stupid indentation on new line
+\setlength\parskip{\medskipamount}
+
+\title{Tekening}
+\author{Olivier Van den Eede}
+\date{}
+
+\begin{document}
+    \maketitle
+
+    \section{Gegevens}
+
+        \begin{figure}[tbh]
+            \centering
+            \begin{tikzpicture}[x=1cm,y=1cm,z=0.6cm,>=stealth]
+                \coordinate (Camera) at (-3, 1);
+                \coordinate (Obj1) at (0, 3);
+                \coordinate (Obj2) at (0, 6);
+                \coordinate (Obj3) at (-6, 9);
+
+                % Side lines
+                \draw (-6,0) -- (-6,12);
+                \draw (0,0) -- (0,12);
+
+                % Objects
+                \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj1) {};
+                \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj2) {};
+                \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj3) {};
+
+                % Camera
+                \node[fill,circle,inner sep=2pt, label={left:Camera}] at (Camera) {};
+
+                % Field of view
+                \draw[dashed] (-3, 1) -- (0,4);
+                \draw[dashed] (-3, 1) -- (-6,4);
+                \draw[dashed] (-3, 1) -- (-3,12);
+
+                % Focal plane
+                \draw[blue, name path=fplane] (-1, 3) -- (-5, 3);
+
+                % Obj to camera
+                \draw[dashed, red, name path=o2--c] (Obj2) -- (Camera);
+                \draw[dashed, red, name path=o3--c] (Obj3) -- (Camera);
+
+                \pic [draw, <->, "$\alpha_2$", angle eccentricity=1.1, angle radius=3cm] {angle = Obj2--Camera--Camera};
+                \pic [draw, <->, "$\alpha_3$", angle eccentricity=1.1, angle radius=3.5cm] {angle = Camera--Camera--Obj3};
+                
+                % Projection points
+                \path[name intersections={of=o2--c and fplane,by=p2}];
+                \node[fill,circle,inner sep=2pt, red] at (p2) {};
+                \path[name intersections={of=o3--c and fplane,by=p3}];
+                \node[fill,circle,inner sep=2pt, red] at (p3) {};
+
+                
+                \draw[<->] ([yshift=+0.3cm]p2) -- ([yshift=+0.3cm]-3,3) node[midway, above] {$x_2$};
+                \draw[<->] ([yshift=+0.4cm]p3) -- ([yshift=+0.4cm]-3,3) node[midway, above] {$x_3$};
+
+                \draw[<->] ([xshift=+2.2cm]-3,3) -- ([xshift=+2.2cm] Camera) node[midway, left] {$l_f$};
+
+            \end{tikzpicture}
+        \end{figure}
+
+    
+\end{document}
