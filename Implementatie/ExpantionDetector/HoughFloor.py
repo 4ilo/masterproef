@@ -7,6 +7,7 @@ from .ExpantionDetector import ExpantionDetector
 class HoughFloor(ExpantionDetector):
     def __init__(self):
         self.lines = []
+        self.intersections = []
 
     def _remove_duplicates(self, diff=0.25):
         """ Remove lines with the same rico """
@@ -41,7 +42,7 @@ class HoughFloor(ExpantionDetector):
             d = (det(*line1), det(*line2))
             x = int(det(d, xdiff) / div)
             y = int(det(d, ydiff) / div)
-            intersections.append((x,y))
+            intersections.append((x, y))
 
         return intersections
 
@@ -81,4 +82,9 @@ class HoughFloor(ExpantionDetector):
                 self.lines.append((pt1, pt2))
 
         self._remove_duplicates()
-        return self._line_intersections()
+        intersections = self._line_intersections()
+
+        for inter in intersections:
+            self.intersections.append((inter[0]/mask.shape[1], inter[1]/mask.shape[0]))
+
+        return self.intersections

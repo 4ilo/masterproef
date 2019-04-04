@@ -104,6 +104,9 @@ class HoughVanishing(ExpantionDetector):
     def render(self, img: np.ndarray) -> np.ndarray:
         """ Render the vanishing points onto the given frame """
         for point in self.intersections:
-            cv2.circle(img, transform(point, img.shape ), 10, (0, 0, 255))
+            cv2.circle(img, transform(point, img.shape), 10, (0, 0, 255))
+
+        # for line in self.lines:
+        #     cv2.line(img, transform(line[0], img.shape), transform(line[1], img.shape), (255, 0, 0), 5)
 
         return img

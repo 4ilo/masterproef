@@ -2,7 +2,7 @@ import os
 import numpy as np
 import tensorflow as tf
 
-from segmentation.model import DeepLabResNetModel
+from .model import DeepLabResNetModel
 
 
 class Segmentation:
