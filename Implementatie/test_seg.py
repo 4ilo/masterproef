@@ -11,19 +11,6 @@ from ExpantionDetector.HoughVanishing import HoughVanishing, transform
 from DetectionAngle import *
 
 
-def get_floor_mask(img, floor_label=4):
-    """ Create binary mask for floor pixels """
-    n, h, w, c = img.shape
-
-    mask = np.zeros((h, w), dtype=np.uint8)
-    for j, j_val in enumerate(img[0, :, :, 0]):
-        for i, i_val in enumerate(j_val):
-            if i_val == floor_label:
-                mask[j, i] = 1
-
-    return mask
-
-
 def draw(img, box, vanishing_point):
     temp = img.copy()
     # Draw box
@@ -57,7 +44,7 @@ if __name__ == "__main__":
     preds = seg_network.run(img)
 
     # Only select floor pixels
-    mask = get_floor_mask(preds)
+    mask = seg_network.get_floor_mask(preds)
 
     floor = cv2.bitwise_and(img, img, mask=mask)
     cv2.imshow("floor", floor)
