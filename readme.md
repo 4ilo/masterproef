@@ -51,6 +51,9 @@
 | 28/03/19 | Uitdenken + experimenteren wiskunde voor afstanden naar hoeken |
 | 29/03/19 | Implementatie berekening hoeken |
 | 30/03/19 | Maken tekening hoeken berekening |
+| 03/04/19 | Meeting met Toon Goedemé |
+| 04/04/19 | Schrijven test programmas voor perspectiefdetectie |
+| 05/04/19 | Skypemeeting met Filip |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
