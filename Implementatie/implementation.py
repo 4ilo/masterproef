@@ -54,7 +54,7 @@ if __name__ == "__main__":
 
         # Calculate angle for each detection
         for obj in objects:
-            angle = angle_det.calculate(obj) + img_offset
+            angle = angle_det.calculate(obj)
             obj.render(img, text="%.3f" % angle)
 
         cv2.imshow("test", img)
