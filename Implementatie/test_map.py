@@ -1,3 +1,6 @@
 from MapParser import *
 
-parse_map("img/amk_copy.osm")
+objects, locations = parse_map("data/map.osm")
+
+print(objects)
+print(locations)

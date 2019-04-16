@@ -20,9 +20,12 @@ class BoundingBox:
         self.x = x_c - w / 2
         self.y = y_c - h / 2
 
-    def render(self, img, color=(0, 255, 0)):
+    def render(self, img, color=(0, 255, 0), text=None):
         """ Render bounding box onto image """
         cv2.rectangle(img, transform(self._tl(), img.shape), transform(self._br(), img.shape), color, 1)
+
+        if text is not None:
+            cv2.putText(img, text, transform(self.center, img.shape), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255))
         return img
 
     @property

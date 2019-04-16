@@ -1,5 +1,7 @@
 
 import xml.etree.ElementTree as ET
+from .Object import Object
+from .Location import Location
 
 
 def convert(node):
@@ -25,7 +27,8 @@ def parse_map(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
 
-    nodes = []
+    objects = []
+    locations = []
 
     for child in root:
         if child.tag == 'node':
@@ -33,8 +36,14 @@ def parse_map(filename):
                 if tag.tag == 'tag':
                     if tag.get('k') == 'type':
                         # Get this node
-                        nodes.append(convert(child))
+                        if tag.get('v') == 'object':
+                            data = convert(child)
+                            objects.append(Object(data))
 
-    return nodes
+                        elif tag.get('v') == 'location':
+                            data = convert(child)
+                            locations.append(Location(data))
+
+    return objects, locations
 
 

@@ -13,10 +13,16 @@ class DetectionAngle:
         self.vanishing_point = vanishing_point
         self._focal_length = (max(SENSOR_W, SENSOR_H) * FOCAL_LENGTH) / SENSOR_WIDTH
 
-    def calculate(self, box: BoundingBox):
-        """ Calculate the angle between the camera and the center of a detected object """
-        diff = (box.center[0] - self.vanishing_point[0]) * SENSOR_W
+    def _calculate(self, center):
+        diff = (center[0] - self.vanishing_point[0]) * SENSOR_W
 
-        alpha = math.atan(diff/self._focal_length)
+        alpha = math.atan(diff / self._focal_length)
         return math.degrees(alpha)
 
+    def calculate(self, box: BoundingBox):
+        """ Calculate the angle between the camera and the center of a detected object """
+        return self._calculate(box.center)
+
+    def calculate_offset(self):
+        """ Calculate the angle between the center of the image and the vanishing point """
+        return self._calculate((.5, .5))    # Center is 0.5 in normalised coordinates
