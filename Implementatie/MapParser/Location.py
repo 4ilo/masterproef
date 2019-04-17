@@ -1,8 +1,8 @@
 
 class Location:
-
-    def __init__(self, loc):
+    def __init__(self, loc, node_id):
         self._node = loc.pop('node')
+        self.node_id = node_id
         self.id = loc.pop('id')
         loc.pop('type')
 
@@ -13,4 +13,4 @@ class Location:
             self.objects.update({int(key): float(val)})
 
     def __repr__(self):
-        return "Loc<{}>".format(self.id)
+        return "Node<{}>/Loc<{}>".format(self.node_id, self.id)

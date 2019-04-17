@@ -2,6 +2,7 @@
 import xml.etree.ElementTree as ET
 from .Object import Object
 from .Location import Location
+from .Way import Way
 
 
 def convert(node):
@@ -22,14 +23,30 @@ def convert(node):
     return data
 
 
+def parse_way(node, locations):
+    ids = {x.node_id: x for x in locations}
+    node_list = []
+
+    for nd in node.findall('nd'):
+        if int(nd.get('ref')) in ids.keys():
+            node_list.append(ids[int(nd.get('ref'))])
+
+    if len(node_list):
+        return Way(node_list)
+
+    return False
+
+
 def parse_map(filename):
-    """ Get object and location nodes """
+    """ Get object, way and location nodes """
     tree = ET.parse(filename)
     root = tree.getroot()
 
     objects = []
     locations = []
+    ways = []
 
+    # Get nodes
     for child in root:
         if child.tag == 'node':
             for tag in child:
@@ -42,8 +59,15 @@ def parse_map(filename):
 
                         elif tag.get('v') == 'location':
                             data = convert(child)
-                            locations.append(Location(data))
+                            locations.append(Location(data, int(child.get('id'))))
 
-    return objects, locations
+    # Get ways
+    for child in root:
+        if child.tag == 'way':
+            way = parse_way(child, locations)
+            if way:
+                ways.append(way)
+
+    return objects, locations, ways
 
 

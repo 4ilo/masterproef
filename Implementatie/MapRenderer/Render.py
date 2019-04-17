@@ -4,8 +4,8 @@ import networkx as nx
 
 
 class MapRenderer:
-    def __init__(self, map_path, start_node=-126565):
-        self.G = ox.graph_from_file(map_path, name="Map", retain_all=True)
+    def __init__(self, map_path, start_node=-137971):
+        self.G = ox.graph_from_file(map_path, name="Map", retain_all=True, simplify=False)
         ox.config(imgs_folder="data/plot")
         self.start = start_node
 
