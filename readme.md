@@ -54,6 +54,9 @@
 | 03/04/19 | Meeting met Toon Goedemé |
 | 04/04/19 | Schrijven test programmas voor perspectiefdetectie |
 | 05/04/19 | Skypemeeting met Filip |
+| 15/04/19 | Vervolledigen kaart met objecten en locaties |
+| 16/04/19 | Visualisatie van route + parser objecten/locaties |
+| 17/04/19 | Localistatie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
