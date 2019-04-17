@@ -68,6 +68,10 @@ def parse_map(filename):
             if way:
                 ways.append(way)
 
+    # Attach Objects to Locations
+    for location in locations:
+        location.link_objects(objects)
+
     return objects, locations, ways
 
 

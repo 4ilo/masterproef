@@ -4,7 +4,7 @@ class Object:
 
     def __init__(self, object):
         self._node = object['node']
-        self.id = object['id']
+        self.id = int(object['id'])
         self.name = object['name']
 
     def __repr__(self):
