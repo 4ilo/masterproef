@@ -12,7 +12,7 @@ class HighestPixel(ExpantionDetector):
     def render(self, img: np.ndarray) -> np.ndarray:
         """ Render detections onto the given image """
         cv2.circle(img, transform(self.expantion_point, img.shape), 10, (255, 0, 0))
-        cv2.imshow("HighestPixel Expantion", img)
+        # cv2.imshow("HighestPixel Expantion", img)
 
         return img
 
