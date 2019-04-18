@@ -11,5 +11,10 @@ class Way:
 
     def get_neighbours(self, node):
         index = self.node_list.index(node)
-        return tuple(self.node_list[index-1:index+2])
+
+        back = self.node_list[index-1]
+        if len(back.objects) == 0:
+            back = node
+
+        return back, node, self.node_list[index+1]
 

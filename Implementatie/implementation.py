@@ -48,7 +48,8 @@ def render_result(img, fig):
 
 
 def cost(node, detections):
-    filters = ['light', 'smoke_detector', 'exit_sign']
+    # filters = ['light', 'smoke_detector', 'exit_sign']
+    filters = ['light']
     # split into categories
     data = node.split(filters)
 
@@ -82,6 +83,7 @@ def cost(node, detections):
 
     # Calculate cost
     print(len(matches))
+
     cost = 0
     for data, detection in matches.items():
         cost += abs(node.objects[data] - detections[detection])
@@ -90,6 +92,7 @@ def cost(node, detections):
     for obj in node.objects:
         if obj in matches.keys():
             cost -= 5
+            pass
         else:
             cost += 10
 
@@ -107,8 +110,6 @@ if __name__ == "__main__":
 
     # Init segmentation network
     seg_network = Segmentation("{}/{}".format(args.input_path, images[0]))
-
-    nodes = [4427, -137923, -137925, -137927, -137931, -137933, -137935, -137939, -137941, -137943, -137945, -137947, -137949, -137951, -137953, -137955, -137957, -137959, -137961, -137963, -137965, -137967, -137969, -137971, -137973, -137975, -137977, -137979, -137981, -137983, -137985, -137987, -137989, -137991, -137993, -137995, -137997, -137999, -138001, -138003, -138005, -138007, -138009, -138011, -138013, -138015, -138017, -138019, -138023, -138021, -138025, -138027, -138029, ]
     mr = MapRenderer("data/map.osm")
 
     # Parse objects, locations and ways from the map
@@ -140,14 +141,21 @@ if __name__ == "__main__":
         # Get neighbouring nodes
         back, current, following = route.get_neighbours(current_location)
 
-        cost_b = cost(back, detections)
+        # cost_b = cost(back, detections)
         cost_c = cost(current, detections)
         cost_f = cost(following, detections)
 
-        print("Cost Back: {}".format(cost_b))
+        # Find best match
+        # costs = sorted([(back, cost_b), (current, cost_c), (following, cost_f)], key=lambda x: x[1])
+        costs = sorted([(current, cost_c), (following, cost_f)], key=lambda x: x[1])
+
+        # print("Cost Back: {}".format(cost_b))
         print("Cost Current: {}".format(cost_c))
         print("Cost Following: {}".format(cost_f))
 
-        fig = mr.show_route(nodes[i % len(nodes)])
+        current_location = costs[0][0]
+        print("New location: {}".format(current_location))
+
+        fig = mr.show_route(current_location.node_id)
         render_result(img, fig)
-        cv2.waitKey(0)
+        cv2.waitKey(1)

@@ -15,7 +15,7 @@ class MapRenderer:
         :param end_node: Node id of current location
         :return: Matplotlib figure
         """
-        route = nx.shortest_path(self.G, self.start, end_node, weight='length')
+        route = nx.shortest_path(self.G, end_node, end_node, weight='length')
 
         ox.plot_graph_route(self.G, route, node_size=0, show=False, save=True, filename="output", file_format="png")
         fig = cv2.imread("data/plot/output.png")
