@@ -60,6 +60,7 @@
 | 18/04/19 | Localisatie + Skypemeeting Filip |
 | 19/04/19 | Extra parameters voor localisatie |
 | 25/04/19 | Cameracalibratie |
+| 25/04/19 | Yolo detector in pipeline |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
