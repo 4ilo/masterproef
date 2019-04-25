@@ -23,7 +23,7 @@ def get_vp(seg_network, img):
     # Use HighestPixel detector
     vanishing = HighestPixel()
     vp = vanishing.detect(mask)
-    cv2.circle(img, (int(img.shape[1] / 2), int(img.shape[0] / 2)), 10, (0, 0, 255))
+    cv2.drawMarker(img, (int(img.shape[1] / 2), int(img.shape[0] / 2)), (0, 70, 255), cv2.MARKER_CROSS, 10, 1)
     vanishing.render(img)
 
     return vp
@@ -141,15 +141,12 @@ if __name__ == "__main__":
         # Get neighbouring nodes
         back, current, following = route.get_neighbours(current_location)
 
-        # cost_b = cost(back, detections)
         cost_c = cost(current, detections)
-        cost_f = cost(following, detections)
+        cost_f = cost(following, detections) * 1.25
 
         # Find best match
-        # costs = sorted([(back, cost_b), (current, cost_c), (following, cost_f)], key=lambda x: x[1])
         costs = sorted([(current, cost_c), (following, cost_f)], key=lambda x: x[1])
 
-        # print("Cost Back: {}".format(cost_b))
         print("Cost Current: {}".format(cost_c))
         print("Cost Following: {}".format(cost_f))
 
@@ -157,5 +154,6 @@ if __name__ == "__main__":
         print("New location: {}".format(current_location))
 
         fig = mr.show_route(current_location.node_id)
-        render_result(img, fig)
+        img = render_result(img, fig)
+        # cv2.imwrite("result.png", img)
         cv2.waitKey(1)
