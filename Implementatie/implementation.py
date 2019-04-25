@@ -88,13 +88,25 @@ def cost(node, detections):
     for data, detection in matches.items():
         cost += abs(node.objects[data] - detections[detection])
 
+    weights = [1, 0.75, 0.5, 0.3]
+
     # Add penalty for each non detected object, and a benefit for detected objects
-    for obj in node.objects:
+    # Larger angles are more accurate, so they get more weight
+    for obj, val in node.objects.items():
+        if val >= 30:
+            index = 0
+        elif 30 > val >= 15:
+            index = 1
+        elif 15 > val >= 8:
+            index = 2
+        else:
+            index = 3
+
         if obj in matches.keys():
-            cost -= 5
+            cost -= 5 * weights[index]
             pass
         else:
-            cost += 10
+            cost += 10 * weights[index]
 
     return cost
 
