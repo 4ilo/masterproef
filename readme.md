@@ -57,6 +57,9 @@
 | 15/04/19 | Vervolledigen kaart met objecten en locaties |
 | 16/04/19 | Visualisatie van route + parser objecten/locaties |
 | 17/04/19 | Localistatie |
+| 18/04/19 | Localisatie + Skypemeeting Filip |
+| 19/04/19 | Extra parameters voor localisatie |
+| 25/04/19 | Cameracalibratie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

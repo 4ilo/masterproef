@@ -7,12 +7,14 @@ SENSOR_W = 3280
 SENSOR_H = 2464
 # FOCAL_LENGTH = 3.04
 FOCAL_LENGTH = 1.5
+FOCAL_LENGTH_CALIBRATED = 1796
 
 
 class DetectionAngle:
     def __init__(self, vanishing_point):
         self.vanishing_point = vanishing_point
         self._focal_length = (max(SENSOR_W, SENSOR_H) * FOCAL_LENGTH) / SENSOR_WIDTH
+        self._focal_length = FOCAL_LENGTH_CALIBRATED
 
     def _calculate(self, center):
         diff = (center[0] - self.vanishing_point[0]) * SENSOR_W
