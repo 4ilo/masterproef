@@ -1,1 +1,1 @@
-from .DetectorStub import detect_objects
+from .YoloDetector import detect_objects

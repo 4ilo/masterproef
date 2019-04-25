@@ -121,7 +121,7 @@ if __name__ == "__main__":
         img = cv2.imread("{}/{}".format(args.input_path, image_path))
 
         # Run object detector
-        det_objects = detect_objects(image_path)
+        det_objects = detect_objects(args.input_path, image_path)
 
         # Find vanishing point
         vp = get_vp(seg_network, img)

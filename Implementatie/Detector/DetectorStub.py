@@ -1,7 +1,7 @@
 from DetectionAngle import BoundingBox
 
 
-def detect_objects(img_path):
+def detect_objects(input_path, img_path):
     """ Stub yolo detector with annotation files """
     boxes = []
 
