@@ -3,12 +3,14 @@ import cv2
 from DetectionAngle import BoundingBox
 from .darknet.Darknet import performDetect
 
+CONFIG_PATH = "/darknet/all/"
+
 
 def detect_objects(input_path, image):
     """ Run yolo detector on img_path """
 
     # Get darknet config dir
-    darknet_dir = os.path.dirname(os.path.abspath(__file__)) + "/darknet/"
+    darknet_dir = os.path.dirname(os.path.abspath(__file__)) + CONFIG_PATH
 
     # Get image width and height
     img_path = "{}/{}".format(input_path, image)

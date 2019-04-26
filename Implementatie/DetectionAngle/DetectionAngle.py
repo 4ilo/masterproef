@@ -1,5 +1,5 @@
-from .BoundingBox import BoundingBox
 import math
+from .BoundingBox import BoundingBox
 
 SENSOR_WIDTH = 3.68
 SENSOR_HEIGHT = 2.76

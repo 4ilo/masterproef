@@ -1,2 +1,2 @@
-from .DetectionAngle import DetectionAngle
 from .BoundingBox import BoundingBox
+from .DetectionAngle import DetectionAngle

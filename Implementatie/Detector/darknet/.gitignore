@@ -1,2 +1,2 @@
 libdarknet.so
-cust.weights
+*.weights

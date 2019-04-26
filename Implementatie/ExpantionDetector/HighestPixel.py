@@ -5,7 +5,6 @@ from ExpantionDetector.HoughVanishing import transform
 
 
 class HighestPixel(ExpantionDetector):
-
     def __init__(self):
         self.expantion_point = False
 

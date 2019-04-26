@@ -1,5 +1,5 @@
 classes= 1
 train  = data/train.txt
 valid  = data/train_vid1.txt
-names = Detector/darknet/cust.names
+names = Detector/darknet/lights/cust.names
 backup = backup/

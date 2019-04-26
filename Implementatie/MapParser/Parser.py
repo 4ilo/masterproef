@@ -1,8 +1,7 @@
-
-import xml.etree.ElementTree as ET
+from .Way import Way
 from .Object import Object
 from .Location import Location
-from .Way import Way
+import xml.etree.ElementTree as ET
 
 
 def convert(node):

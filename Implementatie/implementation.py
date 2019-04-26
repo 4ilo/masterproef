@@ -1,15 +1,18 @@
 import cv2
+import logging
 import argparse
 import numpy as np
 from os import listdir
 from os.path import isfile, join
 
+from MapParser import parse_map
+from MapRenderer import MapRenderer
 from Detector import detect_objects
 from DetectionAngle import DetectionAngle
 from segmentation.segmentation import Segmentation
 from ExpantionDetector.HighestPixel import HighestPixel
-from MapRenderer import MapRenderer
-from MapParser import parse_map
+
+logging.basicConfig(level=logging.INFO)
 
 
 def get_vp(seg_network, img):
@@ -82,7 +85,7 @@ def cost(node, detections):
                 matches.update({obj: possible_matches[0]})
 
     # Calculate cost
-    print(len(matches))
+    logging.info("Matches: %d", len(matches))
 
     cost = 0
     for data, detection in matches.items():
@@ -141,7 +144,7 @@ if __name__ == "__main__":
         # Calculate image offset
         angle_det = DetectionAngle(vp)
         img_offset = angle_det.calculate_offset()
-        print(img_offset)
+        logging.info("Vp offset: %f", img_offset)
 
         # Calculate angle for each detection
         detections = {}
@@ -159,11 +162,11 @@ if __name__ == "__main__":
         # Find best match
         costs = sorted([(current, cost_c), (following, cost_f)], key=lambda x: x[1])
 
-        print("Cost Current: {}".format(cost_c))
-        print("Cost Following: {}".format(cost_f))
+        logging.info("Cost Current: %f", cost_c)
+        logging.info("Cost Following: %f", cost_f)
 
         current_location = costs[0][0]
-        print("New location: {}".format(current_location))
+        logging.info("New location: %s", current_location)
 
         fig = mr.show_route(current_location.node_id)
         img = render_result(img, fig)
