@@ -1,4 +1,5 @@
 import cv2
+import time
 import logging
 import argparse
 import numpy as np
@@ -12,7 +13,7 @@ from DetectionAngle import DetectionAngle
 from segmentation.segmentation import Segmentation
 from ExpantionDetector.HighestPixel import HighestPixel
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 
 def get_vp(seg_network, img):
@@ -133,13 +134,20 @@ if __name__ == "__main__":
     current_location = list(filter(lambda x: x.node_id == -137971, locations))[0]
 
     for i, image_path in enumerate(images):
+        fps_start = time.time()
         img = cv2.imread("{}/{}".format(args.input_path, image_path))
 
         # Run object detector
+        obj_start_time = time.time()
         det_objects = detect_objects(args.input_path, image_path)
+        obj_end_time = time.time()
+        logging.warning("Yolo calculation time: %f", obj_end_time - obj_start_time)
 
         # Find vanishing point
+        vp_start_time = time.time()
         vp = get_vp(seg_network, img)
+        vp_end_time = time.time()
+        logging.warning("Segmentation calculation time: %f", vp_end_time - vp_start_time)
 
         # Calculate image offset
         angle_det = DetectionAngle(vp)
@@ -170,5 +178,9 @@ if __name__ == "__main__":
 
         fig = mr.show_route(current_location.node_id)
         img = render_result(img, fig)
-        # cv2.imwrite("result.png", img)
+
+        fps_stop = time.time()
+        logging.warning("Fps: %f", 1/(fps_stop-fps_start))
+        logging.warning("--------------------------------")
+
         cv2.waitKey(1)
