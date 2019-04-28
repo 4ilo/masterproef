@@ -70,7 +70,23 @@ if __name__ == "__main__":
         ap = bbb.ap(p, r)
         plt.plot(r, p, label=f'{c}: {round(ap * 100, 2)}%')
 
-    plt.gcf().suptitle('PR-curve individual example')
+    plt.gcf().suptitle('PR-curve individual')
+    plt.gca().set_ylabel('Precision')
+    plt.gca().set_xlabel('Recall')
+    plt.gca().set_xlim([0, 1])
+    plt.gca().set_ylim([0, 1])
+    plt.legend()
+    plt.show()
+
+    # Generate PR-curve and compute mAP
+    plt.figure()
+
+    p, r = bbb.pr(detections, annotations)
+    ap = bbb.ap(p, r)
+
+    plt.plot(r, p, label=f'mAP: {round(ap * 100, 2)}%')
+
+    plt.gcf().suptitle('PR-curve total')
     plt.gca().set_ylabel('Precision')
     plt.gca().set_xlabel('Recall')
     plt.gca().set_xlim([0, 1])
