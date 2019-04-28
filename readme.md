@@ -62,6 +62,8 @@
 | 25/04/19 | Cameracalibratie |
 | 25/04/19 | Yolo detector in pipeline |
 | 26/04/19 | Afwerken implementatie |
+| 26/04/19 | Meeting met Filip, Toon en Herman |
+| 28/04/19 | Yolo detector grafieken genereren |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
