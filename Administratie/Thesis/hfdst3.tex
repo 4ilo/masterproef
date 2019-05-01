@@ -1,102 +1,92 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 %                                                                 %
-%                      Reeds gerealiseerd                         %
+%                          Uitwerking                             %
 %                                                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-\chapter{Reeds gerealiseerd}
+\chapter{Uitwerking}
 
-Er zijn reeds een aantal experimenten uitgevoerd met de technieken die beschreven worden in de literatuur om voeling te krijgen met wat er wel en niet kan werken in situatie van dit onderzoek
-en het beschikbare beeldmateriaal. De experimenten zijn onder te verdelen in 2 categorie\"{e}n die verder beschreven worden.
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=\linewidth]{uitwerking/pipeline1.png}
+    \caption{Overzicht van het programma}
+    \label{fig:pipeline1}
+\end{figure}
+
+Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een semantische kaart een robot autonoom te laten navigeren in de logistieke gangen van een ziekenhuis.
+Om dit te implementeren, is er een pipeline opgesteld. Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden.
 
 \section{Object detectie}
-   In hoofdstuk~\ref{sec:trad_obj_det} is er beschreven hoe er op een traditionele manier pictogrammen herkent kunnen worden.
-   Bij het zoeken naar de specifieke hue van de pictogrammen is gebleken dat het wel mogelijk is om dit als feature te gebruiken op het beschikbare beeldmateriaal, maar
-   er is een te groot verschil in de belichting tussen de verschillende gangen waardoor de kleuren niet overeen komen en er moeilijk een juiste hue bepaald kan worden.
-   Dit is ge\"{i}llustreerd in figuur~\ref{fig:kleurverschil}. Dit toont aan dat de hue van de pictogrammen geen absoluut uitsluitsel kan geven over de segmentatie, maar uitraard
-   is het verschil in kleur in 1 beeld/omgeving nog steeds een feature die het pictogram onderscheid van de achtergrond.
-   
-   \begin{figure}[!htb]
-      \centering
-      \includegraphics[width=0.75\linewidth]{kleurverschil.png}
-      \caption{Kleurverschil tussen verschillende gangen}
-      \label{fig:kleurverschil}
-   \end{figure}
 
-   Voor het identificeren van de pictogrammen is er geprobeerd om gebruik te maken van 'local feature matching' door middel van \gls{sift}. 
-   Hierbij is gebleken dat door de lage resolutie van het beeldmateriaal er zo goed als geen features gedetecteerd kunnen worden zoals te zien in figuur~\ref{fig:sift_detect}.
+Zoals besproken zal worden in hoofdstuk~\ref{sec:sem_kaart}, bevat de semantische kaart van het ziekenhuis een beschrijving van objecten/features die aanwezig zijn in de gangen.
+Deze objecten zijn bijvoorbeeld:
+\begin{itemize}
+    \item Lampen;
+    \item Brandblussers;
+    \item Pictogrammen;
+    \item Rookdetectors;
+    \item Deurklinken.
+\end{itemize}
 
+De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} camera.
+In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en kan er een detector gemaakt worden om deze features te herkennen.
 
-   \begin{figure}[!htb]
-      \centering
-      \includegraphics{sift_detectie.png}
-      \caption{SIFT features op gedetecteerde contour.}
-      \label{fig:sift_detect}
-   \end{figure}
+De gekozen object detector is YOLOv2\cite{yolov22016}. Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om
+objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
 
+\subsection{Annotatie beeldmateriaal}
+Om een object-detector te maken gebaseerd op een \gls{cnn} moet al het beeldmateriaal geannoteerd worden door bounding-boxes te teken rondom de kenmerkende objecten.
+Elk van deze bounding-boxes moet ook voorzien worden van een bijhorend label. In tabel~\ref{tab:annotaties} is een opsomming gemaakt van alle annotaties in de training en validatie set.
 
-   In hoofdstuk~\ref{sec:yolo} is reeds beschreven hoe een \gls{cnn} gebruikt kan worden om objecten te detecteren. Hiervoor zijn we begonnen met annoteren van het beeldmateriaal.
-   Voor het tekenen van bounding boxes is er gebruik gemaakt van de opencv tool CVAT\footnote{https://github.com/opencv/cvat}. Als proof of concept zijn we begonnen met 4 object klassen om te detecteren:
+\begin{table}[h]
+    \caption{Annotaties in training en validatie set}\label{tab:annotaties}
+    \begin{tabular}{l | l | l | l | l | l | l}
+        & Aantal frames & Rookmelder & Deurklink & Pictogram & TL-lamp & Totaal \\ \hline
+        Trainings set & 899 & 1016 & 147 & 340 & 5260 & 6763 \\
+        Validatie set & 711 & 1130 & 180 & 408 & 992 & 2710 \\
+    \end{tabular}
+\end{table}
 
-   \begin{itemize}
-      \item Brandblusser;
-      \item Deurklink;
-      \item Pictogram;
-      \item Bordje.
-   \end{itemize}
+Voor het aanduiden van de annotaties is er gebruik gemaakt van de OpenCV \gls{cvat}\footnote{https://github.com/opencv/cvat}.
+De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de co\"{o}rdinaten van de objecten. Een voorbeeld output voor 1 enkele afbeelding is te zien in listing~\ref{lst:cvat_xml}.
 
-   In elk frame van het beeldmateriaal zijn er voor deze klassen bounding boxes getekend. De output van de CVAT tool is een XML-bestand met voor elke afbeelding de co\"{o}rdinaten van de objecten.
-   Een voorbeeld output voor 1 enkele afbeelding is te zien in listing~\ref{lst:cvat_xml}.
-
-   \lstset{language=XML, caption={Voorbeeld CVAT output}, label={lst:cvat_xml}}
-   \begin{lstlisting}
-<image id="24" name="hospital_corridors_4Hz-025.png" width="1280" height="720">
-   <box label="door_handle" xtl="863.66" ytl="237.20" xbr="881.28" ybr="248.22"/>
-   <box label="sign" xtl="584.02" ytl="254.12" xbr="608.24" ybr="265.28"/>
-   <box label="door_handle" xtl="435.83" ytl="321.53" xbr="448.33" ybr="329.06"/>
-   <box label="sign" xtl="590.76" ytl="298.63" xbr="604.02" ybr="307.70"/>
-</image>     
+\lstset{language=XML, caption={Voorbeeld CVAT output}, label={lst:cvat_xml}}
+   \begin{lstlisting}[basicstyle=\small]
+<image id="24" name="hospital_corridors_025.png" width="1280" height="720">
+   <box label="door_handle" xtl="863" ytl="237" xbr="881" ybr="248"/>
+   <box label="light" xtl="584" ytl="254" xbr="608" ybr="265"/>
+   <box label="light" xtl="435" ytl="321" xbr="448" ybr="329"/>
+   <box label="exit_sign" xtl="590" ytl="298" xbr="604" ybr="307"/>
+</image>
    \end{lstlisting}
 
-   De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
-   Het conversiescript bevind zich in bijlage~\ref{bij:convert}. 
-   Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
+De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
+Het conversiescript bevind zich in bijlage~\ref{bij:convert}.
+Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
+Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co\"{o}rdinaat te bekomen, de waardes vermenigvuldigd moeten worden met de breedte en de hoogte zoals ge\"{i}llustreerd in~\ref{eq:yolo_abs}.
 
-   \begin{equation} \label{eq:yolo}
-      <x> <y> <width> <height> 
-   \end{equation}
+\begin{equation} \label{eq:yolo}
+  <x> <y> <width> <height>
+\end{equation}
 
-   In figuur~\ref{fig:yolo_1} en~\ref{fig:yolo_2} zijn 2 resultaten te zien van de \gls{yolo} detector op de dataset.
+\begin{equation} \label{eq:yolo_abs}
+    \begin{split}
+        x_{abs} &= <x> *  \mathrm{image\_width} \\
+        y_{abs} &= <y> * \mathrm{image\_height}
+    \end{split}
+\end{equation}
 
-   \begin{figure}[H]
-      \centering
-      \includegraphics[width=0.75\linewidth]{yolo_detectie1.jpg}
-      \caption{Resultaat 1 YOLO detector.}
-      \label{fig:yolo_1}
-   \end{figure}
+\subsection{Training YOLOv2}
 
-   \begin{figure}[!htb]
-      \centering
-      \includegraphics[width=0.75\linewidth]{yolo_detectie2.jpg}
-      \caption{Resultaat 2 YOLO detector.}
-      \label{fig:yolo_2}
-   \end{figure}
+Voor training en later ook detectie met YOLOv2 is er gebruikt gemaakt van een aangepaste versie van de darknet\footnote{https://github.com/AlexeyAB/darknet} implementatie in C.
+We zijn vertrokken van het yolo-voc.2.0.cfg configuratie bestand waar we het aantal te detecteren klassen hebben aangepast naar 4 (light, smoke\_detector, exit\_sign en door\_handle), en het aantal filters naar 25.
+Dit nieuw configuratie bestand specificeert de netwerk layout, deze layout is een YOLOv2 netwerk waarbij nu de laatste lagen aangepast zijn om slechts 4 objecten te classificeren.
 
-\newpage
-\section{Image segmentation}
+Het trainen gebeurd nu op basis van de traininsset zoals weergegeven in tabel~\ref{tab:annotaties}. De performantie van het netwerk zal besproken worden in hoofdstuk~\ref{chap:resultaten}.
+\section{Perspectiefpunt detectie}
 
-   Zoals reeds voorgesteld in hoofdstuk~\ref{sec:image_segmentation} kan voor het segmenteren van de gangen gebruik gemaakt worden van het SegNet~\cite{Badrinarayanan} segmentatie netwerk.
-   Na enkele uren proberen is het niet gelukt om SegNet werkend te krijgen. Dit zal in de toekomst hernomen worden.
+\section{Omgevingsmeting}
 
-   In plaats daarvan is er een ander segmentatie netwerk gevonden gebaseerd op ResNet dat reeds getraind werd op een dataset met indoor scenes en gangen.
-   In figuur~\ref{fig:resnet_seg} is het resultaat te zien van het netwerk zonder een hertraining.
+\section{Semantische kaart}\label{sec:sem_kaart}
 
-   
-   \begin{figure}[!htb]
-      \centering
-      \includegraphics[width=0.75\linewidth]{resnet_segmentatie.png}
-      \caption{Resultaat van ResNet segmentatie netwerk.}
-      \label{fig:resnet_seg}
-   \end{figure}
-
-   In de toekomst zal er vergeleken worden welke van de 2 netwerken het beste resultaat geeft, en zal er een hertraining gebeuren op basis van het beeldmateriaal om te proberen om ook deuren te segmenteren.
+\section{Lokalisatie}
