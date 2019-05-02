@@ -65,6 +65,7 @@
 | 26/04/19 | Meeting met Filip, Toon en Herman |
 | 28/04/19 | Yolo detector grafieken genereren |
 | 01/05/19 | Schrijven over object detectie |
+| 02/05/19 | Schrijven over segmentatie + omgevingsrepresentatie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

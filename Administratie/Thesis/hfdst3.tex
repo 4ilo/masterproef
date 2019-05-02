@@ -17,7 +17,7 @@ Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een seman
 Om dit te implementeren, is er een pipeline opgesteld. Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden.
 
 
-\section{Object detectie}
+\section{Object detectie}\label{sec:object_detectie}
 
 Zoals besproken zal worden in hoofdstuk~\ref{sec:sem_kaart}, bevat de semantische kaart van het ziekenhuis een beschrijving van objecten/features die aanwezig zijn in de gangen.
 Deze objecten zijn bijvoorbeeld:
@@ -90,7 +90,7 @@ Het trainen gebeurd nu op basis van de traininsset zoals weergegeven in tabel~\r
 
 \section{Perspectiefpunt detectie}
 
-Ik hoofdstuk~\ref{sec:lokalisatie} zullen we bespreken hoe het lokaliseren werkt, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
+Ik hoofdstuk~\ref{sec:omgevingsmeting} zullen we bespreken hoe het lokaliseren werkt, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
 Het detecteren van het perspectiefpunt kan gebeuren op verschillende manieren, voor dit onderzoek zijn drie verschillende technieken ge\"{i}mplementeerd, en deze zullen verder besproken worden.
 
 De performantie en nauwkeurigheid van de 3 methoden zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
@@ -146,7 +146,83 @@ Indien er slechts een paar lijnen overschieten na filtering, kan gesteld worden 
 \end{figure}
 
 
-\section{Omgevingsmeting}
+\section{Omgevingsmeting} \label{sec:omgevingsmeting}
+
+\begin{figure}[!h]
+    \centering
+    \begin{tikzpicture}[x=1cm,y=1cm,z=0.6cm,>=stealth]
+        \coordinate (Camera) at (-3, 1);
+        \coordinate (Obj1) at (0, 3);
+        \coordinate (Obj2) at (0, 6);
+        \coordinate (Obj3) at (-6, 9);
+
+        % Side lines
+        \draw (-6,0) -- (-6,12);
+        \draw (0,0) -- (0,12);
+
+        % Objects
+        \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj1) {};
+        \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj2) {};
+        \node[fill,circle, inner sep=2pt, label={right:Obj}] at (Obj3) {};
+
+        % Camera
+        \node[fill,circle,inner sep=2pt, label={left:Camera}] at (Camera) {};
+
+        % Field of view
+        \draw[dashed] (-3, 1) -- (0,4);
+        \draw[dashed] (-3, 1) -- (-6,4);
+        \draw[dashed] (-3, 1) -- (-3,12);
+
+        % Focal plane
+        \draw[blue, name path=fplane] (-1, 3) -- (-5, 3);
+
+        % Obj to camera
+        \draw[dashed, red, name path=o2--c] (Obj2) -- (Camera);
+        \draw[dashed, red, name path=o3--c] (Obj3) -- (Camera);
+
+        \pic [draw, <->, "$\alpha_2$", angle eccentricity=1.1, angle radius=3cm] {angle = Obj2--Camera--Camera};
+        \pic [draw, <->, "$\alpha_3$", angle eccentricity=1.1, angle radius=3.5cm] {angle = Camera--Camera--Obj3};
+
+        % Projection points
+        \path[name intersections={of=o2--c and fplane,by=p2}];
+        \node[fill,circle,inner sep=2pt, red] at (p2) {};
+        \path[name intersections={of=o3--c and fplane,by=p3}];
+        \node[fill,circle,inner sep=2pt, red] at (p3) {};
+
+
+        \draw[<->] ([yshift=+0.3cm]p2) -- ([yshift=+0.3cm]-3,3) node[midway, above] {$x_2$};
+        \draw[<->] ([yshift=+0.4cm]p3) -- ([yshift=+0.4cm]-3,3) node[midway, above] {$x_3$};
+
+        \draw[<->] ([xshift=+2.2cm]-3,3) -- ([xshift=+2.2cm] Camera) node[midway, left] {$l_f$};
+    \end{tikzpicture}
+    \caption{Schematische voorstelling omgevingsmeting}
+    \label{fig:omgevingsmeting}
+\end{figure}
+
+Door middel van de \gls{rgb} camerabeelden genomen van het standpunt van de robot, willen we een representatie maken van de omgeving. Deze representatie zal later
+gebruikt worden om de actuele locatie van de robot te volgen.
+Voor het opbouwen van de omgeving maken we gebruik van de object detector beschreven in hoofdstuk~\ref{sec:object_detectie}.
+De detector geeft een lijst terug van objecten met voor elk object een begrenzende rechthoek en een klasse.
+Elk object heeft een unieke locatie in het beeld, en dus ook in de ruimte.
+
+In figuur~\ref{fig:omgevingsmeting} is een schematische 2d voorstelling te zien van een gang waarin er zich 3 objecten bevinden, 2 van deze objecten bevinden zich
+binnen de kijkhoek van de camera, en worden door middel van de rode stippellijnen geprojecteerd op het blauwe cameravlak.
+
+De rode stippen zichtbaar in~\ref{fig:omgevingsmeting} zijn de co\"{o}rdinaten van de objecten zoals ze gedetecteerd worden door de object detector.
+Het doel is om op basis van deze co\"{o}rdinaten de hoek $\alpha_i$ tussen de optische as van de camera en het object in de ruimte te bepalen.
+
+Hiervoor komt het perspectiefpunt van pas, het perspectiefpunt licht in de figuur op een oneindige afstand op de zwarte stippellijn(optische as).
+De pixelafstand volgens de x-as van de optische as tot het centrum van de bounding box van een object is gedefinieerd als $x_i$.
+
+Formule~\ref{eq:angles} toont dat voor het verband tussen $x_i$ gemeten in pixels en $\alpha_i$ een extra constante parameter $l_f$ nodig is.
+$l_f$ is \'{e}\'{e}n van de camera specifieke parameters, die de afstand tussen de camerasensor en het beeldvlak definieert, namelijk de focale lengte of brandpuntsafstand.
+Deze parameter kan verkregen worden door middel van een cameracalibratie, en moet omgerekend worden naar pixels.
+
+\begin{equation}
+    \alpha_i = \tan^{-1}(\frac{x_i}{l_f})
+    \label{eq:angles}
+\end{equation}
+
 \subsection{Camera kalibratie}
 
 \section{Semantische kaart}\label{sec:sem_kaart}
