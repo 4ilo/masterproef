@@ -6,6 +6,7 @@
 from network import Network
 import tensorflow as tf
 
+
 class DeepLabResNetModel(Network):
     def setup(self, is_training, num_classes):
         '''Network definition.

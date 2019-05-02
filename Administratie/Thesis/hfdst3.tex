@@ -16,6 +16,7 @@
 Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een semantische kaart een robot autonoom te laten navigeren in de logistieke gangen van een ziekenhuis.
 Om dit te implementeren, is er een pipeline opgesteld. Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden.
 
+
 \section{Object detectie}
 
 Zoals besproken zal worden in hoofdstuk~\ref{sec:sem_kaart}, bevat de semantische kaart van het ziekenhuis een beschrijving van objecten/features die aanwezig zijn in de gangen.
@@ -33,6 +34,7 @@ In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en
 
 De gekozen object detector is YOLOv2\cite{yolov22016}. Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om
 objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
+
 
 \subsection{Annotatie beeldmateriaal}
 Om een object-detector te maken gebaseerd op een \gls{cnn} moet al het beeldmateriaal geannoteerd worden door bounding-boxes te teken rondom de kenmerkende objecten.
@@ -61,7 +63,7 @@ De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de 
    \end{lstlisting}
 
 De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
-Het conversiescript bevind zich in bijlage~\ref{bij:convert}.
+Het conversiescript bevind zich in bijlage~\ref{ch:bij_convert}.
 Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
 Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co\"{o}rdinaat te bekomen, de waardes vermenigvuldigd moeten worden met de breedte en de hoogte zoals ge\"{i}llustreerd in~\ref{eq:yolo_abs}.
 
@@ -76,17 +78,77 @@ Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co
     \end{split}
 \end{equation}
 
+
 \subsection{Training YOLOv2}
 
 Voor training en later ook detectie met YOLOv2 is er gebruikt gemaakt van een aangepaste versie van de darknet\footnote{https://github.com/AlexeyAB/darknet} implementatie in C.
 We zijn vertrokken van het yolo-voc.2.0.cfg configuratie bestand waar we het aantal te detecteren klassen hebben aangepast naar 4 (light, smoke\_detector, exit\_sign en door\_handle), en het aantal filters naar 25.
 Dit nieuw configuratie bestand specificeert de netwerk layout, deze layout is een YOLOv2 netwerk waarbij nu de laatste lagen aangepast zijn om slechts 4 objecten te classificeren.
 
-Het trainen gebeurd nu op basis van de traininsset zoals weergegeven in tabel~\ref{tab:annotaties}. De performantie van het netwerk zal besproken worden in hoofdstuk~\ref{chap:resultaten}.
+Het trainen gebeurd nu op basis van de traininsset zoals weergegeven in tabel~\ref{tab:annotaties}. De performantie van het netwerk zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
+
+
 \section{Perspectiefpunt detectie}
 
+Ik hoofdstuk~\ref{sec:lokalisatie} zullen we bespreken hoe het lokaliseren werkt, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
+Het detecteren van het perspectiefpunt kan gebeuren op verschillende manieren, voor dit onderzoek zijn drie verschillende technieken ge\"{i}mplementeerd, en deze zullen verder besproken worden.
+
+De performantie en nauwkeurigheid van de 3 methoden zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
+
+\subsection{Hoogste vloerpixel segmentatie}\label{sec:seg_highest}
+
+De eerste techniek maakt gebruik van het DeepLab-ResNet~\cite{resnet101} segmentatienetwerk gelijkaardig aan de beschrijving in hoofdstuk~\ref{sec:image_segmentation}.
+Het netwerk is ge\"{i}mplementeerd in TensorFlow en voorgetraind op indoor scenes zodat het klaar is voor gebruik in python.\footnote{https://github.com/hellochick/Indoor-segmentation}
+
+Het netwerk kan gebruikt worden om in een afbeelding elke pixel onder te verdelen in een aantal klassen zoals: muur, vloer, boom, meubel en trap.
+Voor het detecteren van het perspectiefpunt hebben we gekozen om enkel de vloerpixels te gebruiken.
+Het resultaat van de segmentatie is te zien in figuur~\ref{fig:floor_seg} waarbij groen vloepixels zijn, roze muurpixels, grijs plafontpixels en blauw meubelpixels.
+
+Van de gesegmenteerde data nemen we dan de hoogste vloerpixel, en deze gebruiken we als perspectiefpunt.
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{uitwerking/segmentatie.png}
+    \caption{ResNet segmentatie van 1 input frame.}
+    \label{fig:floor_seg}
+\end{figure}
+
+
+\subsection{Vloerlijn kruising}\label{sec:hough_floor}
+Voor deze techniek maken we gebruik van dezelfde segmentatiedata als in hoofdstuk~\ref{sec:seg_highest}, maar wordt er een masker gemaakt met enkel de vloerpixels.
+Op dit masker wordt door middel van een Canny-edgedetector de rand van de vloer gedetecteerd, dit proces is gevisualiseerd in figuur~\ref{fig:hough_floor}.
+Vervolgens kunnen er door middel van de Hough-transformatie een aantal rechten gevonden worden die raken aan zoveel mogelijk punten met de rand van de vloer.
+Zoals te zien in figuur~\ref{fig:hough_floor} worden er meerdere rechten gevonden, en deze moeten gefilterd worden omdat ze ongeveer dezelfde lijn voorstellen.
+Dit gebeurd door de richtingsco\"{e}ffici\"{e}nt van alle lijnen met elkaar te vergelijken, en indien het verschil te klein is, wordt de lijn met de laagste
+richtingsco\"{e}ffici\"{e}nt verwijderd.
+Het optimale resultaat is dat er 1 lijn overblijft aan elke kant van de vloer, zodat deze de vluchtlijnen voorstellen.
+Indien dit het geval is, is de kruising van de 2 rechten het perspectiefpunt.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{uitwerking/hough_floor.png}
+    \caption{\textbf{Linksboven}: vloersegmentatie, \textbf{Rechtsboven}: Canny-edgedetectie, \textbf{Linksonder}: alle Hough lijnen, \textbf{Rechtsonder}: filtering van lijnen}
+    \label{fig:hough_floor}
+\end{figure}
+
+
+\subsection{Perspectieflijn kruising}
+Deze techniek gelijkt sterk op de beschreven methode uit~\ref{sec:hough_floor} met als verschil dat hier geen gebruik gemaakt wordt van vloersegmentatie.
+De gehele afbeelding wordt omgezet naar grijswaarden voordat het door een Canny-edgedetector gehaald word met een variabele treshold gebaseerd op de mediaan van de grijswaarden.
+De edge detectie wordt wederom gebruikt om door middel van de Hough-transformatie een aantal aanliggende rechten te zoeken die zoveel mogelijk punten snijd.
+We zijn op zoek naar perspectieflijnen, dus alle horizontale en verticale lijnen worden onmiddellijk verwijderd net als rechten waarvan de richtingsco\"{e}ffici\"{e}nt
+niet genoeg van elkaar afwijkt. Dit is weergegeven in figuur~\ref{fig:hough_all}.
+
+Indien er slechts een paar lijnen overschieten na filtering, kan gesteld worden dat het perspectiefpunt te vinden is op de kruising van de rechten.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{uitwerking/hough_all.png}
+    \caption{\textbf{Links}: Canny-edgedetectie op hele afbeelding. \textbf{Rechts}: Hough lijnen uit edge detectie.}
+    \label{fig:hough_all}
+\end{figure}
+
+
 \section{Omgevingsmeting}
+\subsection{Camera kalibratie}
 
 \section{Semantische kaart}\label{sec:sem_kaart}
 
-\section{Lokalisatie}
+\section{Lokalisatie}\label{sec:lokalisatie}
