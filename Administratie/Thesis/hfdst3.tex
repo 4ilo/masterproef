@@ -216,15 +216,103 @@ De pixelafstand volgens de x-as van de optische as tot het centrum van de boundi
 
 Formule~\ref{eq:angles} toont dat voor het verband tussen $x_i$ gemeten in pixels en $\alpha_i$ een extra constante parameter $l_f$ nodig is.
 $l_f$ is \'{e}\'{e}n van de camera specifieke parameters, die de afstand tussen de camerasensor en het beeldvlak definieert, namelijk de focale lengte of brandpuntsafstand.
-Deze parameter kan verkregen worden door middel van een cameracalibratie, en moet omgerekend worden naar pixels.
+Deze parameter kan verkregen worden door middel van een cameraKalibratie, en moet omgerekend worden naar pixels.
 
 \begin{equation}
     \alpha_i = \tan^{-1}(\frac{x_i}{l_f})
     \label{eq:angles}
 \end{equation}
 
+
 \subsection{Camera kalibratie}
+Elke camera heeft een set van intrinsieke parameters die uniek zijn voor de camera/lens combinatie.
+Deze parameters kunnen voorgesteld worden door middel van een cameramatrix $M$ zoals weergegeven in~\ref{eq:camera_matrix} waarbij ($f_x$, $f_y$) de focale lengtes zijn, en ($c_x$, $c_y$) de optische centra.
+
+\begin{equation}
+    M = \begin{bmatrix}
+            f_x &  0  & c_x \\
+            0   & f_y & c_y \\
+            0   &  0  &  1
+    \end{bmatrix}
+    \label{eq:camera_matrix}
+\end{equation}
+
+Een eenvoudige methode om een camerakalibratie uit te voeren is een gekend patroon fotograferen uit verschillende hoeken en zo de verschillende parameters te berekenen.
+Het meestgebruikte patroon voor deze toepassing is een dambordpatroon met afwisselend witte en zwarte vlakken, de raakpunten van de zwarte vlakken vormen hier een
+identificeerbaar patroon. In figuur~\ref{fig:kalibratie} is een voorbeeld opgenomen van de patroondetectie.
+
+\begin{figure}[!hb]
+    \centering
+    \includegraphics{uitwerking/kalibratie.png}
+    \caption{Detectie van het dambordpatroon voor camerakalibratie}
+    \label{fig:kalibratie}
+\end{figure}
+
 
 \section{Semantische kaart}\label{sec:sem_kaart}
+De semantische kaart is een belangrijk onderdeel van dit werkt.
+De kaart bevat een representatie van alle objecten/features die zichtbaar zijn binnen in de ruimtes.
+Er is gekozen om de gegevens voor te stellen in het \gls{osm} formaat waarbij alles wordt voorgesteld door middel van node's in een XML formaat.
+In figuur~\ref{fig:kaart} is een deel uit de kaart gevisualiseerd met behulp van een \gls{osm} map editor.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{uitwerking/kaart.png}
+    \caption{Grafische voorstelling semantische kaart}
+    \label{fig:kaart}
+\end{figure}
+
+Het \gls{osm} formaat definieert alles met behulp van node's. Elke node kan beschikken over een aantal tags waarin sleutel-waarde gegevens gelinkt kunnen worden aan de node's.
+\gls{osm} is een formaat dat gebruikt wordt voor andere doeleinden dan deze toepassing, daarom hebben we gekozen om de node's op maat gemaakte tags toe te kennen
+die onze eigen parser later kan interpreteren.
+Aan de kaart zijn een aantal dingen toegevoegd om deze later te kunnen gebruiken.
+De objecten zijn als tag toegevoegd via een map editor, en de tags zijn ingevuld in een vast patroon. Het resultaat van deze aanpassing in XML is weergegeven in listing~\ref{lst:object_node}.
+De belangrijkste gegevens zijn het type en de name tag, deze geven weer dat het gaat over een 'object' met als label 'licht'.
+Alle gegevens in de node tag zelf zijn ge cre\"{e}ert door de map editor bij het aanmaken van de node, waarbij 'lat' en 'lon' de wereldco\"{o}rdinaten zijn van de node.
+
+\lstset{language=XML, caption={XML voorstelling van 1 object node}, label={lst:object_node}}
+\begin{lstlisting}[basicstyle=\small]
+<node id='137883' action='modify' visible='true' lat='51.068085' lon='4.500029'>
+    <tag k='id' v='19' />
+    <tag k='name' v='licht' />
+    <tag k='type' v='object' />
+</node>
+\end{lstlisting}
+
+Een 2de aanpassing aan de kaart is de beschrijving van een te volgen route in het midden van de gangen.
+Een route bestaat uit een opeenvolging van node's die aan elkaar grenzen.
+Een aantal van deze node's zijn toegevoegd om discrete locaties te verkrijgen die op 1 route liggen.
+De XML structuur van een locatie node is zichtbaar in listing~\ref{lst:location_node}.
+Een locatie node is gekenmerkt door een type='location' en bezit een aantal extra tags.
+
+De extra tags zijn het belangrijkste onderdeel van de kaart, zij bevatten informatie over de objecten die zichtbaar zijn van op een specifieke locatie.
+Zo geeft bijvoorbeeld een tag met de sleutel $21$ en waarde $10.5$ aan dat object $21$ zichtbaar is onder een hoek van ongeveer $10.5\textdegree$.
+
+\lstset{language=XML, caption={XML voorstelling van 1 lokatie node}, label={lst:location_node}}
+\begin{lstlisting}[basicstyle=\small]
+<node id='137973' action='modify' visible='true' lat='51.068085' lon='4.500029'>
+    <tag k='id' v='27' />
+    <tag k='type' v='location' />
+    <tag k='20' v='20' />
+    <tag k='21' v='10.5' />
+</node>
+\end{lstlisting}
+
+Een route of 'way' in \gls{osm} is een gesorteerde lijst van alle node id's die op de route liggen. Dit wordt gebruikt om het pad dat de robot zal volgen aan te geven.
+In listing~\ref{lst:way} is in XML formaat een deel van de route beschreven.
+De aangemaakte locatie node's zijn via de map editor gekoppeld in \'{e}\'{e}n route, deze route zal ingelezen worden door het programma, en is de enige route die de robot kan afleggen.
+
+\lstset{language=XML, caption={XML voorstelling van een route}, label={lst:way}}
+\begin{lstlisting}[basicstyle=\small]
+<way id='140546' action='modify' visible='true'>
+    <nd ref='4427' />
+    <nd ref='137973' />
+    <nd ref='137925' />
+</way>
+\end{lstlisting}
+
+Het inlezen van het \gls{osm} kaartformaat gebeurd via een zelfgemaakte parser die de object, locatie en route node's inleest in een gelinkte datastructuur
+zodat het eenvoudig is om later te verwerken.
+De kaart kan gevisualiseerd worden met behulp van een Python \gls{osm} bibliotheek\footnote{https://github.com/gboeing/osmnx}.
 
 \section{Lokalisatie}\label{sec:lokalisatie}
