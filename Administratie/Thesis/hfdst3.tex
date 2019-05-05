@@ -316,3 +316,41 @@ zodat het eenvoudig is om later te verwerken.
 De kaart kan gevisualiseerd worden met behulp van een Python \gls{osm} bibliotheek\footnote{https://github.com/gboeing/osmnx}.
 
 \section{Lokalisatie}\label{sec:lokalisatie}
+Nu we alle stappen afzonderlijk besproken hebben, is het tijd om alles te combineren tot \'{e}\'{e}n geheel.
+Zoals in figuur~\ref{fig:pipeline1} al weergegeven werd, worden de input beelden van de camera frame per frame verwerkt.
+E\'{e}n input afbeelding wordt eerst geanalyseerd door de YOLO object detector waarna het perspectiefpunt gedetecteerd kan worden.
+Het perspectiefpunt zou in principe ongeveer het midden van het beeld moeten aangeven.
+Dit is echter niet altijd het geval omdat de robot geroteerd kan zijn om zijn eigen as.
+Daarom wordt er een correctiefactor berekend om het perspectiefpunt ongeveer in het midden van het beeld te leggen.
+
+De 2 detectieresultaten kunnen vervolgens gecombineerd worden om de omgevingsmeting uit te voeren zoals beschreven in hoofdstuk~\ref{sec:omgevingsmeting}.
+Dit geeft als resultaat een lijst van gedetecteerde objecten samen met de hoek waaronder ze zichtbaar zijn.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{uitwerking/pipeline2.png}
+    \caption{Overzicht van de lokalisatie}
+    \label{fig:pipeline2}
+\end{figure}
+
+De omgevingsmeting en de gegevens beschreven op de semantische kaart moeten nu aan elkaar gelinkt worden om de actuele locatie van de robot te bepalen.
+We gaan er vanuit dat de robot vertrekt op een gekende locatie, deze locatie is \'{e}\'{e}n van de discrete locaties aangeduid op de kaart in hoofdstuk~\ref{sec:sem_kaart}.
+De eerste vorm van kennis ingebracht in de implementatie is het feit dat de robot niet kan springen, met andere woorden de robot kan enkel op of tussen 2 discrete locatie punten op de kaart zijn.
+In het programma wordt dus enkel getracht om de huidige locatie te onderscheiden tussen de vorige locatie node, en de volgende locatie node op de gedefinieerde route.
+Figuur~\ref{fig:pipeline2} geeft het overzicht van hoe de lokalisatie verloopt.
+
+Voor elk van deze 2 mogelijke nodes wordt vervolgens een score berekend, deze score geeft aan hoeveel de theoretische node lijkt op de omgevingsmeting van het huidige frame.
+Om deze score te berekenen, wordt er eerst geprobeerd om per object-klasse objecten van op de kaart te linken aan objecten uit de omgevingsmeting.
+Dit gebeurd door de hoeken te vergelijken.
+De objecten waarvan de detectie en de data hoeken het dichtst bij elkaar liggen worden gelinkt.
+Uiteraard zijn de metingen niet exact gelijk aan de data, daarom wordt er een afwijking tot 20\% toegestaan bij het linken.
+
+De score die de gelijkenis tussen de meting en data weergeeft wordt berekend op basis van deze gelinkte gegevens.
+Elk object uit de node data dat niet gelinkt kon worden met een detectie wordt afgestraft, en elke match wordt beloont.
+Vervolgens wordt per match het verschil in hoek (fout) tussen de detectie en data hoek afgetrokken van de score.
+De laatste stap is het wegen van de verschillende features. Objecten dichtbij hebben een veel grotere detectiehoek, die naukeuriger berekend kan worden.
+Daarom wordt er op basis van de hoek een wegingsfactor toegevoegd voor dat specifieke object ten opzichte van de score.
+Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedeterceerd had moeten worden.
+
+Deze score wordt berekend voor de 2 kandidaat locaties, en de node met de hoogste score wordt beschouwd als de actuele locatie.
+Vervolgens wordt een nieuw input frame verwerkt, en zal de berekening opnieuw beginnen.

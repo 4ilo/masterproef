@@ -67,6 +67,7 @@
 | 01/05/19 | Schrijven over object detectie |
 | 02/05/19 | Schrijven over segmentatie + omgevingsrepresentatie |
 | 03/05/19 | Hoofdstuk over semantische kaart |
+| 05/05/19 | Hoofdstuk over lokalisatie |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
