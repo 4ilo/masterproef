@@ -14,7 +14,15 @@
 \end{figure}
 
 Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een semantische kaart een robot autonoom te laten navigeren in de logistieke gangen van een ziekenhuis.
-Om dit te implementeren, is er een pipeline opgesteld. Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden.
+Om dit te implementeren, is er een pipeline opgesteld.
+Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden:
+\begin{itemize}
+    \item Object detectie (\ref{sec:object_detectie});
+    \item Vluchtpunt detectie (\ref{sec:perspectiefpunt_detectie});
+    \item Omgevingsmeting (\ref{sec:omgevingsmeting});
+    \item Semantische kaart (\ref{sec:sem_kaart});
+    \item Lokalisatie (\ref{sec:lokalisatie}).
+\end{itemize}
 
 
 \section{Object detectie}\label{sec:object_detectie}
@@ -32,24 +40,29 @@ Deze objecten zijn bijvoorbeeld:
 De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} camera.
 In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en kan er een detector gemaakt worden om deze features te herkennen.
 
-De gekozen object detector is YOLOv2\cite{yolov22016}. Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om
-objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
+De gekozen object detector is YOLOv2\cite{yolov22016}.
+Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
+De belangrijkste reden dat we deze detector gekozen hebben, is omdat op een grafische kaart deze real-time kan werken.
 
 
 \subsection{Annotatie beeldmateriaal}
 Om een object-detector te maken gebaseerd op een \gls{cnn} moet al het beeldmateriaal geannoteerd worden door bounding-boxes te teken rondom de kenmerkende objecten.
-Elk van deze bounding-boxes moet ook voorzien worden van een bijhorend label. In tabel~\ref{tab:annotaties} is een opsomming gemaakt van alle annotaties in de training en validatie set.
+Elk van deze bounding-boxes moet ook voorzien worden van een bijhorend label.
+Er is gekozen om de dataset op te splitsen in 2 delen, een training en een validatie set.
+De 2 datasets omvatten verschillende delen van de gangen in het gebouw.
+Het splitsen is nodig om door middel van de validatie set te valideren hoe goed de detector presteert op niet eerder geziene beelden.
+In tabel~\ref{tab:annotaties} is een opsomming gemaakt van alle annotaties in de training en validatie set.
 
 \begin{table}[h]
     \caption{Annotaties in training en validatie set}\label{tab:annotaties}
     \begin{tabular}{l | l | l | l | l | l | l}
         & Aantal frames & Rookmelder & Deurklink & Pictogram & TL-lamp & Totaal \\ \hline
-        Trainings set & 899 & 1016 & 147 & 340 & 5260 & 6763 \\
-        Validatie set & 711 & 1130 & 180 & 408 & 992 & 2710 \\
+        Trainingsset & 899 & 1016 & 147 & 340 & 5260 & 6763 \\
+        Validatieset & 711 & 1130 & 180 & 408 & 992 & 2710 \\
     \end{tabular}
 \end{table}
 
-Voor het aanduiden van de annotaties is er gebruik gemaakt van de OpenCV \gls{cvat}\footnote{https://github.com/opencv/cvat}.
+Voor het aanduiden van de annotaties maakten we gebruik van de OpenCV \gls{cvat}\footnote{https://github.com/opencv/cvat}.
 De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de co\"{o}rdinaten van de objecten. Een voorbeeld output voor 1 enkele afbeelding is te zien in listing~\ref{lst:cvat_xml}.
 
 \lstset{language=XML, caption={Voorbeeld CVAT output}, label={lst:cvat_xml}}
@@ -62,8 +75,8 @@ De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de 
 </image>
    \end{lstlisting}
 
-De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom is er een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
-Het conversiescript bevind zich in bijlage~\ref{ch:bij_convert}.
+De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom hebben we een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
+Het conversiescript bevindt zich in bijlage~\ref{ch:bij_convert}.
 Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
 Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co\"{o}rdinaat te bekomen, de waardes vermenigvuldigd moeten worden met de breedte en de hoogte zoals ge\"{i}llustreerd in~\ref{eq:yolo_abs}.
 
@@ -73,8 +86,8 @@ Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co
 
 \begin{equation} \label{eq:yolo_abs}
     \begin{split}
-        x_{abs} &= <x> *  \mathrm{image\_width} \\
-        y_{abs} &= <y> * \mathrm{image\_height}
+        x_{abs} &= <x> \cdot  image\_width \\
+        y_{abs} &= <y> \cdot image\_height
     \end{split}
 \end{equation}
 
@@ -82,34 +95,53 @@ Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co
 \subsection{Training YOLOv2}
 
 Voor training en later ook detectie met YOLOv2 is er gebruikt gemaakt van een aangepaste versie van de darknet\footnote{https://github.com/AlexeyAB/darknet} implementatie in C.
-We zijn vertrokken van het yolo-voc.2.0.cfg configuratie bestand waar we het aantal te detecteren klassen hebben aangepast naar 4 (light, smoke\_detector, exit\_sign en door\_handle), en het aantal filters naar 25.
-Dit nieuw configuratie bestand specificeert de netwerk layout, deze layout is een YOLOv2 netwerk waarbij nu de laatste lagen aangepast zijn om slechts 4 objecten te classificeren.
+We zijn vertrokken van het yolo-voc.2.0.cfg configuratiebestand waar we het aantal te detecteren klassen hebben aangepast naar 4 (light, smoke\_detector, exit\_sign en door\_handle), en het aantal filters naar 25.
+Dit nieuw configuratiebestand specificeert de netwerklayout, deze layout is een YOLOv2 netwerk waarbij nu de laatste lagen aangepast zijn om slechts 4 objecten te classificeren.
+De belangrijkste parameters zijn weergegeven in tabel~\ref{tab:hyperparameters}.
 
-Het trainen gebeurd nu op basis van de traininsset zoals weergegeven in tabel~\ref{tab:annotaties}. De performantie van het netwerk zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
+Het trainen gebeurt nu op basis van de trainingsset zoals weergegeven in tabel~\ref{tab:annotaties}. De performantie van het netwerk zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
+
+\begin{table}[h]
+    \centering
+    \caption{YOLOv2 training hyperparameters} \label{tab:hyperparameters}
+    \begin{tabular}{l | l | l | l | l | l | l}
+        \textbf{Naam} & Batch size & Batch subdivisions & Learning rate & Maximum batches & Classes & Filters \\
+        \hline
+        \textbf{Waarde} & 64 & 8 & 0.0001 & 45000 & 4 & 25
+    \end{tabular}
+\end{table}
 
 
-\section{Perspectiefpunt detectie}
+\section{Perspectiefpunt detectie}\label{sec:perspectiefpunt_detectie}
 
 Ik hoofdstuk~\ref{sec:omgevingsmeting} zullen we bespreken hoe het lokaliseren werkt, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
-Het detecteren van het perspectiefpunt kan gebeuren op verschillende manieren, voor dit onderzoek zijn drie verschillende technieken ge\"{i}mplementeerd, en deze zullen verder besproken worden.
+Het detecteren van het vluchtpunt of perspectiefpunt kan gebeuren op verschillende manieren, voor dit onderzoek hebben we drie verschillende technieken uitgevonden en ge\"{i}mplementeerd, en deze zullen verder besproken worden.
 
 De performantie en nauwkeurigheid van de 3 methoden zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
 
 \subsection{Hoogste vloerpixel segmentatie}\label{sec:seg_highest}
 
-De eerste techniek maakt gebruik van het DeepLab-ResNet~\cite{resnet101} segmentatienetwerk gelijkaardig aan de beschrijving in hoofdstuk~\ref{sec:image_segmentation}.
+De eerste techniek maakt gebruik van het DeepLab-ResNet~\cite{resnet101} segmentatienetwerk, gelijkaardig aan de beschrijving in hoofdstuk~\ref{sec:image_segmentation}.
 Het netwerk is ge\"{i}mplementeerd in TensorFlow en voorgetraind op indoor scenes zodat het klaar is voor gebruik in python.\footnote{https://github.com/hellochick/Indoor-segmentation}
 
 Het netwerk kan gebruikt worden om in een afbeelding elke pixel onder te verdelen in een aantal klassen zoals: muur, vloer, boom, meubel en trap.
 Voor het detecteren van het perspectiefpunt hebben we gekozen om enkel de vloerpixels te gebruiken.
-Het resultaat van de segmentatie is te zien in figuur~\ref{fig:floor_seg} waarbij groen vloepixels zijn, roze muurpixels, grijs plafontpixels en blauw meubelpixels.
+Het resultaat van de segmentatie is te zien in figuur~\ref{fig:floor_seg} waarbij groen vloerpixels zijn, roze muurpixels, grijs plafondpixels en blauw meubelpixels.
 
-Van de gesegmenteerde data nemen we dan de hoogste vloerpixel, en deze gebruiken we als perspectiefpunt.
+In eerste instantie nemen we van de gesegmenteerde data de hoogste vloerpixel, en deze gebruiken we als perspectiefpunt.
+Dit illustreren we in figuur~\ref{fig:floor_seg}
+
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{uitwerking/segmentatie.png}
     \caption{ResNet segmentatie van 1 input frame.}
     \label{fig:floor_seg}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{uitwerking/seg_highest.png}
+    \caption{Hoogste vloerpixel als perspectiefpunt}
+    \label{fig:highest_pixel}
 \end{figure}
 
 
@@ -118,30 +150,31 @@ Voor deze techniek maken we gebruik van dezelfde segmentatiedata als in hoofdstu
 Op dit masker wordt door middel van een Canny-edgedetector de rand van de vloer gedetecteerd, dit proces is gevisualiseerd in figuur~\ref{fig:hough_floor}.
 Vervolgens kunnen er door middel van de Hough-transformatie een aantal rechten gevonden worden die raken aan zoveel mogelijk punten met de rand van de vloer.
 Zoals te zien in figuur~\ref{fig:hough_floor} worden er meerdere rechten gevonden, en deze moeten gefilterd worden omdat ze ongeveer dezelfde lijn voorstellen.
-Dit gebeurd door de richtingsco\"{e}ffici\"{e}nt van alle lijnen met elkaar te vergelijken, en indien het verschil te klein is, wordt de lijn met de laagste
+Dit gebeurt door de richtingsco\"{e}ffici\"{e}nt van alle lijnen met elkaar te vergelijken, en indien het verschil te klein is, wordt de lijn met de laagste
 richtingsco\"{e}ffici\"{e}nt verwijderd.
 Het optimale resultaat is dat er 1 lijn overblijft aan elke kant van de vloer, zodat deze de vluchtlijnen voorstellen.
 Indien dit het geval is, is de kruising van de 2 rechten het perspectiefpunt.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{uitwerking/hough_floor.png}
-    \caption{\textbf{Linksboven}: vloersegmentatie, \textbf{Rechtsboven}: Canny-edgedetectie, \textbf{Linksonder}: alle Hough lijnen, \textbf{Rechtsonder}: filtering van lijnen}
+    \caption{\textbf{Linksboven}: vloersegmentatie, \textbf{Rechtsboven}: Canny-edgedetectie, \textbf{Linksonder}: alle Hough lijnen, \textbf{Rechtsonder}: filtering van lijnen + resultaat}
     \label{fig:hough_floor}
 \end{figure}
 
 
 \subsection{Perspectieflijn kruising}
 Deze techniek gelijkt sterk op de beschreven methode uit~\ref{sec:hough_floor} met als verschil dat hier geen gebruik gemaakt wordt van vloersegmentatie.
-De gehele afbeelding wordt omgezet naar grijswaarden voordat het door een Canny-edgedetector gehaald word met een variabele treshold gebaseerd op de mediaan van de grijswaarden.
-De edge detectie wordt wederom gebruikt om door middel van de Hough-transformatie een aantal aanliggende rechten te zoeken die zoveel mogelijk punten snijd.
+De gehele afbeelding wordt omgezet naar grijswaarden voordat het door een Canny-edgedetector gehaald wordt met een variabele treshold gebaseerd op de mediaan van de grijswaarden.
+De edge detectie wordt wederom gebruikt om door middel van de Hough-transformatie een aantal aanliggende rechten te zoeken die zoveel mogelijk punten snijdt.
 We zijn op zoek naar perspectieflijnen, dus alle horizontale en verticale lijnen worden onmiddellijk verwijderd net als rechten waarvan de richtingsco\"{e}ffici\"{e}nt
 niet genoeg van elkaar afwijkt. Dit is weergegeven in figuur~\ref{fig:hough_all}.
 
 Indien er slechts een paar lijnen overschieten na filtering, kan gesteld worden dat het perspectiefpunt te vinden is op de kruising van de rechten.
+In het geval dat er nog meerdere kruispunten zouden overschieten, kan er een gemiddelde positie berekend worden van deze punten.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{uitwerking/hough_all.png}
-    \caption{\textbf{Links}: Canny-edgedetectie op hele afbeelding. \textbf{Rechts}: Hough lijnen uit edge detectie.}
+    \caption{\textbf{Links}: Canny-edgedetectie op hele afbeelding. \textbf{Rechts}: Hough lijnen uit edge detection.}
     \label{fig:hough_all}
 \end{figure}
 
@@ -205,18 +238,18 @@ Voor het opbouwen van de omgeving maken we gebruik van de object detector beschr
 De detector geeft een lijst terug van objecten met voor elk object een begrenzende rechthoek en een klasse.
 Elk object heeft een unieke locatie in het beeld, en dus ook in de ruimte.
 
-In figuur~\ref{fig:omgevingsmeting} is een schematische 2d voorstelling te zien van een gang waarin er zich 3 objecten bevinden, 2 van deze objecten bevinden zich
+In figuur~\ref{fig:omgevingsmeting} is een schematische 2D voorstelling te zien van een gang waarin er zich 3 objecten bevinden, 2 van deze objecten bevinden zich
 binnen de kijkhoek van de camera, en worden door middel van de rode stippellijnen geprojecteerd op het blauwe cameravlak.
 
 De rode stippen zichtbaar in~\ref{fig:omgevingsmeting} zijn de co\"{o}rdinaten van de objecten zoals ze gedetecteerd worden door de object detector.
 Het doel is om op basis van deze co\"{o}rdinaten de hoek $\alpha_i$ tussen de optische as van de camera en het object in de ruimte te bepalen.
 
-Hiervoor komt het perspectiefpunt van pas, het perspectiefpunt licht in de figuur op een oneindige afstand op de zwarte stippellijn(optische as).
+Hiervoor komt het perspectiefpunt van pas, het perspectiefpunt ligt in de figuur op een oneindige afstand op de zwarte stippellijn(optische as).
 De pixelafstand volgens de x-as van de optische as tot het centrum van de bounding box van een object is gedefinieerd als $x_i$.
 
 Formule~\ref{eq:angles} toont dat voor het verband tussen $x_i$ gemeten in pixels en $\alpha_i$ een extra constante parameter $l_f$ nodig is.
 $l_f$ is \'{e}\'{e}n van de camera specifieke parameters, die de afstand tussen de camerasensor en het beeldvlak definieert, namelijk de focale lengte of brandpuntsafstand.
-Deze parameter kan verkregen worden door middel van een cameraKalibratie, en moet omgerekend worden naar pixels.
+Deze parameter kan verkregen worden door middel van een camerakalibratie, en moet omgerekend worden naar pixels.
 
 \begin{equation}
     \alpha_i = \tan^{-1}(\frac{x_i}{l_f})
@@ -250,9 +283,9 @@ identificeerbaar patroon. In figuur~\ref{fig:kalibratie} is een voorbeeld opgeno
 
 
 \section{Semantische kaart}\label{sec:sem_kaart}
-De semantische kaart is een belangrijk onderdeel van dit werkt.
+De semantische kaart is een belangrijk onderdeel van dit werk.
 De kaart bevat een representatie van alle objecten/features die zichtbaar zijn binnen in de ruimtes.
-Er is gekozen om de gegevens voor te stellen in het \gls{osm} formaat waarbij alles wordt voorgesteld door middel van node's in een XML formaat.
+Er is gekozen om de gegevens voor te stellen in het \gls{osm} formaat waarbij alles wordt voorgesteld door middel van nodes in een XML formaat.
 In figuur~\ref{fig:kaart} is een deel uit de kaart gevisualiseerd met behulp van een \gls{osm} map editor.
 
 \begin{figure}
@@ -262,8 +295,8 @@ In figuur~\ref{fig:kaart} is een deel uit de kaart gevisualiseerd met behulp van
     \label{fig:kaart}
 \end{figure}
 
-Het \gls{osm} formaat definieert alles met behulp van node's. Elke node kan beschikken over een aantal tags waarin sleutel-waarde gegevens gelinkt kunnen worden aan de node's.
-\gls{osm} is een formaat dat gebruikt wordt voor andere doeleinden dan deze toepassing, daarom hebben we gekozen om de node's op maat gemaakte tags toe te kennen
+Het \gls{osm} formaat definieert alles met behulp van nodes. Elke node kan beschikken over een aantal tags waarin sleutel-waarde gegevens gelinkt kunnen worden aan de nodes.
+\gls{osm} is een formaat dat gebruikt wordt voor andere doeleinden dan deze toepassing, daarom hebben we gekozen om de nodes op maat gemaakte tags toe te kennen
 die onze eigen parser later kan interpreteren.
 Aan de kaart zijn een aantal dingen toegevoegd om deze later te kunnen gebruiken.
 De objecten zijn als tag toegevoegd via een map editor, en de tags zijn ingevuld in een vast patroon. Het resultaat van deze aanpassing in XML is weergegeven in listing~\ref{lst:object_node}.
@@ -280,8 +313,8 @@ Alle gegevens in de node tag zelf zijn ge cre\"{e}ert door de map editor bij het
 \end{lstlisting}
 
 Een 2de aanpassing aan de kaart is de beschrijving van een te volgen route in het midden van de gangen.
-Een route bestaat uit een opeenvolging van node's die aan elkaar grenzen.
-Een aantal van deze node's zijn toegevoegd om discrete locaties te verkrijgen die op 1 route liggen.
+Een route bestaat uit een opeenvolging van nodes die aan elkaar grenzen.
+Een aantal van deze nodes zijn toegevoegd om discrete locaties te verkrijgen die op 1 route liggen.
 De XML structuur van een locatie node is zichtbaar in listing~\ref{lst:location_node}.
 Een locatie node is gekenmerkt door een type='location' en bezit een aantal extra tags.
 
@@ -300,7 +333,7 @@ Zo geeft bijvoorbeeld een tag met de sleutel $21$ en waarde $10.5$ aan dat objec
 
 Een route of 'way' in \gls{osm} is een gesorteerde lijst van alle node id's die op de route liggen. Dit wordt gebruikt om het pad dat de robot zal volgen aan te geven.
 In listing~\ref{lst:way} is in XML formaat een deel van de route beschreven.
-De aangemaakte locatie node's zijn via de map editor gekoppeld in \'{e}\'{e}n route, deze route zal ingelezen worden door het programma, en is de enige route die de robot kan afleggen.
+De aangemaakte locatie nodes zijn via de map editor gekoppeld in \'{e}\'{e}n route, deze route zal ingelezen worden door het programma, en is de enige route die de robot kan afleggen.
 
 \lstset{language=XML, caption={XML voorstelling van een route}, label={lst:way}}
 \begin{lstlisting}[basicstyle=\small]
@@ -311,16 +344,17 @@ De aangemaakte locatie node's zijn via de map editor gekoppeld in \'{e}\'{e}n ro
 </way>
 \end{lstlisting}
 
-Het inlezen van het \gls{osm} kaartformaat gebeurd via een zelfgemaakte parser die de object, locatie en route node's inleest in een gelinkte datastructuur
+Het inlezen van het \gls{osm} kaartformaat gebeurt via een zelfgemaakte parser die de object, locatie en route nodes inleest in een gelinkte datastructuur
 zodat het eenvoudig is om later te verwerken.
 De kaart kan gevisualiseerd worden met behulp van een Python \gls{osm} bibliotheek\footnote{https://github.com/gboeing/osmnx}.
+
 
 \section{Lokalisatie}\label{sec:lokalisatie}
 Nu we alle stappen afzonderlijk besproken hebben, is het tijd om alles te combineren tot \'{e}\'{e}n geheel.
 Zoals in figuur~\ref{fig:pipeline1} al weergegeven werd, worden de input beelden van de camera frame per frame verwerkt.
 E\'{e}n input afbeelding wordt eerst geanalyseerd door de YOLO object detector waarna het perspectiefpunt gedetecteerd kan worden.
 Het perspectiefpunt zou in principe ongeveer het midden van het beeld moeten aangeven.
-Dit is echter niet altijd het geval omdat de robot geroteerd kan zijn om zijn eigen as.
+Dit is echter niet altijd het geval omdat de robot geroteerd kan zijn ten opzichte van de gang.
 Daarom wordt er een correctiefactor berekend om het perspectiefpunt ongeveer in het midden van het beeld te leggen.
 
 De 2 detectieresultaten kunnen vervolgens gecombineerd worden om de omgevingsmeting uit te voeren zoals beschreven in hoofdstuk~\ref{sec:omgevingsmeting}.
@@ -341,14 +375,14 @@ Figuur~\ref{fig:pipeline2} geeft het overzicht van hoe de lokalisatie verloopt.
 
 Voor elk van deze 2 mogelijke nodes wordt vervolgens een score berekend, deze score geeft aan hoeveel de theoretische node lijkt op de omgevingsmeting van het huidige frame.
 Om deze score te berekenen, wordt er eerst geprobeerd om per object-klasse objecten van op de kaart te linken aan objecten uit de omgevingsmeting.
-Dit gebeurd door de hoeken te vergelijken.
+Dit gebeurt door de hoeken te vergelijken.
 De objecten waarvan de detectie en de data hoeken het dichtst bij elkaar liggen worden gelinkt.
 Uiteraard zijn de metingen niet exact gelijk aan de data, daarom wordt er een afwijking tot 20\% toegestaan bij het linken.
 
 De score die de gelijkenis tussen de meting en data weergeeft wordt berekend op basis van deze gelinkte gegevens.
-Elk object uit de node data dat niet gelinkt kon worden met een detectie wordt afgestraft, en elke match wordt beloont.
+Elk object uit de node data dat niet gelinkt kon worden met een detectie wordt afgestraft, en elke match wordt beloond.
 Vervolgens wordt per match het verschil in hoek (fout) tussen de detectie en data hoek afgetrokken van de score.
-De laatste stap is het wegen van de verschillende features. Objecten dichtbij hebben een veel grotere detectiehoek, die naukeuriger berekend kan worden.
+De laatste stap is het wegen van de verschillende features. Objecten dichtbij hebben een veel grotere detectiehoek, die nauwkeuriger berekend kan worden.
 Daarom wordt er op basis van de hoek een wegingsfactor toegevoegd voor dat specifieke object ten opzichte van de score.
 Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedeterceerd had moeten worden.
 
