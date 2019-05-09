@@ -386,5 +386,26 @@ De laatste stap is het wegen van de verschillende features. Objecten dichtbij he
 Daarom wordt er op basis van de hoek een wegingsfactor toegevoegd voor dat specifieke object ten opzichte van de score.
 Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedeterceerd had moeten worden.
 
+De berekening van de score kan worden samengevat in formule~\ref{eq:score} waarbij $a$ de positieve beloningsfactor is, $b$ de negatieve afstraffactor,
+$\alpha_{mi}$ is een hoek uitgelezen van de semantische kaart en $\alpha_{di}$ een door detectie gemeten hoek.
+$n$ staat voor het aantal links tussen detectie en data hoeken en $m$ is het aantal niet gelinkte objecten.
+Met andere woorden $n + m$ is het totaal aantal objecten zichtbaar op de discrete locatie van de kaart.
+Functie~\ref{eq:score_weights} genereert de wegingsfactor van de invloed van een object op de score, zoals eerder besproken krijgen objecten met grote hoeken
+een grotere invloed op de score.
+
 Deze score wordt berekend voor de 2 kandidaat locaties, en de node met de hoogste score wordt beschouwd als de actuele locatie.
 Vervolgens wordt een nieuw input frame verwerkt, en zal de berekening opnieuw beginnen.
+
+\begin{equation}\label{eq:score}
+    score = \sum_{i=1}^{n}\big[a - |\alpha_{mi} - \alpha_{di}|\big] \cdot f_w(\alpha_{mi}) + \sum_{i=1}^{m}\big[b \cdot f_w(\alpha_{mi})\big]
+\end{equation}
+
+\begin{equation}\label{eq:score_weights}
+    f_w(\alpha) = \left\{\begin{array}{lr}
+                1 & \text{for } 30 \leq |\alpha|\\
+                0.75 & \text{for } 15 \leq |\alpha| < 30\\
+                0.5 & \text{for } 8 \leq |\alpha| < 15\\
+                0.3 & \text{for } 0 \leq |\alpha| < 8\\
+    \end{array}
+    \right\}
+\end{equation}
