@@ -6,3 +6,104 @@
  
 \chapter{Resultaten}\label{ch:resultaten}
 
+\section{Object detectie}
+
+Zoals besproken in hoofdstuk~\ref{sec:object_detectie} wordt er gebruik gemaakt van YOLOv2 met een aangepaste versie van darknet ge\"{i}mplementeerd in C.
+Voor de training hebben we gebruik gemaakt van het standaard trainingsprogramma, voor het gebruik of inferentie van het netwerk maken we gebruik van
+de Python api via de darknet 'shared library'.
+
+De training en inferentie zijn beide gebeurd op een computer met de specificaties weergegeven in tabel~\ref{tab:specs}.
+
+\begin{table}[!h]
+    \caption{Computer specificaties}
+    \label{tab:specs}
+    \centering
+    \begin{tabular}{l|l|l|l}
+        & Model & Kloksnelheid & Geheugen \\
+        \hline
+        CPU & Ryzen 5 1600 & 4.0Ghz & 16 GB DDR4 \\
+        GPU & GTX 1070 & 1.5Ghz & 8 GB GDDR5
+    \end{tabular}
+\end{table}
+
+\subsection{Training}
+
+We hebben 2 verschillende detectors getraind namelijk een detector op alle 4 de klassen (light, smoke\_detector, exit\_sign en door\_handle), en een detector
+die enkel lampen kan detecteren.
+Beide detectors zijn getraind op dezelfde dataset van 899 frames zoals reeds weergegeven in tabel~\ref{tab:annotaties}.
+Voor de 2de detector hebben we de annotatie files aangepast zodat ze nog enkel lampen bevatten.
+De detectors hebben beide een training gehad van 36000 iteraties met 64 afbeeldingen per iteratie.
+
+\subsection{Snelheid}
+
+De belangrijkste reden dat we voor de YOLOv2 detector gekozen hebben is de mogelijk om real-time te infereren.
+Om dit aan te tonen is er een random sample van 100 frames genomen uit de datasets. Alle waarden zijn een gemiddelde van deze 100 afbeeldingen.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{results/yolo_420_lights.png}
+    \caption{Inferentie van YOLOv2 detector met 1 klasse op 100 afbeeldingen.}
+    \label{fig:speed_lights}
+\end{figure}
+
+In figuur~\ref{fig:speed_lights} hebben we dezelfde 100 afbeeldingen geinfereerd met de detector die enkel lampen detecteert.
+Hierop kunnen we duidelijk afleiden dat de \gls{CPU} versie niet bruikbaar is voor real-time gebruik, maar de \gls{GPU} versie
+met zijn $0.0271 s$ inferentie tijd of $36.9 fps$ zeker bruikbaar is. We zullen verder enkel de resultaten verkregen via \gls{GPU}
+gebruiken omdat deze substantieel beter zijn.
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{results/yolo_bar.png}
+    \caption{Inferentie van YOLOv2 detector op verschillende inputformaten. \textbf{Links:} 4 klassen, \textbf{Rechts:} 1 klasse}
+    \label{fig:speed_bar}
+\end{figure}
+
+Een belangrijke factor die invloed heeft op de inferentietijd is de grootte van de afbeeldingen die aan de detector als input gegeven worden
+In figuur~\ref{fig:speed_bar} hebben we dezelfde input frames getest met een verschillende grootte, namelijk 1280x720 pixels en 747x420 pixels.
+Zo kunnen we besluiten dat het verkleinen van de input frames met een factor 1.7 in de breedte en de hoogte een snelheidswinst kan opleveren van
+ongeveer 20\%.
+
+Een 2de conclusie die we kunnen opmaken uit figuur~\ref{fig:speed_bar} is dat het aantal detectieklassen slechts een kleine invloed heeft op de snelheid van de detector.
+
+
+\subsection{Nauwkeurigheid}
+
+Buiten de snelheid van de object detector is ook de nauwkeurigheid van belang.
+Het testen van de nauwkeurigheid gebeurd door middel van een 2de dataset genaamd de validatieset. Deze validatieset bevat afbeeldingen genomen met dezelfde camera
+van een ander deel van het gebouw, er zijn dus geen frames die de detector reeds gezien heeft tijdens de training.
+
+De testprocedure begint door de detector te laten lopen op 1 frame, en de annotaties voor hetzelfde frame in te lezen.
+Voor elke detectie wordt er gekeken of het label overeenkomt met het label in de annotatie.
+Een 2de metriek waarmee rekening gehouden wordt is de Intersect Over Union(\gls{IoU}), zoals ge\"{i}llustreerd in figuur~\ref{fig:iou} is de \gls{IoU}
+het oppervlak overeenkomstig tussen de detectie en de annotatie.
+Een overlap van 100\% is perfect, een overlap van 0\% is slecht.
+
+Uit deze 2 metrieken wordt de \gls{mAP} berekend, deze waarde geeft de oppervlakte onder de pr-curve.
+De exacte berekeningen voor deze metrieken zijn beschreven in~\cite{everingham2010pascal}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{results/iou.png}
+    \caption{Grafische voorstelling \gls{IoU}}
+    \label{fig:iou}
+\end{figure}
+
+De pr-curves en \gls{mAP} waarden van onze detector zijn weergegeven in figuur~\ref{fig:yolo_pr}.
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{results/yolo_pr.png}
+    \caption{Precision-Recall curves van YOLOv2 detector met mAP in de legende. \textbf{Links:} detector met 4 klassen. \textbf{Rechts:} detector met 1 klasse}
+    \label{fig:yolo_pr}
+\end{figure}
+
+Uit de grafieken kunnen we een verband zien tussen de annotaties op het beeldmateriaal beschreven in tabel~\ref{tab:annotaties} en de nauwkeurigheid van
+de detector voor bepaalde klassen. De klasse met het grootste aantal voorbeelden namelijk 'light' haalt de beste score.
+De score voor 'door\_handle' of deurklink is nagenoeg 0, dit is niet verwonderlijk aangezien er slechts een paar voorbeelden waren in de dataset.
+Dit object geeft dus geen meerwaarde voor de detector of voor het geheel.
+
+Om deze reden is er getest of een detector met \'{e}\'{e}n enkele klasse betere resultaten zou opleveren.
+De logische keuze voor de nieuwe klasse is uiteraard 'light' omdat deze de hoogste precisie haalt, maar ook het belangrijkste object is voor de lokalisatie.
+In figuur~\ref{fig:yolo_pr} zien we echter dat dit weinig verschil maakt, de \gls{mAP} van de 2 detectors voor het lampobject is vergelijkbaar.
+
+\section{Perspectiefpunt detectie}
+
+
+\section{Lokalisatie}
