@@ -1,2 +1,2 @@
-libdarknet.so
+*.so
 *.weights
