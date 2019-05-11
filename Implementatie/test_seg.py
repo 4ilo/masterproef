@@ -59,7 +59,7 @@ if __name__ == "__main__":
     img3 = expantion.render(img.copy())
 
     vanishing = HoughVanishing()
-    intersections = vanishing.detect(img)
+    detection = vanishing.detect(img)
     img2 = img.copy()
     img2 = vanishing.render(img2)
     cv2.imshow("HoughVanishing", img2)
@@ -73,26 +73,3 @@ if __name__ == "__main__":
     cv2.imwrite("validation/3.png", vis)
 
     cv2.waitKey(0)
-    exit(0)
-
-    boxes = []
-
-    filename = image_path.split('.')[0]
-    for line in open(filename+'.detect', 'r'):
-        box = BoundingBox()
-        data = [float(x) for x in line.rstrip().split(' ')]
-
-        box.from_yolo(*data)
-        boxes.append(box)
-
-    for box in boxes:
-        angle = DetectionAngle(intersections[0])
-        ang = angle.calculate(box)
-        print(ang)
-
-        draw(img, box, intersections[0])
-
-    if args.output_path:
-        cv2.imwrite(args.output_path, img)
-    else:
-        cv2.waitKey(0)

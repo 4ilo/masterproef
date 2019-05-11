@@ -24,7 +24,7 @@ def test_hough(image_path, images):
         detection = vanishing.detect(img)
 
         if detection:
-            detection = np.array(detection[0])
+            detection = np.array(detection)
             real = np.array(vanishing_points[image])
 
             error = np.linalg.norm(real - detection)

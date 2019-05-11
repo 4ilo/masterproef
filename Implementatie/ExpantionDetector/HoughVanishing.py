@@ -10,10 +10,10 @@ def transform(point: tuple, shape: tuple) -> tuple:
 
 class HoughVanishing(ExpantionDetector):
     def __init__(self):
-        self.std_dev = 0.34
+        self.std_dev = 0.65
         self.houghlines_divisor = 10
-        self.min_crossing_angle = 1
-        self.theta_tresh = 0.2
+        self.min_crossing_angle = 0.5
+        self.theta_tresh = 0.1
 
         self.lines = []
         self.intersections = []
@@ -35,12 +35,21 @@ class HoughVanishing(ExpantionDetector):
     def _calc_treshold(self, img_gray):
         """ Calculate a threshold for edge detection based on the median grayscale value """
         vector = np.reshape(img_gray, img_gray.shape[0] * img_gray.shape[1])
-        median = np.median(vector)
+        median = np.mean(vector)
 
         low_tresh = median / self.std_dev
         high_tresh = median * self.std_dev
 
         return low_tresh, high_tresh
+
+    def mean_intersection(self):
+        if len(self.intersections):
+            intersection_x = sum(i[0] for i in self.intersections)/len(self.intersections)
+            intersection_y = sum(i[1] for i in self.intersections) / len(self.intersections)
+
+            return intersection_x, intersection_y
+
+        return False
 
     def detect(self, orig: np.ndarray) -> list:
         """
@@ -61,7 +70,7 @@ class HoughVanishing(ExpantionDetector):
 
         # Detect lines using Hough transform
         hough_tresh = int(np.sqrt(((img.shape[0] * img.shape[0]) + (img.shape[1] * img.shape[1]))) / self.houghlines_divisor)
-        lines = cv2.HoughLines(img_edges, 1, np.pi / 180, hough_tresh)
+        lines = cv2.HoughLines(mask, 1, np.pi / 180, hough_tresh)
 
         if lines is not None:
             for i in range(len(lines)):
@@ -88,25 +97,30 @@ class HoughVanishing(ExpantionDetector):
                         theta2 = lines[j][0][1]
                         costheta2 = np.cos(theta2)
                         sintheta2 = np.sin(theta2)
+                        if (theta2 > (0 + self.theta_tresh)) and (theta2 < (np.pi / 2 - self.theta_tresh)) or (
+                                theta2 > ((np.pi / 2) + self.theta_tresh)) and (theta2 < (np.pi - self.theta_tresh)):
 
-                        # Don't use lines that are the same
-                        if (abs(theta1) - abs(theta2)) < self.min_crossing_angle:
-                            break
+                            # Don't use lines that are the same
+                            if abs(abs(theta1) - abs(theta2)) < self.min_crossing_angle:
+                                continue
 
-                        det = (costheta1 * sintheta2) - (sintheta1 * costheta2)
-                        intersection_x = (((sintheta2 * rho1) - (sintheta1 * rho2)) / det) / width
-                        intersection_y = (((-costheta2 * rho1) + (costheta1 * rho2)) / det) / height
+                            det = (costheta1 * sintheta2) - (sintheta1 * costheta2)
+                            intersection_x = (((sintheta2 * rho1) - (sintheta1 * rho2)) / det) / width
+                            intersection_y = (((-costheta2 * rho1) + (costheta1 * rho2)) / det) / height
 
-                        self.intersections.append((intersection_x, intersection_y))
+                            self.intersections.append((intersection_x, intersection_y))
 
-        return self.intersections
+        return self.mean_intersection()
 
     def render(self, img: np.ndarray) -> np.ndarray:
         """ Render the vanishing points onto the given frame """
         for point in self.intersections:
             cv2.circle(img, transform(point, img.shape), 10, (0, 0, 255))
 
+        if len(self.intersections):
+            cv2.circle(img, transform(self.mean_intersection(), img.shape), 10, (0, 255, 0))
+
         # for line in self.lines:
-        #     cv2.line(img, transform(line[0], img.shape), transform(line[1], img.shape), (255, 0, 0), 5)
+        #     cv2.line(img, transform(line[0], img.shape), transform(line[1], img.shape), (255, 0, 0), 2)
 
         return img
