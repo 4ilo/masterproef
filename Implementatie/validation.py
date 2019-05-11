@@ -120,5 +120,5 @@ if __name__ == "__main__":
 
     plt.xlabel("Test image")
     plt.ylabel("Euclidean error")
-    plt.legend(['Hough transform', 'Seg Highest pixel', 'Seg Hough'])
+    plt.legend(['Hough transform: {}'.format(round(np.mean(e1), 3)), 'Seg Highest pixel: {}'.format(round(np.mean(e2),3)), 'Seg Hough: {}'.format(round(np.mean(e3),3))])
     plt.show()

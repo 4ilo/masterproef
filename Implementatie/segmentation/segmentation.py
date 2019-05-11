@@ -46,8 +46,16 @@ class Segmentation:
         self.pred = tf.expand_dims(raw_output_up, axis=3)
 
         # Setup tf
-        config = tf.ConfigProto()
-        config.gpu_options.allow_growth = True
+        if "FORCE_CPU" in os.environ:
+            print("# FORCING CPU USAGE #")
+            config = tf.ConfigProto(
+                device_count = {'GPU': 0}
+            )
+        
+        else:
+            config = tf.ConfigProto()
+            config.gpu_options.allow_growth = True
+
         self.sess = tf.Session(config=config)
         init = tf.global_variables_initializer()
 
