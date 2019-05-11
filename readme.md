@@ -69,7 +69,8 @@
 | 03/05/19 | Hoofdstuk over semantische kaart |
 | 05/05/19 | Hoofdstuk over lokalisatie |
 | 09/05/19 | Verwerken opmerkingen + aanpassen titel |
-| 10/05/19 | Yolo resultaten hoofdstuk |
+| 10/05/19 | Yolo resultaten hoofdstuk schrijven |
+| 11/15/19 | VP resultaten hoofdstuk schrijven |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

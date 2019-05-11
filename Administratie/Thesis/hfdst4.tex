@@ -105,5 +105,63 @@ In figuur~\ref{fig:yolo_pr} zien we echter dat dit weinig verschil maakt, de \gl
 
 \section{Perspectiefpunt detectie}
 
+In hoofdstuk~\ref{sec:perspectiefpunt_detectie} hebben is besproken hoe we drie verschillende methoden van perspectiefpunt detectie ge\"{i}mplementeerd hebben.
+Hier gaan we de 3 technieken vergelijken op nauwkeurigheid en snelheid.
+
+
+\subsection{Snelheid}\label{sec:seg_speed}
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{results/seg_speed.png}
+    \caption{Detectiesnelheid van 3 perspectiefpunt detectiemethoden op \gls{CPU} en \gls{GPU}}
+    \label{fig:seg_speed}
+\end{figure}
+
+In figuur~\ref{fig:seg_speed} zijn detectiesnelheden van de 3 detectietechnieken weergegeven.
+Voor deze resultaten is het gemiddelde genomen van de detectietijd van 100 willekeurig gekozen input afbeeldingen uit de dataset.
+Elke afbeelding is 4 keer door een specifieke detector gevalideerd namelijk op \gls{CPU} en \gls{GPU} alsook op 2 verschillende resoluties.
+De verschillende resoluties zijn 1280x720 pixels en 747x420 pixels.
+
+Net zoals bij de objectdetector zien we hier ook een aanzienlijk verschil in detectietijd tussen \gls{CPU} en \gls{GPU} voor 2 van de 3 technieken.
+Dit is niet verwonderlijk aangezien deze methoden gebruik maken van een segmentatie netwerk.
+Het verschil in tijd tussen \gls{CPU} en \gls{GPU} is zo groot dat we verder dus ook enkel de \gls{GPU} implementatie gaan gebruiken en bespreken.
+
+Op de linkse grafiek in figuur~\ref{fig:seg_speed} is te zien dat de perspectieflijn kruising techniek met een grote marge de snelste techniek is, dit komt
+omdat deze techniek gebaseerd is op klassieke beeldverwerkings technieken en geen gebruik maakt van een neuraal netwerk.
+Hierbij is dan ook geen verschil tussen het detecteren op \gls{CPU} en \gls{GPU} omdat er geen \gls{GPU} implementatie is.
+
+De hoogste vloerpixel techniek is de 2de snelste, deze techniek is een fractie sneller door zijn eenvoud na het segmenteren van de vloer.
+Het zoeken van de hoogste pixel neemt amper tijd in beslag en het grootste deel van de tijd komt omwille van de segmentatie.
+
+In figuur~\ref{fig:seg_speed} is ook duidelijk zichtbaar dat de resolutie van de input afbeelding een grote invloed heeft op de detectiesnelheid
+van het gebruikte segmentatienetwerk.
+Zo is door de afbeelding bijna te halveren in de breedte en de hoogte een snelheidswinst van ongeveer $60\%$ verkregen.
+
+
+\subsection{Nauwkeurigheid}
+Om de nauwkeurigheid van een perspectiefpunt detector te bepalen is er een script geschreven om voor elk van de 100 willekeurig gekozen input afbeeldingen
+het perspectiefpunt handmatig aan te duiden.
+Vervolgens is elke afbeelding getest door de 3 detectoren en het perspectiefpunt bepaald.
+De co\"{o}rdinaten van het gedetecteerde perspectiefpunt, en het data punt door ons aangeduid, zijn beide in genormaliseerd ten opzichte van de breedte en de hoogte van de input afbeelding.
+De euclidische afstand tussen de 2 punten is de afwijking of fout van de detector.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{results/seg_accuracy.png}
+    \caption{Afwijking t.o.v. perspectiefpunt voor 3 verschillende detectietechnieken.}
+    \label{fig:seg_accuracy}
+\end{figure}
+
+In figuur~\ref{fig:seg_accuracy} is de fout voor elke afbeelding weergegeven alsook de gemiddelde fout in de legende.
+Hieruit kunnen we afleiden dat de perspectieflijn kruising techniek(\ref{sec:perspectieflijnkruising}) ondanks het de snelste techniek is, de laagste nauwkeurigheid haalt.
+
+TODO: aanpassen van tresholds, dit is echt slecht!
+
+Ondanks de eenvoudigste techniek te zijn, is de hoogste vloerpixel(\ref{sec:seg_highest}) methode over heel de lijn het meest nauwkeurig.
+Een belangrijke reden voor dit resultaat is het excellente resultaat van het gebruikte segmentatienetwerk.
+Indien de vloersegmentatie van mindere kwaliteit zou zijn, zou deze methode een slechter resultaat opleveren.
+
+De vloerlijn kruising(\ref{sec:hough_floor}) methode geeft niet het beste resultaat, maar het is gemiddeld gezien zeker aanvaardbaar.
+Doordat we in hoofdstuk~\ref{sec:seg_speed} besloten hebben dat de 2 technieken die gebruik maken van vloersegmentatie ongeveer evenveel rekentijd in beslag
+nemen, en de hoogste vloerpixel methode de grootste nauwkeurigheid bied, is deze gekozen voor de uiteindelijke implementatie.
 
 \section{Lokalisatie}
