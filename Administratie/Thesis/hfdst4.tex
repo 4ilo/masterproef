@@ -153,8 +153,9 @@ De euclidische afstand tussen de 2 punten is de afwijking of fout van de detecto
 
 In figuur~\ref{fig:seg_accuracy} is de fout voor elke afbeelding weergegeven alsook de gemiddelde fout in de legende.
 Hieruit kunnen we afleiden dat de perspectieflijn kruising techniek(\ref{sec:perspectieflijnkruising}) ondanks het de snelste techniek is, de laagste nauwkeurigheid haalt.
-
-TODO: aanpassen van tresholds, dit is echt slecht!
+Dit is grotendeels omdat niet voor elke afbeelding de detector erin slaagt een perspectiefpunt te vinden. De reden dat niet in elk frame
+een punt gevonden wordt komt door een gebrek aan hough-lines die gevonden worden op basis van de rand-detectie.
+Door meer met de parameters te spelen zou dit probleem eventueel opgelost kunnen worden om de nauwkeurigheid van deze detector te verhogen.
 
 Ondanks de eenvoudigste techniek te zijn, is de hoogste vloerpixel(\ref{sec:seg_highest}) methode over heel de lijn het meest nauwkeurig.
 Een belangrijke reden voor dit resultaat is het excellente resultaat van het gebruikte segmentatienetwerk.

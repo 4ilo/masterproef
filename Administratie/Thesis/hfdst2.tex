@@ -43,10 +43,12 @@
             De aanpak van~\cite{Fang2003} is om 2 soorten features in een beeld te onderscheiden. Enerzijds detecteren ze vormen op basis van kleurranden en anderzijds wordt de
             afbeelding omgezet naar \gls{hsi} waaruit enkel de hue gebruikt wordt. De hue is de belangrijkste component voor het onderscheiden van kleuren omdat er zo geen rekening wordt gehouden
             met de hoeveelheid licht en schaduwen.
-            Een recenter onderzoek~\cite{Zabihi2017} bouwt voort op deze technieken,
-            maar hier berekenen ze de \gls{hog} features van het beeld. Vervolgens wordt er gebruik gemaakt van een \gls{svm} om te bepalen waar er zich een match bevindt.
+            Een recenter onderzoek~\cite{Zabihi2017} bouwt voort op deze technieken, maar hier berekenen ze de \gls{hog} features van het beeld.
+            Vervolgens wordt er gebruik gemaakt van een \gls{svm} om te bepalen waar er zich een match bevindt.
 
-            !!! TODO support vector machine
+            Een \gls{svm} is een binaire classificatie techniek die gebruikt kan worden om na te kijken bij welk klasse een feature het dichtst aanleunt.
+            De scheiding tussen de 2 klassen wordt voorgesteld door een hypervlak dat bepaald wordt door middel van voorbeelden in de trainingsfase.
+            Een feature wordt geclassificeerd door te kijken aan welke kant van het hypervlak hij het beste past.
 
             De vorm en kleur features kunnen dan gecombineerd worden om de positie van een mogelijke match te vinden. Eens er een mogelijke boundig box rond de mogelijke match gevonden is,
             kan er geprobeerd worden een template te matchen om het effectieve pictogram te achterhalen. Het grootste probleem bij de techniek van~\cite{Fang2003} is
