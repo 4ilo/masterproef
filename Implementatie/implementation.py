@@ -133,6 +133,10 @@ if __name__ == "__main__":
     route = ways[0]
     current_location = list(filter(lambda x: x.node_id == -137971, locations))[0]
 
+    output_file = open("output.csv", "w")
+    fps_file = open("fps.txt", "w")
+    vp = (0.5, 0.5)
+
     for i, image_path in enumerate(images):
         fps_start = time.time()
         img = cv2.imread("{}/{}".format(args.input_path, image_path))
@@ -145,7 +149,9 @@ if __name__ == "__main__":
 
         # Find vanishing point
         vp_start_time = time.time()
-        vp = get_vp(seg_network, img)
+        new = get_vp(seg_network, img)
+        if new:
+            vp = new
         vp_end_time = time.time()
         logging.warning("Segmentation calculation time: %f", vp_end_time - vp_start_time)
 
@@ -182,5 +188,8 @@ if __name__ == "__main__":
         fps_stop = time.time()
         logging.warning("Fps: %f", 1/(fps_stop-fps_start))
         logging.warning("--------------------------------")
+
+        output_file.write("{},{}\n".format(image_path, current_location.id))
+        fps_file.write('{}\n'.format(fps_stop-fps_start))
 
         cv2.waitKey(1)

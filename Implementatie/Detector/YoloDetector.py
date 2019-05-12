@@ -3,7 +3,7 @@ import cv2
 from DetectionAngle import BoundingBox
 from .darknet.Darknet import performDetect
 
-CONFIG_PATH = "/darknet/all/"
+CONFIG_PATH = "/darknet/lights/"
 
 
 def detect_objects(input_path, image):

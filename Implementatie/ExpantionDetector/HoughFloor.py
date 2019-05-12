@@ -59,6 +59,15 @@ class HoughFloor(ExpantionDetector):
         cv2.imshow("ExpantionDetection", img)
         return img
 
+    def mean_intersection(self):
+        if len(self.intersections):
+            intersection_x = sum(i[0] for i in self.intersections)/len(self.intersections)
+            intersection_y = sum(i[1] for i in self.intersections) / len(self.intersections)
+
+            return intersection_x, intersection_y
+
+        return False
+
     def detect(self, mask: np.ndarray):
         edges = cv2.Canny(mask, 0, 1, apertureSize=3)
 
@@ -87,4 +96,4 @@ class HoughFloor(ExpantionDetector):
         for inter in intersections:
             self.intersections.append((inter[0]/mask.shape[1], inter[1]/mask.shape[0]))
 
-        return self.intersections
+        return self.mean_intersection()
