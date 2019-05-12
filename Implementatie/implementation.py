@@ -12,6 +12,7 @@ from Detector import detect_objects
 from DetectionAngle import DetectionAngle
 from segmentation.segmentation import Segmentation
 from ExpantionDetector.HighestPixel import HighestPixel
+from ExpantionDetector.HoughVanishing import HoughVanishing
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -19,14 +20,14 @@ logging.basicConfig(level=logging.WARNING)
 def get_vp(seg_network, img):
     """ Find the vanishing point """
     # Run segmentation
-    preds = seg_network.run(img)
+    # preds = seg_network.run(img)
 
     # Only select floor pixels
-    mask = seg_network.get_floor_mask(preds)
+    # mask = seg_network.get_floor_mask(preds)
 
     # Use HighestPixel detector
-    vanishing = HighestPixel()
-    vp = vanishing.detect(mask)
+    vanishing = HoughVanishing()
+    vp = vanishing.detect(img)
     cv2.drawMarker(img, (int(img.shape[1] / 2), int(img.shape[0] / 2)), (0, 70, 255), cv2.MARKER_CROSS, 10, 1)
     vanishing.render(img)
 
@@ -138,24 +139,28 @@ if __name__ == "__main__":
     vp = (0.5, 0.5)
 
     for i, image_path in enumerate(images):
+        time_data = []
         fps_start = time.time()
         img = cv2.imread("{}/{}".format(args.input_path, image_path))
 
         # Run object detector
-        obj_start_time = time.time()
+        t_s = time.time()
         det_objects = detect_objects(args.input_path, image_path)
-        obj_end_time = time.time()
-        logging.warning("Yolo calculation time: %f", obj_end_time - obj_start_time)
+        t_e = time.time()
+        logging.warning("Yolo calculation time: %f", t_e - t_s)
+        time_data.append(t_e - t_s)
 
         # Find vanishing point
-        vp_start_time = time.time()
+        t_s = time.time()
         new = get_vp(seg_network, img)
         if new:
             vp = new
-        vp_end_time = time.time()
-        logging.warning("Segmentation calculation time: %f", vp_end_time - vp_start_time)
+        t_e = time.time()
+        logging.warning("Segmentation calculation time: %f", t_e - t_s)
+        time_data.append(t_e - t_s)
 
         # Calculate image offset
+        t_s = time.time()
         angle_det = DetectionAngle(vp)
         img_offset = angle_det.calculate_offset()
         logging.info("Vp offset: %f", img_offset)
@@ -167,7 +172,11 @@ if __name__ == "__main__":
             obj.render(img, text="%.3f" % angle)
             detections.update({obj: angle})
 
+        t_e = time.time()
+        time_data.append(t_e - t_s)
+
         # Get neighbouring nodes
+        t_s = time.time()
         back, current, following = route.get_neighbours(current_location)
 
         cost_c = cost(current, detections)
@@ -181,15 +190,21 @@ if __name__ == "__main__":
 
         current_location = costs[0][0]
         logging.info("New location: %s", current_location)
+        t_e = time.time()
+        time_data.append(t_e - t_s)
 
+        t_s = time.time()
         fig = mr.show_route(current_location.node_id)
         img = render_result(img, fig)
+        t_e = time.time()
+        time_data.append(t_e - t_s)
 
         fps_stop = time.time()
         logging.warning("Fps: %f", 1/(fps_stop-fps_start))
         logging.warning("--------------------------------")
+        time_data.append(fps_stop-fps_start)
 
         output_file.write("{},{}\n".format(image_path, current_location.id))
-        fps_file.write('{}\n'.format(fps_stop-fps_start))
+        fps_file.write('{}\n'.format(','.join(map(str, time_data))))
 
         cv2.waitKey(1)
