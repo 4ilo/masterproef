@@ -166,3 +166,54 @@ Doordat we in hoofdstuk~\ref{sec:seg_speed} besloten hebben dat de 2 technieken 
 nemen, en de hoogste vloerpixel methode de grootste nauwkeurigheid bied, is deze gekozen voor de uiteindelijke implementatie.
 
 \section{Lokalisatie}
+
+In de lokalisatiestap besproken in hoofdstuk~\ref{sec:lokalisatie} komt alles samen.
+Hier zullen we bekijken hoe goed we een lokatie kunnen inschatten op basis van semantische kenmerken in een \gls{RGB} beeld.
+Zoals bij de vorige resultaten zijn ook deze opgesplitst in snelheid en nauwkeurigheid.
+
+
+\subsection{Snelheid}
+Voor validatie is er een dataset genomen van 125 opeenvolgende frames van een video.
+De tijden waargenomen voor deze exprimenten zijn voor 1 volledige iteratie in het programma, dit houd in:
+
+\begin{itemize}
+    \item YOLOv2 object detectie;
+    \item Perspectiefpunt detectie;
+    \item Localisatie berekeningen;
+    \item User interface met frame en lokatie op kaart plotten.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{results/loc_speed.png}
+    \caption{Berekeningssnelheid van de actuele lokatie}
+    \label{fig:loc_speed}
+\end{figure}
+
+In figuur~\ref{fig:loc_speed} is een grafiek te zien van de iteratietijd per frame, in de legende is de gemiddelde tijd weergegeven.
+Er is uiteraard een redelijk verschil waar te nemen tussen de implementatie die gebruikmaakt van het segmentatienetwerk, en die zonder.
+Maar de detector zonder segmentatie(perspectiefpunt detectie d.m.v. perspectieflijn kruising~\ref{sec:perspectieflijnkruising}) heeft nog steeds
+een vrij lange rekentijd.
+Ondanks de theoretische snelheid die we uit vorige hoofdstukken kunnen afleiden ongeveer 0.042 s zou moeten zijn, is de gemiddelde rekentijd meer dan 10 keer hoger.
+Na profilering van de implementatiecode, zijn we tot de constatatie gekomen dat het grootste deel van de tijd verloren gaat in de bibliotheek die gebruikt wordt
+om de kaart en de actuele lokatie visueel weer te geven.
+
+
+\subsection{Nauwkeurigheid}
+Voor de validatie is er op een dataset van 125 opeenvolgende frames van een video aangeduid bij welke discrete lokatie op de semantische kaart
+het beeld het beste past.
+Deze data data wordt beschouwd als waarheid.
+Dit wordt vergeleken met de output lokatie per frame van ons programma.
+
+\begin{figure}[h]
+    \includegraphics[width=\linewidth]{results/loc_acc.png}
+    \caption{Vergelijking van localisatie errors}
+    \label{fig:loc_acc}
+\end{figure}
+
+In figuur~\ref{fig:loc_acc} is de fout in lokatie weergegeven voor 6 verschillende detector combinaties.
+Deze combinaties zijn de 2 YOLOv2 detectoren (4 klassen en 1 klasse) samen met de 3 perspectiefpunt detectiemethoden.
+
+De lokatiefout is het aantal nodes (beschreven in de route) dat de detector afwijkt van de actuele locatie.
+Een fout van 0 is dus een juiste predictie, bij een positieve fout loopt de detector vooruit en bij een negatieve fout loopt de detetor achter.
+De legende in figuur~\ref{fig:loc_acc} geeft de gemiddelde fout van de geteste detector.

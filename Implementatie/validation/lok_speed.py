@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    speed_seg = [float(x) for x in open('out/fps_seg.txt').read().splitlines()]
-    speed_non_seg = [float(x) for x in open('out/fps.txt').read().splitlines()]
+    speed_seg = [float(x) for x in open('out/fps_seg.txt').read().splitlines()][:125]
+    speed_non_seg = [float(x) for x in open('out/fps.txt').read().splitlines()][:125]
 
     plt.plot(speed_seg)
     plt.plot(speed_non_seg)
