@@ -82,7 +82,7 @@ De exacte berekeningen voor deze metrieken zijn beschreven in~\cite{everingham20
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{results/iou.png}
-    \caption{Grafische voorstelling \gls{IoU}}
+    \caption{Grafische voorstelling IoU}
     \label{fig:iou}
 \end{figure}
 
@@ -112,7 +112,7 @@ Hier gaan we de 3 technieken vergelijken op nauwkeurigheid en snelheid.
 \subsection{Snelheid}\label{sec:seg_speed}
 \begin{figure}[h]
     \includegraphics[width=\linewidth]{results/seg_speed.png}
-    \caption{Detectiesnelheid van 3 perspectiefpunt detectiemethoden op \gls{CPU} en \gls{GPU}}
+    \caption{Detectiesnelheid van 3 perspectiefpunt detectiemethoden op CPU en GPU}
     \label{fig:seg_speed}
 \end{figure}
 
@@ -165,28 +165,29 @@ De vloerlijn kruising(\ref{sec:hough_floor}) methode geeft niet het beste result
 Doordat we in hoofdstuk~\ref{sec:seg_speed} besloten hebben dat de 2 technieken die gebruik maken van vloersegmentatie ongeveer evenveel rekentijd in beslag
 nemen, en de hoogste vloerpixel methode de grootste nauwkeurigheid bied, is deze gekozen voor de uiteindelijke implementatie.
 
+
 \section{Lokalisatie}
 
 In de lokalisatiestap besproken in hoofdstuk~\ref{sec:lokalisatie} komt alles samen.
-Hier zullen we bekijken hoe goed we een lokatie kunnen inschatten op basis van semantische kenmerken in een \gls{RGB} beeld.
+Hier zullen we bekijken hoe goed we een locatie kunnen inschatten op basis van semantische kenmerken in een \gls{rgb} beeld.
 Zoals bij de vorige resultaten zijn ook deze opgesplitst in snelheid en nauwkeurigheid.
 
 
 \subsection{Snelheid}
 Voor validatie is er een dataset genomen van 125 opeenvolgende frames van een video.
-De tijden waargenomen voor deze exprimenten zijn voor 1 volledige iteratie in het programma, dit houd in:
+De tijden waargenomen voor deze experimenten zijn voor 1 volledige iteratie in het programma, dit houd in:
 
 \begin{itemize}
     \item YOLOv2 object detectie;
     \item Perspectiefpunt detectie;
-    \item Localisatie berekeningen;
-    \item User interface met frame en lokatie op kaart plotten.
+    \item Lokalisatie berekeningen;
+    \item User interface met frame en locatie op kaart plotten.
 \end{itemize}
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.6\linewidth]{results/loc_speed.png}
-    \caption{Berekeningssnelheid van de actuele lokatie}
+    \caption{Berekeningssnelheid van de actuele locatie}
     \label{fig:loc_speed}
 \end{figure}
 
@@ -196,24 +197,57 @@ Maar de detector zonder segmentatie(perspectiefpunt detectie d.m.v. perspectiefl
 een vrij lange rekentijd.
 Ondanks de theoretische snelheid die we uit vorige hoofdstukken kunnen afleiden ongeveer 0.042 s zou moeten zijn, is de gemiddelde rekentijd meer dan 10 keer hoger.
 Na profilering van de implementatiecode, zijn we tot de constatatie gekomen dat het grootste deel van de tijd verloren gaat in de bibliotheek die gebruikt wordt
-om de kaart en de actuele lokatie visueel weer te geven.
+om de kaart en de actuele locatie visueel weer te geven. Dit is te zien in figuur~\ref{fig:loc_time}.
+Hier zien we duidelijk dat de object en perspectiefpunt detector wel een stuk tijd in beslag nemen, maar dat door de visualisatie te laten vallen
+de snelheid bijna $1/4$ van de huidige detectietijd zou kunnen zijn.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{results/loc_time.png}
+    \caption{Gemiddelde profilering van het lokalisatieproces}
+    \label{fig:loc_time}
+\end{figure}
 
 
 \subsection{Nauwkeurigheid}
-Voor de validatie is er op een dataset van 125 opeenvolgende frames van een video aangeduid bij welke discrete lokatie op de semantische kaart
+Voor de validatie is er op een dataset van 125 opeenvolgende frames van een video aangeduid bij welke discrete locatie op de semantische kaart
 het beeld het beste past.
 Deze data data wordt beschouwd als waarheid.
-Dit wordt vergeleken met de output lokatie per frame van ons programma.
+Dit wordt vergeleken met de output locatie per frame van ons programma.
 
 \begin{figure}[h]
     \includegraphics[width=\linewidth]{results/loc_acc.png}
-    \caption{Vergelijking van localisatie errors}
+    \caption{Vergelijking van lokalisatie fouten}
     \label{fig:loc_acc}
 \end{figure}
 
-In figuur~\ref{fig:loc_acc} is de fout in lokatie weergegeven voor 6 verschillende detector combinaties.
+In figuur~\ref{fig:loc_acc} is de fout in locatie weergegeven voor 6 verschillende detector combinaties.
 Deze combinaties zijn de 2 YOLOv2 detectoren (4 klassen en 1 klasse) samen met de 3 perspectiefpunt detectiemethoden.
 
-De lokatiefout is het aantal nodes (beschreven in de route) dat de detector afwijkt van de actuele locatie.
-Een fout van 0 is dus een juiste predictie, bij een positieve fout loopt de detector vooruit en bij een negatieve fout loopt de detetor achter.
-De legende in figuur~\ref{fig:loc_acc} geeft de gemiddelde fout van de geteste detector.
+De locatiefout is het aantal nodes (beschreven in de route) dat de detector afwijkt van de actuele locatie.
+Een fout van 0 is dus een juiste predictie, bij een positieve fout loopt de detector vooruit en bij een negatieve fout loopt de detector achter.
+De legende in figuur~\ref{fig:loc_acc} geeft de gemiddelde fout van de geteste detector weer.
+
+De grafieken geven duidelijk weer dat de lokalisatie niet altijd even goed verloopt.
+Het algoritme heeft de neiging om te vaak vooruit te gaan, behalve bij 1 test is dit niet het geval waardoor de lokalisatie een beetje achterloopt.
+
+De keuze van object detector kan een invloed hebben op de nauwkeurigheid. Dit komt omdat het aantal wel en niet gedetecteerde objecten
+rechtstreeks gebruikt worden in scoreberekening~\ref{eq:score_weights}.
+Een object met een grote wegingsfactor dat niet gedetecteerd is, zal zwaar afgestraft worden met een mogelijke lokalisatiefout ten gevolg.
+Daarom zal het belangrijk zijn om een object detector te gebruikten met een grootte nauwkeurigheid.
+
+Ook de keuze van perspectiefpunt detector heeft een grote invloed op de lokalisatie nauwkeurigheid.
+Dit komt omdat de positie van het gedetecteerde punt rechtstreeks gebruikt wordt om de hoeken t.o.v. de gedetecteerde objecten te bepalen.
+Als de hoeken niet nauwkeurig zijn, is het moeilijk om de metingen te linken aan een positie op de kaart.
+Als in dit geval, door een slechte meting, de score van de verkeerde locatie hoger wordt, dan wordt er een verkeerde aanname gedaan.
+Deze ene fout is misschien niet erg, maar wordt wel verder meegenomen in de volgende berekeningen waardoor de fouten zich kunnen opstapelen.
+
+De belangrijkste reden voor de minder goede resultaten van de lokalisatie, is omdat de data in de semantische kaart niet nauwkeurig genoeg is.
+Bij de start van het implementeren hebben we een semantische kaart verkregen met bijhorend beeldmateriaal van een specifieke omgeving.
+Op dat moment bevatte de kaart enkel een beschrijving van de muren en deuren.
+Dit was uiteraard niet genoeg voor de doeleinden die we hier voor ogen hadden, en was het noodzakelijk om de features beschreven in vorige hoofdstukken
+in de kaart op te nemen.
+Het was niet mogelijk om van deze objecten de echte afmetingen en locaties te verkrijgen, daarom is er besloten om op de kaart de afstanden en hoeken tot de objecten
+te schatten. Deze schatting is gebeurd op basis van het verkregen beeldmateriaal.
+
+Doordat onze data die slechts een schatting is, is het zeer moeilijk om exact te zeggen hoe nauwkeurig onze detector is.
