@@ -37,7 +37,7 @@ Deze objecten zijn bijvoorbeeld:
     \item Deurklinken.
 \end{itemize}
 
-De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} camera.
+De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} dashboard camera.
 In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en kan er een detector gemaakt worden om deze features te herkennen.
 
 De gekozen object detector is YOLOv2\cite{yolov22016}.
@@ -169,7 +169,7 @@ De edge detectie wordt wederom gebruikt om door middel van de Hough-transformati
 We zijn op zoek naar perspectieflijnen, dus alle horizontale en verticale lijnen worden onmiddellijk verwijderd net als rechten waarvan de richtingsco\"{e}ffici\"{e}nt
 niet genoeg van elkaar afwijkt. Dit is weergegeven in figuur~\ref{fig:hough_all}.
 
-Indien er slechts een paar lijnen overschieten na filtering, kan gesteld worden dat het perspectiefpunt te vinden is op de kruising van de rechten.
+Indien er slechts een paar lijnen overblijven na filtering, kan gesteld worden dat het perspectiefpunt te vinden is op de kruising van de rechten.
 In het geval dat er nog meerdere kruispunten zouden overschieten, kan er een gemiddelde positie berekend worden van deze punten.
 
 \begin{figure}

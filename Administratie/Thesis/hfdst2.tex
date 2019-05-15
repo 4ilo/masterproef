@@ -65,12 +65,13 @@
             Een deep learning techniek die veel gebruikt wordt in de beeldverwerking is een \gls{cnn}.
 
             Een \gls{cnn} is een supervised deep learning techniek die gebruikt kan worden om verschillende beeldverwerkende taken uit te voeren.
-            Als een traditioneel neuraal netwerk gebruikt zou worden voor een afbeelding van 448 bij 448 pixels, zou er bij elke inwendige laag een paar miljoen variabele gewichten aanwezig moeten zijn,
-            dit zou leiden tot een veel te complex netwerk. Daarom wordt er gebruikgemaakt van een \gls{cnn}, dit is eigenlijk een neuraal netwerk waarbij niet alle neuronen met elkaar verbonden zijn.
+            Als een traditioneel neuraal netwerk gebruikt zou worden voor een afbeelding van 448 bij 448 pixels, zou er bij elke inwendige laag van 40 neuronen ongeveer 8 miljoen variabele gewichten aanwezig moeten zijn,
+            dit zou leiden tot een veel te complex netwerk.
+            Daarom wordt er gebruikgemaakt van een \gls{cnn}, dit is eigenlijk een neuraal netwerk waarbij niet alle neuronen met elkaar verbonden zijn.
 
             Een \gls{cnn} kan bestaan uit meerdere lagen die meestal een combinatie zijn van 'convolutional-layers' en 'fully connected-layers'.
             Elk van deze lagen bevat een aantal neuronen met elk een eigen set van gewichten.
-            Het doel van een \gls{cnn} is om de gewichten zodanig bij te stellen dat data die aan de eerste laag (de input laag) gegeven wordt een verwacht resultaat geeft aan de laatste laag (de output/classificatie laag).
+            Het doel van een \gls{cnn} is om de gewichten zodanig bij te stellen dat data gegeven aan de eerste laag (de input laag) een resultaat zoals een classificatie met een nauwkeurigheid geeft aan de laatste laag (de output/classificatie laag).
             Deze laatste laag kan men de classificatielaag noemen, en geeft een representatie van wat het netwerk denkt dat er aan de input staat.
             In figuur~\ref{fig:yolo_cnn} is een voorbeeld zichtbaar van een \gls{cnn} met de verschillende soorten lagen.
 
@@ -99,12 +100,18 @@
             Trainen van een netwerk is het optimaliseren van de gewichten bij de neuronen in elke laag van het netwerk, bij een optimaal resultaat is de loss functie minimaal.
             Dit is een complex probleem dat enkel kan lukken indien er genoeg trainingsdata ter beschikking is.
             Trainen kan gedaan worden d.m.v 'backprogagation'.
-            Backpropagation is het steeds een klein beetje aanpassen van de gewichten bij de neuronen in het netwerk om de classificatie ten gevolge van de input, en het trainingslabel beter op elkaar af te stemmen.
-            Dit proces werkt door de kettingregel toe te passen, en voor elke laag een voor een de gewichten te zoeken.
+
+            De kost van een netwerk is afhankelijk van alle gewichten die zich in het netwerk bevinden.
+            Om de kost te minimaliseren dienen al deze gewichten zo goed mogelijk afgestemd te worden op basis van de trainingsvoorbeelden.
+            Een neuraal netwerk propageert data van de input door al zijn parameters tot aan de laatste laag waar de beslissing genomen wordt.
+            Op dit moment kan de eindbeslissing vergeleken worden met het trainingslabel en achteruit gepropageerd worden (backpropagation) met informatie over de gemaakte fout.
+            Zo kan het netwerk gecorrigeerd worden 1 gewicht per keer.
+            Doordat de gewichten zich in lagen bevinden, en dus onderling afhankelijk zijn, moet de kettingregel toegepast worden om de waarden te corrigeren.
+            Een meer gedetailleerde uitleg over de wiskunde achter backpropagation is beschreven door~\cite{nielsenneural}.
 
             Een belangrijke laag in een \gls{cnn} is de \gls{relu}.
             Deze laag voegt een niet lineaire functie toe tussen de convolutielagen, dit is nodig omdat de convolutie een lineaire operatie is, en een eigenschap van lineaire operators laat toe om deze te combineren tot 1 operator.
-            Dit zou willen zeggen dat alle convoluties in een netwerk samengesteld kunnen worden tot 1 laag, en dus het voordeel van meerdere lagen wegnemen.
+            Dit zou willen zeggen dat alle convoluties in een netwerk gereduceerd kunnen worden tot 1 laag, en dus het voordeel van meerdere lagen wegnemen.
             Het toevoegen van een \gls{relu} laag tussen elke convolutielaag voorkomt dit probleem.
 
             Een voorbeeld van een CNN is het '\gls{yolo} detection system'~\cite{Redmon_2016}. Het \gls{yolo} netwerk is opgebouwd uit 24 convolutielagen en 2 'fully connected' lagen.
@@ -130,7 +137,9 @@
         Het correct segmenteren van de beelden zal een belangrijke rol spelen. Niet in elk beeld zal er een distinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
         de muren te kunnen onderscheiden. Een eenvoudige aanpak zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
         Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafond omwille van kleur en textuurgelijkenissen.
-        Hun regressie gebaseerde labeling techniek blijkt dus een slechte oplossing. Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
+        Hun regressie gebaseerde labeling techniek blijkt dus een slechte oplossing.
+        Een mogelijke verbetering zou kunnen zijn om de kennis toe te voegen dat een plafond zich steeds boven de vloer bevindt, hierbij zou de blob in 2 delen gesplitst kunnen worden om de vloer te verkrijgen.
+        Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
         een correcte segmentatie te doen.
         \cite{Li2010} stelt een techniek voor die begint met het detecteren van verticale en horizontale lijn segmenten. Dit doen ze door eerst een Canny edge detector\cite{Canny} toe te passen en vervolgens een line fitting.
         Een zelf geleerde \gls{svm} classifier verdeeld alle lijnsegmenten in twee categorie\"{e}n: horizontaal en verticaal. De vluchtlijnen van de gang worden hierbij onderverdeeld in de horizontale categorie.
