@@ -71,6 +71,7 @@
 | 09/05/19 | Verwerken opmerkingen + aanpassen titel |
 | 10/05/19 | Yolo resultaten hoofdstuk schrijven |
 | 11/15/19 | VP resultaten hoofdstuk schrijven |
+| 12/15/19 | Hoofdstuk over localisatie resultaten |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 
