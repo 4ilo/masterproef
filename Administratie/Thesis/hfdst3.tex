@@ -24,6 +24,19 @@ Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstu
     \item Lokalisatie (\ref{sec:lokalisatie}).
 \end{itemize}
 
+De implementatie is geprogrammeert in Python 3.7. De versies van de belangrijkste biblioteken die gebruikt zijn, zijn weergegeven in tabel~\ref{tab:versies}.
+
+\begin{table}
+    \centering
+    \caption{Belangrijkste Python bibliotheken en versienummers}
+    \label{tab:versies}
+    \begin{tabular}{l|l|l|l}
+        \textbf{Bibliotheek} & OpenCV & Osmnx & Tensorflow \\
+        \hline
+        \textbf{Versie} & 3.4.5 & 0.9 & 1.13.1 \\
+    \end{tabular}
+\end{table}
+
 
 \section{Object detectie}\label{sec:object_detectie}
 
@@ -76,7 +89,6 @@ De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de 
    \end{lstlisting}
 
 De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom hebben we een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
-Het conversiescript bevindt zich in bijlage~\ref{ch:bij_convert}.
 Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
 Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co\"{o}rdinaat te bekomen, de waardes vermenigvuldigd moeten worden met de breedte en de hoogte zoals ge\"{i}llustreerd in~\ref{eq:yolo_abs}.
 
