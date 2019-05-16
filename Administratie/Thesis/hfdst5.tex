@@ -1,6 +1,58 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                 %
 %                            Besluit                              %
 %                                                                 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Besluit}
+
+Voor dit onderzoek hebben we onderzocht of het mogelijk is om de positie van en mobiele robot te volgen in de logistieke gangen van een ziekenhuis
+op basis van \'{e}\'{e}n \gls{rgb} camera en een semantische kaart.
+We hebben een vergelijking gemaakt tussen verschillende technieken om informatie vanop de kaart te koppelen aan de omgeving.
+
+We zijn begonnen door een pipeline op te stellen om in eerste instantie informatie te verzamelen over de omgeving op basis van camerabeelden samen met beeldverwerkingstechnieken.
+Vervolgens zijn we gaan kijken hoe we de omgeving kunnen voorstellen op basis van een semantische kaart, en welke gegevens we daarvoor nodig hebben.
+Een derde en laatste stap was het koppelen van de metingen aan de gegevens vanop de kaart.
+Het resultaat van deze koppeling is een schatting van de huidige positie van de mobiele robot.
+Heel deze pipeline is ge\"{i}mplementeerd in Python en OpenCV.
+
+Het verzamelen van informatie en voorstellen van de omgeving op basis van de camerabeelden gebeurd in 3 stappen.
+Eerst zijn we begonnen met het trainen van een objectdetector om de locatie van bepaalde features in de beelden op te sporen.
+Vervolgens hebben we drie methoden uitgewerkt om het perspectiefpunt van de gangen te zoeken.
+Op basis van deze gegevens konden we voor elk object de hoek bepalen tussen de optische as en het object.
+
+Op de semantische kaart hebben we een te volgen route aangeduid die onderverdeeld is in een aantal discrete locaties.
+Elk van deze locaties bevat een beschrijving van welke objecten zichtbaar zijn op dat punt, en onder welke hoek.
+
+De gegevens vanop de kaart en de verzamelde informatie worden in de laatste stap vergeleken met elkaar.
+Dit wordt apart gedaan per locatie punt.
+Elk punt krijgt een score in hoeverre het gelijkt op de metingen van de camerabeelden, en de locatie met de beste score wordt beschouwd als
+de huidige locatie.
+
+Na het analyseren van de resultaten zijn we tot de conclusie gekomen dat de YOLOv2 objectdetector die we getraind hebben zeker bruikbaar is
+om redelijk nauwkeurig objecten te detecteren. Hoe meer trainingsmateriaal beschikbaar is, hoe beter het resultaat.
+De drie methoden om het perspectiefpunt van een gang te vinden die we ge\"{i}mplementeerd hebben, hebben elk hun eigen sterke en zwakke punten.
+Mits kleine verbeteringen en eventuele samenvoeging van de verschillende technieken,
+is ook de perspectiefpuntdetectie nauwkeurig genoeg om gebruikt te worden.
+
+De lokalisatie zelf blijkt niet het beste resultaat te geven, dit komt omdat de informatie die we ter beschikking hadden op de semantische kaart zeer beperkt was.
+Alle objecten die we gebruikt hebben, hebben we manueel op basis van een schatting vanop de camerabeelden moeten aanduiden op de kaart.
+Ook de hoeken naar de objecten zijn berekend op basis van de schattingen.
+Dit geeft uiteraard een zeer grote kans op fouten, wat ook zichtbaar is in de resultaten.
+
+
+\section{Toekomstig werk}
+Zoals reeds besproken zijn de resultaten van de YOLOv2 object detector zeer goed.
+Door meer trainingsmateriaal te verzamelen van verschillende omgevingen, kan deze detector uitgebreid worden om nog extra objectklassen te vinden.
+Met genoeg trainingsmateriaal en tijd om te trainen zal de detector in staat zijn om met een goede nauwkeurigheid ook deze objecten te vinden.
+
+De perspectiefpuntdetectie methoden die ge\"{i}mplementeerd zijn, geven al een goed resultaat, maar kunnen nog fel verbeterd worden.
+Een combinatie van de verschillende methoden, en een betere afstelling van de verschillende parameters kunnen de nauwkeurigheid verhogen.
+Dee methode is uitermate geschikt om te bepalen hoeveel de mobiele robot gedraaid is ten opzichte van de gang waarin hij zich bevindt.
+
+Zoals we ontdekt hebben, is de bibliotheek die we gebruiken om de kaart de visualiseren zeer slecht geschreven, en neemt deze het grootste deel van
+de rekentijd per iteratie in beslag.
+Dit zou opgelost kunnen worden door een betere bibliotheek te zoeken, of zelf \'{e}\'{e}n te schrijven.
+
+Een belangrijk werk dat nog moet gebeuren, is het testen van de lokalisatiemethode met fysiek opgemeten gegevens.
+Zoals eerder aangehaald, is het zeer moeilijk om de nauwkeurigheid van de lokalisatie te beoordelen omdat de meeste gegevens slechts schattingen waren.
+Een kaart met daarop de exacte co\"{o}rdinaten en hoeken zal hopelijk een beter resultaat opleveren.
