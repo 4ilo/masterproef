@@ -83,7 +83,7 @@
             \end{figure}
 
             Een 'convolutional-layer' of convolutie-laag is een laag die een convolutie operatie uitvoert op zijn input.
-            Dit wil zeggen dat de input verdeeld word in regio's van bijvoorbeeld 7x7 pixels, deze 49 pixels zijn verbonden met 1 neuron in de volgende inwendige laag.
+            Dit wil zeggen dat de input verdeeld wordt in regio's van bijvoorbeeld 7x7 pixels, deze 49 pixels zijn verbonden met 1 neuron in de volgende inwendige laag.
             Als dit 7x7 masker wordt opgeschoven met 1 pixel, verkrijgen we de input voor aan andere neuron in de volgende laag.
             Dit proces kan gebeuren in meerdere dimensies tegelijkertijd, op dat moment spreekt men van een tensormasker.
             Een voorbeeld van een convolutie in meerdere dimensies tegelijkertijd is een \gls{rgb} afbeelding die in een keer door het netwerk gaat, waarbij de dimensies de rode, groene en blauwe pixels van het beeld zijn.
@@ -142,7 +142,7 @@
         Verder zoals~\cite{Li2010} aangeeft zijn reflecties en overbelichting eigenschappen van indoor omgevingen die het moeilijk kunnen maken om
         een correcte segmentatie te doen.
         \cite{Li2010} stelt een techniek voor die begint met het detecteren van verticale en horizontale lijn segmenten. Dit doen ze door eerst een Canny edge detector\cite{Canny} toe te passen en vervolgens een line fitting.
-        Een zelf geleerde \gls{svm} classifier verdeeld alle lijnsegmenten in twee categorie\"{e}n: horizontaal en verticaal. De vluchtlijnen van de gang worden hierbij onderverdeeld in de horizontale categorie.
+        Een zelf geleerde \gls{svm} classifier verdeeldt alle lijnsegmenten in twee categorie\"{e}n: horizontaal en verticaal. De vluchtlijnen van de gang worden hierbij onderverdeeld in de horizontale categorie.
         Alle lijnstukken krijgen een score via een reeks van operaties waarna enkel de beste lijnen bijgehouden worden. Op basis van de kleur van de vlakken tussen de lijnstukken kan een segmentatie gemaakt worden.
         Dit geeft een resultaat waarbij de vloer meestal een mooi homogeen geheel is, maar de muren in meerdere vlakken gesegmenteerd worden door eventuele kleurverschillen en objecten aan de muur.
         
@@ -162,7 +162,7 @@
 
         Het segmentatienetwerk SegNet~\cite{Badrinarayanan} is een combinatie van convolutielagen en pooling layers. Er zijn geen fully connected layers aanwezig zoals het geval is bij een classificatie netwerk.
         De bedoeling van het SegNet netwerk is om als output opnieuw een afbeelding te genereren. Hiervoor zijn de lagen opgebouwd als een zandloper. Op deze manier is de output even groot als de oorspronkelijke afbeelding.
-        Een segmentatienetwerk wordt getraind op gelijkaardige manier aan een traditioneel \gls{cnn} met als verschil dat de labeling gebeurd op pixelbasis aangezien de output even groot is als de input van het systeem.
+        Een segmentatienetwerk wordt getraind op gelijkaardige manier aan een traditioneel \gls{cnn} met als verschil dat de labeling gebeurdt op pixelbasis aangezien de output even groot is als de input van het systeem.
         Het systeem geeft als output een label voor elke pixel uit de afbeelding onderverdeeld in de classen waarmee het systeem getraind is.
 
         Het SegNet netwerk is getraind op de SUN RGB-D~\cite{Song_2015_CVPR} dataset. Deze dataset bevat een groot aantal indoor scenes, waarbij er onder andere segmentatie klassen zijn voor muren, vloeren en plafonds.

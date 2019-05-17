@@ -8,7 +8,7 @@
 
 \section{Object detectie}
 
-Zoals besproken in hoofdstuk~\ref{sec:object_detectie} wordt er gebruik gemaakt van YOLOv2 met een aangepaste versie van darknet ge\"{i}mplementeerd in C.
+Zoals besproken in hoofdstuk~\ref{sec:object_detectie} maken we gebruik van YOLOv2 met een aangepaste versie van darknet ge\"{i}mplementeerd in C.
 Voor de training hebben we gebruik gemaakt van het standaard trainingsprogramma, voor het gebruik of inferentie van het netwerk maken we gebruik van
 de Python api via de darknet 'shared library'.
 
@@ -45,7 +45,7 @@ Om dit aan te tonen is er een random sample van 100 frames genomen uit de datase
     \label{fig:speed_lights}
 \end{figure}
 
-In figuur~\ref{fig:speed_lights} hebben we dezelfde 100 afbeeldingen geinfereerd met de detector die enkel lampen detecteert.
+In figuur~\ref{fig:speed_lights} hebben we dezelfde 100 afbeeldingen ge\"{i}nfereerd met de detector die enkel lampen detecteert.
 Hierop kunnen we duidelijk afleiden dat de \gls{CPU} versie niet bruikbaar is voor real-time gebruik, maar de \gls{GPU} versie
 met zijn $0.0271 s$ inferentie tijd of $36.9 fps$ zeker bruikbaar is. We zullen verder enkel de resultaten verkregen via \gls{GPU}
 gebruiken omdat deze substantieel beter zijn.
@@ -72,7 +72,7 @@ van een ander deel van het gebouw, er zijn dus geen frames die de detector reeds
 
 De testprocedure begint door de detector te laten lopen op 1 frame, en de annotaties voor hetzelfde frame in te lezen.
 Voor elke detectie wordt er gekeken of het label overeenkomt met het label in de annotatie.
-Een 2de metriek waarmee rekening gehouden wordt is de \gls{IoU}, zoals ge\"{i}llustreerd in figuur~\ref{fig:iou} is de \gls{IoU}
+Een 2de metriek waarmee we rekening houden is de \gls{IoU}, zoals ge\"{i}llustreerd in figuur~\ref{fig:iou} is de \gls{IoU}
 het oppervlak overeenkomstig tussen de detectie en de annotatie.
 Een overlap van 100\% is perfect, een overlap van 0\% is slecht.
 
@@ -95,7 +95,7 @@ De pr-curves en \gls{mAP} waarden van onze detector zijn weergegeven in figuur~\
 \end{figure}
 
 Uit de grafieken kunnen we een verband zien tussen de annotaties op het beeldmateriaal beschreven in tabel~\ref{tab:annotaties} en de nauwkeurigheid van
-de detector voor bepaalde klassen. De klasse met het grootste aantal voorbeelden namelijk 'light' haalt de beste score.
+de detector voor bepaalde klassen. De klasse met het grootste aantal voorbeelden, namelijk 'light', haalt de beste score.
 De score voor 'door\_handle' of deurklink is nagenoeg 0, dit is niet verwonderlijk aangezien er slechts een paar voorbeelden waren in de dataset.
 Dit object geeft dus geen meerwaarde voor de detector of voor het geheel.
 
@@ -122,11 +122,11 @@ Elke afbeelding is 4 keer door een specifieke detector gevalideerd namelijk op \
 De verschillende resoluties zijn 1280x720 pixels en 747x420 pixels.
 
 Net zoals bij de objectdetector zien we hier ook een aanzienlijk verschil in detectietijd tussen \gls{CPU} en \gls{GPU} voor 2 van de 3 technieken.
-Dit is niet verwonderlijk aangezien deze methoden gebruik maken van een segmentatie netwerk.
+Dit is niet verwonderlijk aangezien deze methoden gebruik maken van een segmentatienetwerk.
 Het verschil in tijd tussen \gls{CPU} en \gls{GPU} is zo groot dat we verder dus ook enkel de \gls{GPU} implementatie gaan gebruiken en bespreken.
 
 Op de linkse grafiek in figuur~\ref{fig:seg_speed} is te zien dat de perspectieflijn kruising techniek met een grote marge de snelste techniek is, dit komt
-omdat deze techniek gebaseerd is op klassieke beeldverwerkings technieken en geen gebruik maakt van een neuraal netwerk.
+omdat deze techniek gebaseerd is op klassieke beeldverwerkingstechnieken en geen gebruik maakt van een neuraal netwerk.
 Hierbij is dan ook geen verschil tussen het detecteren op \gls{CPU} en \gls{GPU} omdat er geen \gls{GPU} implementatie is.
 
 De hoogste vloerpixel techniek is de 2de snelste, deze techniek is een fractie sneller door zijn eenvoud na het segmenteren van de vloer.
@@ -138,10 +138,10 @@ Zo is door de afbeelding bijna te halveren in de breedte en de hoogte een snelhe
 
 
 \subsection{Nauwkeurigheid}
-Om de nauwkeurigheid van een perspectiefpunt detector te bepalen is er een script geschreven om voor elk van de 100 willekeurig gekozen input afbeeldingen
+Om de nauwkeurigheid van een perspectiefpunt detector te bepalen schreven we een script om voor elk van de 100 willekeurig gekozen input afbeeldingen
 het perspectiefpunt handmatig aan te duiden.
 Vervolgens is elke afbeelding getest door de 3 detectoren en het perspectiefpunt bepaald.
-De co\"{o}rdinaten van het gedetecteerde perspectiefpunt, en het data punt door ons aangeduid, zijn beide in genormaliseerd ten opzichte van de breedte en de hoogte van de input afbeelding.
+De co\"{o}rdinaten van het gedetecteerde perspectiefpunt, en het datapunt door ons aangeduid, zijn beide in genormaliseerd ten opzichte van de breedte en de hoogte van de input afbeelding.
 De euclidische afstand tussen de 2 punten is de afwijking of fout van de detector.
 
 \begin{figure}[h]
@@ -152,16 +152,16 @@ De euclidische afstand tussen de 2 punten is de afwijking of fout van de detecto
 \end{figure}
 
 In figuur~\ref{fig:seg_accuracy} is de fout voor elke afbeelding weergegeven alsook de gemiddelde fout in de legende.
-Hieruit kunnen we afleiden dat de perspectieflijn kruising techniek(\ref{sec:perspectieflijnkruising}) ondanks het de snelste techniek is, de laagste nauwkeurigheid haalt.
+Hieruit kunnen we afleiden dat de perspectieflijn kruising techniek (\ref{sec:perspectieflijnkruising}) ondanks het de snelste techniek is, de laagste nauwkeurigheid haalt.
 Dit is grotendeels omdat niet voor elke afbeelding de detector erin slaagt een perspectiefpunt te vinden. De reden dat niet in elk frame
 een punt gevonden wordt komt door een gebrek aan hough-lines die gevonden worden op basis van de rand-detectie.
 Door meer met de parameters te spelen zou dit probleem eventueel opgelost kunnen worden om de nauwkeurigheid van deze detector te verhogen.
 
-Ondanks de eenvoudigste techniek te zijn, is de hoogste vloerpixel(\ref{sec:seg_highest}) methode over heel de lijn het meest nauwkeurig.
+Ondanks de eenvoudigste techniek te zijn, is de hoogste vloerpixel (\ref{sec:seg_highest}) methode over heel de lijn het meest nauwkeurig.
 Een belangrijke reden voor dit resultaat is het excellente resultaat van het gebruikte segmentatienetwerk.
 Indien de vloersegmentatie van mindere kwaliteit zou zijn, zou deze methode een slechter resultaat opleveren.
 
-De vloerlijn kruising(\ref{sec:hough_floor}) methode geeft niet het beste resultaat, maar het is gemiddeld gezien zeker aanvaardbaar.
+De vloerlijn kruising (\ref{sec:hough_floor}) methode geeft niet het beste resultaat, maar het is gemiddeld gezien zeker aanvaardbaar.
 Doordat we in hoofdstuk~\ref{sec:seg_speed} besloten hebben dat de 2 technieken die gebruik maken van vloersegmentatie ongeveer evenveel rekentijd in beslag
 nemen, en de hoogste vloerpixel methode de grootste nauwkeurigheid bied, is deze gekozen voor de uiteindelijke implementatie.
 
@@ -175,12 +175,12 @@ Zoals bij de vorige resultaten zijn ook deze opgesplitst in snelheid en nauwkeur
 
 \subsection{Snelheid}
 Voor validatie is er een dataset genomen van 125 opeenvolgende frames van een video.
-De tijden waargenomen voor deze experimenten zijn voor 1 volledige iteratie in het programma, dit houd in:
+De tijden waargenomen voor deze experimenten zijn voor 1 volledige iteratie in het programma, dit houdt in:
 
 \begin{itemize}
     \item YOLOv2 object detectie;
     \item Perspectiefpunt detectie;
-    \item Lokalisatie berekeningen;
+    \item Lokalisatieberekeningen;
     \item User interface met frame en locatie op kaart plotten.
 \end{itemize}
 
@@ -193,12 +193,12 @@ De tijden waargenomen voor deze experimenten zijn voor 1 volledige iteratie in h
 
 In figuur~\ref{fig:loc_speed} is een grafiek te zien van de iteratietijd per frame, in de legende is de gemiddelde tijd weergegeven.
 Er is uiteraard een redelijk verschil waar te nemen tussen de implementatie die gebruikmaakt van het segmentatienetwerk, en die zonder.
-Maar de detector zonder segmentatie(perspectiefpunt detectie d.m.v. perspectieflijn kruising~\ref{sec:perspectieflijnkruising}) heeft nog steeds
+Maar de detector zonder segmentatie (perspectiefpunt detectie d.m.v. perspectieflijn kruising~\ref{sec:perspectieflijnkruising}) heeft nog steeds
 een vrij lange rekentijd.
 Ondanks de theoretische snelheid die we uit vorige hoofdstukken kunnen afleiden ongeveer 0.042 s zou moeten zijn, is de gemiddelde rekentijd meer dan 10 keer hoger.
 Na profilering van de implementatiecode, zijn we tot de constatatie gekomen dat het grootste deel van de tijd verloren gaat in de bibliotheek die gebruikt wordt
 om de kaart en de actuele locatie visueel weer te geven. Dit is te zien in figuur~\ref{fig:loc_time}.
-Hier zien we duidelijk dat de object en perspectiefpunt detector wel een stuk tijd in beslag nemen, maar dat door de visualisatie te laten vallen
+Hier zien we duidelijk dat de object en perspectiefpuntdetector wel een stuk tijd in beslag nemen, maar dat door de visualisatie te laten vallen
 de snelheid bijna $1/4$ van de huidige detectietijd zou kunnen zijn.
 
 \begin{figure}[h]
@@ -210,7 +210,7 @@ de snelheid bijna $1/4$ van de huidige detectietijd zou kunnen zijn.
 
 
 \subsection{Nauwkeurigheid}
-Voor de validatie is er op een dataset van 125 opeenvolgende frames van een video aangeduid bij welke discrete locatie op de semantische kaart
+Voor de validatie hebben we op een dataset van 125 opeenvolgende frames van een video aangeduid bij welke discrete locatie op de semantische kaart
 het beeld het beste past.
 Deze data data wordt beschouwd als waarheid.
 Dit wordt vergeleken met de output locatie per frame van ons programma.

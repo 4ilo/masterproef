@@ -14,7 +14,7 @@
 \end{figure}
 
 Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een semantische kaart een robot autonoom te laten navigeren in de logistieke gangen van een ziekenhuis.
-Om dit te implementeren, is er een pipeline opgesteld.
+Om dit te implementeren, stelden we een pipeline op.
 Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden:
 \begin{itemize}
     \item Object detectie (\ref{sec:object_detectie});
@@ -53,7 +53,7 @@ Deze objecten zijn bijvoorbeeld:
 De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} dashboard camera.
 In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en kan er een detector gemaakt worden om deze features te herkennen.
 
-De gekozen object detector is YOLOv2\cite{yolov22016}.
+De object detector die we gekozen hebben is YOLOv2\cite{yolov22016}.
 Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
 De belangrijkste reden dat we deze detector gekozen hebben, is omdat op een grafische kaart deze real-time kan werken.
 
@@ -396,7 +396,7 @@ Elk object uit de node data dat niet gelinkt kon worden met een detectie wordt a
 Vervolgens wordt per match het verschil in hoek (fout) tussen de detectie en data hoek afgetrokken van de score.
 De laatste stap is het wegen van de verschillende features. Objecten dichtbij hebben een veel grotere detectiehoek, die nauwkeuriger berekend kan worden.
 Daarom wordt er op basis van de hoek een wegingsfactor toegevoegd voor dat specifieke object ten opzichte van de score.
-Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedeterceerd had moeten worden.
+Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedetecteerd had moeten worden.
 
 De berekening van de score kan worden samengevat in formule~\ref{eq:score} waarbij $a$ de positieve beloningsfactor is, $b$ de negatieve afstraffactor,
 $\alpha_{mi}$ is een hoek uitgelezen van de semantische kaart en $\alpha_{di}$ een door detectie gemeten hoek.
@@ -414,10 +414,8 @@ Vervolgens wordt een nieuw input frame verwerkt, en zal de berekening opnieuw be
 
 \begin{equation}\label{eq:score_weights}
     f_w(\alpha) = \left\{\begin{array}{lr}
-                1 & \text{for } 30 \leq |\alpha|\\
-                0.75 & \text{for } 15 \leq |\alpha| < 30\\
-                0.5 & \text{for } 8 \leq |\alpha| < 15\\
-                0.3 & \text{for } 0 \leq |\alpha| < 8\\
+                1 & \text{for } 30 < |\alpha|\\
+                \frac{7\alpha + 10}{220} & \text{for } 0 \leq |\alpha| \leq 30\\
     \end{array}
     \right\}
 \end{equation}
