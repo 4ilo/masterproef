@@ -1,1 +1,74 @@
-De (korte) samenvatting, toegankelijk voor een breed publiek, wordt in het Nederlands geschreven en bevat {\bf maximum 3500 tekens}. Deze samenvatting moet ook verplicht opgeladen worden in KU Loket.
+\section*{Introduction}
+Hospitals suffer under staff shortage and high working pressure for healthcare staff.
+A part of this is due to their responsibility of logistic transport inside the hospital.
+Our goal is to automate this process with a Automated Guided Vehicle (AGV).
+This robot has to navigate autonomously and estimate its location.
+To realize this goal, we have a single RGB camera, and a semantic map available.
+This map contains a variety of objects visible in the hospital corridors as well as their dimensions, position and orientation.
+
+The exact goal of this thesis is to research which objects/features are present in the logistic corridors of a hospital, and based on this
+information search techniques usable to detect and track them.
+These detections will be used to track the position of the robot based on the information found on the semantic map and a known starting position.
+
+
+\section*{Implementation}
+We implemented a pipeline to process the RGB input frames and the map, and give us the tracked location for the robot.
+This pipeline consists of four steps.
+
+For the fist step we gathered information about the environment.
+We analyzed the dataset, and found four interesting objects in the images.
+To detect these object in the images, we trained a YOLOv2 single shot object detector CNN.
+This convolutional neural network detects the location of objects, and classifies them into the four trained classes.
+
+The second step is to detect the vanishing point in the image.
+This point can be used to identify the rotation of the robot inside the corridor, and will be used later to match the detected objects to the map.
+We implemented three different methods to detect the vanishing point.
+For the first 2 methods, we use a segmentation neural network to detect the foor pixels.
+One of the methods takes the highest floor pixel, and reckons this is the vanishing point.
+The other method try's to fit lines with the Hough transform on the edges of the floor.
+The crossing of these lines is in theory the vanishing point.
+The third and final method try's to find the perspective lines with the Hough transform for the whole image.
+Here also the crossing of these lines is considered the vanishing point.
+
+In the third step we use the results of the object detector and the vanishing point.
+To represent what is visible in the frame we are processing, we calculate the angle between each object and the optical axis of the camera.
+To do this, we measure the distance in pixels from a detection to the vanishing point.
+This distance can be converted into an angle if you use the focal length of the camera.
+After this stage, we have a angle for each object we detected in the frame.
+
+The last step try's to match the angels of the detector object to the semantic map.
+The map contains a predefined route, split into discrete location.
+Each of these locations has information about what should be visible, under which angle.
+The robots always starts on a known location point, and we try and track the current location.
+To do this, we calculate a score for how much a location matches the measurements detected from the current image.
+The location node with the highest score is considered the current location.
+
+\section*{Results}
+We ran some tests on the objet detector, the vanishing point detectors and the localization as a whole.
+For each of these topic's we checked the speed and the accuracy.
+
+The YOLOv2 object detector performs best on the GPU implementation.
+The amount of object classes to be detected doesn't really affect the inference speed.
+The detection can be sped up a bit by decreasing the input image resolution.
+Not al four classes are as accurate, the 'light' class has the highest accuracy because of the higher amount of training examples.
+If we would training longer, and with more examples for the other three classes, the accuracy would increase.
+
+The two vanishing point detection methods using the segmentation network, take a bit longer to calculate then the other method.
+Here also, the resolution of the input image has a big influence on the inference time of the network.
+Generally the highest floor pixel segmentation method has the highest accuracy.
+But with the tweaking of some parameters and combining these techniques, the accuracy can still be improved.
+
+The speed of calculation the tracking of the robots position, should in theory take about as long as inferring both the
+object detector and the segmentation network.
+We found out the time to calculate 1 frame was almost 4 times as long.
+This is due to a slow implemented library for rendering the semantic map.
+The accuracy of the localization is not very good.
+Due to issues with the information on the semantic map, which are only estimates of the object locations based on the dataset instead of
+ground truth location data, we cannot rely on the results of our detector at this point.
+
+%
+%\section*{Conclusion}
+%Our results proof that our object detector and vanishing point detectors are good tools as a starting point for localisation but can still be
+%improved by more training and more examples.
+%The localisation method we use doesn't give the best results, but this is due to the problem with the ground truth data on the semantic map.
+%In de future we should run the test again with a accurate semantic map.

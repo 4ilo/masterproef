@@ -337,17 +337,16 @@
 		\chapter*{Voorwoord} \@acknowledgementsfile
 		\addcontentsline{toc}{chapter}{Voorwoord}
 	\fi
-	
-	\ifsummarypage
-		\chapter*{Samenvatting} \@summaryfile
-		\addcontentsline{toc}{chapter}{Samenvatting}
-	\fi
 
 	\ifabstractpage 
 		\chapter*{Abstract} \@abstractfile
 		\addcontentsline{toc}{chapter}{Abstract}
 	\fi
-	
+
+	\ifsummarypage
+		\chapter*{Short summary} \@summaryfile
+		\addcontentsline{toc}{chapter}{Samenvatting}
+	\fi
 
 	\tableofcontents
 	\addcontentsline{toc}{chapter}{Inhoud}
