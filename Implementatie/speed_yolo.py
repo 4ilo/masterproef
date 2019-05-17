@@ -53,7 +53,7 @@ if __name__ == "__main__":
     plt.plot(time_data, label="Time")
     plt.plot(mean_data, label="Average time: {}s".format(round(mean_gpu,4)))
     plt.suptitle('Inference time YOLOv2 on {}'.format("CPU" if run_cpu else "GPU"))
-    plt.ylabel("Inference time")
+    plt.ylabel("Inference time [s]")
     plt.xlabel("Input frame")
     plt.legend()
     plt.show()

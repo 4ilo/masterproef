@@ -113,12 +113,14 @@ if __name__ == "__main__":
     e1 = test_hough(args.input_path, images)
     e2, e3 = test_seg(args.input_path, images)
 
-    # Plot
-    plt.plot(e1)
-    plt.plot(e2)
-    plt.plot(e3)
+    fig, ax = plt.subplots()
+    ax.boxplot([e1, e2, e3])
+    ax.set_xticklabels(["Hough transform", "Seg Highest pixel", "Seg Hough"])
 
-    plt.xlabel("Test image")
     plt.ylabel("Euclidean error")
-    plt.legend(['Hough transform: {}'.format(round(np.mean(e1), 3)), 'Seg Highest pixel: {}'.format(round(np.mean(e2),3)), 'Seg Hough: {}'.format(round(np.mean(e3),3))])
+    plt.legend([
+        'Hough transform: error: {}, σ: {}'.format(round(np.mean(e1), 3), round(np.std(e1), 3)),
+        'Seg Highest pixel: error: {}, σ: {}'.format(round(np.mean(e2),3), round(np.std(e1), 3)),
+        'Seg Hough: error: {}, σ: {}'.format(round(np.mean(e3),3), round(np.std(e1), 3))
+    ])
     plt.show()

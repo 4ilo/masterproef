@@ -21,8 +21,8 @@ rects2 = plt.bar(index + bar_width, means_gpu, bar_width,
 alpha=opacity,
 label='GPU')
 
-plt.ylabel('Inference time')
-plt.title('YOLOv2 inference time')
+plt.ylabel('Inference time [s]')
+plt.title('YOLOv2 inference time with 1 class')
 plt.xticks(index + bar_width/2, ('747x420p', '1280x720p'))
 plt.legend()
 

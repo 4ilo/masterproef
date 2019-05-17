@@ -10,14 +10,17 @@ if __name__ == "__main__":
     speed_non_seg = np.array(speed_non_seg, dtype=float)
 
     # Speed plot
-    plt.plot(speed_seg[:, 5])
-    plt.plot(speed_non_seg[:, 5])
+    fig, ax = plt.subplots()
+    ax.boxplot([speed_seg[:, 5], speed_non_seg[:, 5]], 0, '')
+    # plt.plot(speed_seg[:, 5])
+    # plt.plot(speed_non_seg[:, 5])
+    ax.set_xticklabels(["With segmentation", "Without segmentation"])
 
-    plt.xlabel("Input Frame")
-    plt.ylabel("Calculation time")
+    # plt.xlabel("Input Frame")
+    plt.ylabel("Calculation time [s]")
     plt.legend([
-        'With segmentation: {}'.format(round(np.mean(speed_seg[:, 5]), 3)),
-        'Without segmentation: {}'.format(round(np.mean(speed_non_seg[:, 5]), 3))
+        'With segmentation: mean = {} s'.format(round(np.mean(speed_seg[:, 5]), 3)),
+        'Without segmentation: mean = {} s'.format(round(np.mean(speed_non_seg[:, 5]), 3))
     ])
     plt.title("Location calculation speed on GPU")
     plt.show()

@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 # Data to plot
 n_groups = 2
 # GPU Data
-means_hp = [0.1650, 0.4230]
-means_seg = [0.1708, 0.4878]
-means_hough = [0.0145, 0.0201]
+# means_hp = [0.1650, 0.4230]
+# means_seg = [0.1708, 0.4878]
+# means_hough = [0.0145, 0.0201]
 
 # CPU Data
-# means_hp = [0.9393, 2.6309]
-# means_seg = [0.9422, 2.6463]
-# means_hough = [0.0150, 0.0189]
+means_hp = [0.9393, 2.6309]
+means_seg = [0.9422, 2.6463]
+means_hough = [0.0150, 0.0189]
 
 # create plot
 fig, ax = plt.subplots()
@@ -31,8 +31,8 @@ rects2 = plt.bar(index + bar_width, means_hough, bar_width,
 alpha=opacity,
 label='Hough transform')
 
-plt.ylabel('Detection time')
-plt.title('VP detection time on GPU')
+plt.ylabel('Detection time [s]')
+plt.title('VP detection time on CPU')
 plt.xticks(index, ('747x420p', '1280x720p'))
 plt.legend()
 
