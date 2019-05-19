@@ -14,17 +14,14 @@
 \end{figure}
 
 Het doel van deze masterproef is om op basis van 1 \gls{rgb} camera en een semantische kaart een robot autonoom te laten navigeren in de logistieke gangen van een ziekenhuis.
-Om dit te implementeren, stelden we een pipeline op.
-Deze pipeline is onderverdeeld in een aantal stappen die in de volgende hoofdstukken uitgebreid besproken worden:
-\begin{itemize}
-    \item Object detectie (\ref{sec:object_detectie});
-    \item Vluchtpunt detectie (\ref{sec:perspectiefpunt_detectie});
-    \item Omgevingsmeting (\ref{sec:omgevingsmeting});
-    \item Semantische kaart (\ref{sec:sem_kaart});
-    \item Lokalisatie (\ref{sec:lokalisatie}).
-\end{itemize}
+Om dit te implementeren, stelden we een pipeline op. Een schematische voorstelling van de pipeline is voorgesteld in figuur~\ref{fig:pipeline1} en~\ref{fig:pipeline2}.
+Deze pipeline is onderverdeeld in 5 stappen.
+Eerst worden er door middel van een object detector (\ref{sec:object_detectie}) visuele kenmerken in de beelden gezocht.
+Vervolgens zoeken we het perspectiefpunt in de input frames (\ref{sec:perspectiefpunt_detectie}).
+Als derde stap representeren we op basis van de gedetecteerde objecten, en het vluchtpunt de waargenomen kenmerken (\ref{sec:omgevingsmeting}) uit het beeld door middel van hoeken.
+Als laatste stap proberen we de locatie van de robot te volgen (\ref{sec:lokalisatie}) door middel van de semantische kaart (\ref{sec:sem_kaart}) en de omgevingsmeting uit de vorige stap.
 
-De implementatie is geprogrammeert in Python 3.7. De versies van de belangrijkste biblioteken die gebruikt zijn, zijn weergegeven in tabel~\ref{tab:versies}.
+De implementatie is geprogrammeerd in Python 3.7. De versies van de belangrijkste bibliotheken die gebruikt zijn, zijn weergegeven in tabel~\ref{tab:versies}.
 
 \begin{table}
     \centering
@@ -41,22 +38,30 @@ De implementatie is geprogrammeert in Python 3.7. De versies van de belangrijkst
 \section{Object detectie}\label{sec:object_detectie}
 
 Zoals besproken zal worden in hoofdstuk~\ref{sec:sem_kaart}, bevat de semantische kaart van het ziekenhuis een beschrijving van objecten/features die aanwezig zijn in de gangen.
-Deze objecten zijn bijvoorbeeld:
-\begin{itemize}
-    \item Lampen;
-    \item Brandblussers;
-    \item Pictogrammen;
-    \item Rookdetectors;
-    \item Deurklinken.
-\end{itemize}
-
-De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} dashboard camera.
-In dit beeldmateriaal zijn er een aantal van bovenstaande objecten zichtbaar, en kan er een detector gemaakt worden om deze features te herkennen.
 
 De object detector die we gekozen hebben is YOLOv2\cite{yolov22016}.
 Dit is een zeer veel gebruikt object detectie/classificatie convolutioneel neuraal netwerk dat toelaat om objecten van een geleerde klasse te herkennen en lokaliseren in nieuwe beelden.
 De belangrijkste reden dat we deze detector gekozen hebben, is omdat op een grafische kaart deze real-time kan werken.
 
+\subsection{Datasets}
+De gebruikte dataset zijn 2 video's opgenomen vanop een robot met de de waylens horizon\footnote{https://waylens.com/horizon/techSpecs/} \gls{rgb} dashboard camera.
+De camera heeft een resolutie van 1920x1080 pixels en filmt met een framerate van 30Hz.
+Wij hebben voor training en test de video verdeeld in afzonderlijke frames met een resolutie van 1280x720 pixels waarbij we slechts
+aan 15Hz gesampled hebben.
+
+In dit beeldmateriaal zijn volgende features zichtbaar:
+\begin{itemize}
+    \item Lampen;
+    \item Rookdetectors;
+    \item Deurklinken;
+    \item Nooduitgang bordjes.
+\end{itemize}
+
+Zoals eerder besproken bestaat de dataset uit 2 delen, een trainingsset en een validatieset.
+De twee sets zijn twee opeenvolgende video's van dezelfde gang uit een ziekenhuis.
+De trainingsvideo is hierbij het 2de deel van de gang, en de validatievideo het startpunt.
+
+Het aantal beelden en objecten dat we ter beschikking hebben, is weergegeven in tabel~\ref{tab:annotaties}.
 
 \subsection{Annotatie beeldmateriaal}
 Om een object-detector te maken gebaseerd op een \gls{cnn} moet al het beeldmateriaal geannoteerd worden door bounding-boxes te teken rondom de kenmerkende objecten.
@@ -284,7 +289,7 @@ Deze parameters kunnen voorgesteld worden door middel van een cameramatrix $M$ z
 
 Een eenvoudige methode om een camerakalibratie uit te voeren is een gekend patroon fotograferen uit verschillende hoeken en zo de verschillende parameters te berekenen.
 Het meestgebruikte patroon voor deze toepassing is een dambordpatroon met afwisselend witte en zwarte vlakken, de raakpunten van de zwarte vlakken vormen hier een
-identificeerbaar patroon. In figuur~\ref{fig:kalibratie} is een voorbeeld opgenomen van de patroondetectie.
+identificeerbaar patroon.
 
 \begin{figure}[!hb]
     \centering
@@ -292,6 +297,9 @@ identificeerbaar patroon. In figuur~\ref{fig:kalibratie} is een voorbeeld opgeno
     \caption{Detectie van het dambordpatroon voor camerakalibratie}
     \label{fig:kalibratie}
 \end{figure}
+
+Dit is de techniek die we toegepast hebben om de camera te kalibreren.
+Een voorbeeld uit onze kalibratie afbeeldingen is zichtbaar in figuur~\ref{fig:kalibratie}.
 
 
 \section{Semantische kaart}\label{sec:sem_kaart}
@@ -397,6 +405,11 @@ Vervolgens wordt per match het verschil in hoek (fout) tussen de detectie en dat
 De laatste stap is het wegen van de verschillende features. Objecten dichtbij hebben een veel grotere detectiehoek, die nauwkeuriger berekend kan worden.
 Daarom wordt er op basis van de hoek een wegingsfactor toegevoegd voor dat specifieke object ten opzichte van de score.
 Objecten veraf die misschien nauwelijks zichtbaar zijn die niet gedetecteerd worden straffen zo bijvoorbeeld minder af dan een object dat dichtbij is en zeker gedetecteerd had moeten worden.
+
+Objecten die in het midden van het beeld staan zoals de rookmelders hebben een horizontale hoek van zo goed als 0.
+Dit is dus weinig bruikbaar.
+Daarom kan er voor dit soort situaties ongeveer dezelfde techniek toegepast worden maar dan in de verticale richting.
+De hoek in de verticale richting geeft dan een goede schatting van de afstand tot het object dat zich vlak voor ons bevind.
 
 De berekening van de score kan worden samengevat in formule~\ref{eq:score} waarbij $a$ de positieve beloningsfactor is, $b$ de negatieve afstraffactor,
 $\alpha_{mi}$ is een hoek uitgelezen van de semantische kaart en $\alpha_{di}$ een door detectie gemeten hoek.

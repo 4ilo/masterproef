@@ -6,13 +6,20 @@
 
 \chapter{Literatuurstudie}
 
-    \section{Indoor navigatie \& visie}
+In dit hoofdstuk gaan we kijken wat er in de literatuur te vinden is over een aantal verschillende topics.
+Het eerste topic is de combinatie van indoor navigatie en visie (~\ref{sec:nav_visie}).
+In een tweede hoofdstuk gaan we kijken naar de verschillende objectdetectie technieken (\ref{sec:object_det}).
+Vervolgens zullen we kijken naar object tracking, of het volgen van objecten tussen frames (\ref{sec:object_det}).
+Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:image_segmentation}).
+
+    \section{Indoor navigatie \& visie} \label{sec:nav_visie}
         Op visie gebaseerde navigatie is een onderwerp dat zeer vaak onderzocht wordt. Oudere onderzoeken zoals~\cite{Tomono2000} maken gebruik van een robot met een \gls{rgb} camera die zonder kaart informatie navigeert.
         De enige informatie die gegeven wordt is een eenvoudige object beschrijving van de gang en een beschrijving van een deur met een deurnummer ernaast.
         Met enkel een deurnummer als doel vertrekt de robot door de gang, en houdt zichzelf parallel met de muren door gebruik te maken van andere sensoren. Eens er een deur in beeld komt, worden er een aantal features(randen)
-        herkent in het beeld.
-        Nadat hun algoritme de deuren herkend kan er via \gls{ocr} op het deurnummer worden nagegaan of het doel bereikt is.
+        herkend in het beeld.
+        Nadat hun algoritme de deuren herkent kan er via \gls{ocr} op het deurnummer worden nagegaan of het doel bereikt is.
         Dit is uiteraard een zeer eenvoudige techniek omdat de robot geen begrip heeft van de omgeving, en moeilijk plaatsen t.o.v elkaar kan onderscheiden.
+        Bovendien zijn in onze ziekenhuisgangbeelden de deurnummers afwezig of moeilijk zichtbaar waardoor we dit niet kunnen gebruiken als feature.
 
         Nieuwere technieken zoals~\cite{Henry10rgb-dmapping} maken gebruik van RGB-D camera's zoals bijvoorbeeld een kinect waardoor ze ook over diepte-informatie beschikken.
         Die diepte info kan dan gebruikt worden om heel de omgeving in 3d te mappen en op basis van de effectief gemeten positie te navigeren.
@@ -20,8 +27,12 @@
         Hierbij wordt de informatie van 2 \gls{rgb} camera's die op een vaste afstand van elkaar staan gecombineerd om diepte informatie te verzamelen.
 
         In dit onderzoek gaan we ons echter beperken tot \'{e}\'{e}n enkele \gls{rgb} camera.
+
+        Goedem\'{e} et al~\cite{goedeme2007omnidirectional} gebruikte ook een topologische kaart, maar zonder semantische aanduidingen.
+        Bovendien maakten deze auteurs gebruik van omnidirectionele camera's zodat de detectie van het vluchtpunt vermeden werd.
         
-    \section{Object detectie}
+        
+    \section{Object detectie}\label{sec:object_det}
 
         Een belangrijk aspect van dit onderzoek is het detecteren van individuele objecten in het beeld van \'{e}\'{e}n enkele \gls{rgb} camera.
         De te detecteren objecten zijn op voorhand vastgelegd, en zijn afhankelijk van de ruimte waarin de robot zich bevindt.
@@ -54,7 +65,7 @@
             kan er geprobeerd worden een template te matchen om het effectieve pictogram te achterhalen. Het grootste probleem bij de techniek van~\cite{Fang2003} is
             dat hun gebruikte template matching techniek niet robuust is tegen schaalinvariantie.
             Bij~\cite{Zabihi2017} maken ze voor de herkenningsfase gebruik van \gls{sift}\cite{Lowe1999} features en kleur informatie.
-            Hierdoor is het probleem van schaal invariantie grotendeels opgelost.
+            Hierdoor is het probleem van schaalinvariantie grotendeels opgelost.
             Hierbij worden de \gls{sift} features van de kandidaat matches en de templates vergeleken, en wordt er een gemiddelde genomen van de verschillen tussen hue, saturation en value.
             Door middel van \gls{ransac} en een treshold wordt er bepaald welke matches gebruikt worden. Deze techniek zou gebruikt kunnen worden voor het detecteren van pictogrammen.
 
@@ -121,9 +132,9 @@
             Zoals~\cite{Llopart2017} voorstelt is het niet moeilijk om het '\gls{yolo} detection system' een hertraining te geven om deuren te herkennen. Zo kan dit ook toegevoegd worden aan de lijst met te detecteren kenmerken. 
 
 
-    \section{Object tracking}
+    \section{Object tracking} \label{sec:obj_tracking}
         Object tracking of het volgen van objecten heeft als doel het bepalen van de positie van hetzelfde object over meerdere frames heen. In het geval van dit onderzoek kan het een indicatie geven van relatieve posities t.o.v. objecten die zich in de gangen bevinden.
-        Een grote moeilijkheid bij het volgen van objecten die stilstaan t.o.v. de camera is dat ze veranderen in grootte, ori\"{e}ntatie en perspectief.
+        Een grote moeilijkheid bij het volgen van objecten die stilstaan t.o.v. de bewegende camera is dat ze veranderen in grootte, ori\"{e}ntatie en perspectief.
         \cite{Zhou2009} stelt voor om gebruik te maken van \gls{sift} voor het volgen van objecten. Ze zoeken een \gls{roi} op het eerste frame waarop ze een kleurhistogram en \gls{sift} features berekenen.
         Op het volgende frame worden dezelfde bewerkingen uitgevoerd in een regio die net iets groter is dan de originele \gls{roi}. Een overeenkomstregio wordt dan berekend door middel van een \gls{em} algoritme.
         Volgens~\cite{Baheti2016} is het beter om gebruik te maken van het KLT feature algoritme~\cite{tomasi1991detection}. Hiermee wordt er een transformatie berekent waardoor de \gls{roi} tussen de 2 frames gelijkaardig wordt. De initi\"{e}le transformatieparameters worden berekend via \gls{ransac}.
@@ -131,10 +142,13 @@
         \cite{Ning2017} heeft een nieuwe techniek ontwikkeld om object tracking te combineren met object detectie \gls{cnn}. Ze hebben een uitbreiding gemaakt op het \gls{yolo} detection system genaamd \gls{rolo}.
         De uitbreiding bevat een extra \gls{lstm} geplaatst achter de detectie fase van het originele netwerk. Een \gls{lstm} is een neuraal netwerk geoptimaliseerd voor het maken van beslissingen op tijdsgebaseerde data.
         De data die aan het extra netwerk gegeven wordt is een van de tussenresultaten van het \gls{yolo} netwerk.
-        Het systeem blijkt zeer goed te werken voor het volgen van objecten zelfs bij occlusies in \'{e}\'{e}n van de beelden. 
+        Het systeem blijkt zeer goed te werken voor het volgen van objecten zelfs bij occlusies in \'{e}\'{e}n van de beelden.
+        Momenteel is deze techniek niet gebruikt in onze implementatie, maar zou in de toekomst wel kunnen helpen om te nauwkeurigheid te verhogen.
 
     \section{Image segmentation}\label{sec:image_segmentation}
-        Het correct segmenteren van de beelden zal een belangrijke rol spelen. Niet in elk beeld zal er een distinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
+        Het correct segmenteren van de beelden zal een belangrijke rol spelen in dit onderzoek.
+        Het segmenteren van een beeld wil zeggen dat we pixels gaan groeperen in een aantal klassen.
+        Niet in elk beeld van ziekenhuisgangen zal er een distinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
         de muren te kunnen onderscheiden. Een eenvoudige aanpak zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
         Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafond omwille van kleur en textuurgelijkenissen.
         Hun regressie gebaseerde labeling techniek blijkt dus een slechte oplossing.
