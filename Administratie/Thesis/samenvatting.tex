@@ -1,13 +1,13 @@
 \section*{Introduction}
-Hospitals suffer under staff shortage and high working pressure for healthcare staff.
+Hospitals suffer from staff shortage and healthcare staff is under high working pressure for healthcare staff.
 A part of this is due to their responsibility of logistic transport inside the hospital.
-Our goal is to automate this process with an Automated Guided Vehicle (AGV).
+The logistic burden can be alleviated by automating this process with an Automated Guided Vehicle (AGV).
 This robot has to navigate autonomously and estimate its location.
 To realize this goal, we have a single RGB camera and a semantic map available.
 This map contains a variety of objects visible in the hospital corridors as well as their dimensions, position and orientation.
 
-The exact goal of this thesis is to research which objects/features are present in the logistic corridors of a hospital, and based on this
-information search techniques usable to detect and track them.
+The exact goal of this thesis is to research which objects/features are present in the logistic corridors of a hospital, and use this
+information to search techniques usable to detect and track them.
 These detections will be used to track the position of the robot based on the information found on the semantic map and a known starting position.
 
 
@@ -15,29 +15,29 @@ These detections will be used to track the position of the robot based on the in
 We implemented a pipeline to process the RGB input frames and the map and give us the tracked location for the robot.
 This pipeline consists of four steps.
 
-For the fist step we gathered information about the environment.
+For the first step we gathered information about the environment.
 We analyzed the dataset, and found four interesting objects in the images.
 To detect these object in the images, we trained a YOLOv2 single shot object detector CNN.
 This convolutional neural network detects the location of objects, and classifies them into the four trained classes.
 
 The second step is to detect the vanishing point in the image.
-This point can be used to identify the rotation of the robot inside the corridor, and will be used later to match the detected objects to the map.
+This point can be used to identify the orientation of the robot with respect to the corridor in the map, and will be used later to match the detected objects to the map.
 We implemented three different methods to detect the vanishing point.
 For the first 2 methods, we use a segmentation neural network to detect the floor pixels.
 One of the methods takes the highest floor pixel, and reckons this is the vanishing point.
-The other method try's to fit lines with the Hough transform on the edges of the floor.
+The other method tries to fit lines with the Hough transform on the edges of the floor.
 The crossing of these lines is in theory the vanishing point.
-The third and final method try's to find the perspective lines with the Hough transform for the whole image.
+The third and final method tries to find the perspective lines with the Hough transform for the whole image.
 Here also the crossing of these lines is considered the vanishing point.
 
 In the third step we use the results of the object detector and the vanishing point.
-To represent what is visible in the frame we are processing, we calculate the angle between each object and the optical axis of the camera.
+To represent what is visible in the frame that we are currently processing, we calculate the angle between each object and the optical axis of the camera.
 To do this, we measure the distance in pixels from the detection to the vanishing point.
 This distance can be converted into an angle if you use the focal length of the camera.
 After this stage, we have a angle for each object we detected in the frame.
 
 The last step tries to match the angels of the detector object to the semantic map.
-The map contains a predefined route, split into discrete location.
+The map contains a predefined route, split into discrete locations.
 Each of these locations has information about what should be visible, under which angle.
 The robots always starts on a known location point, and we try and track the current location.
 To do this, we calculate a score for how much a location matches the measurements detected from the current image.
@@ -49,12 +49,12 @@ For each of these topic's we checked the speed and the accuracy.
 
 The YOLOv2 object detector performs best on the GPU implementation.
 The amount of object classes to be detected doesn't really affect the inference speed.
-The detection can be sped up a bit by decreasing the input image resolution.
+The detection can be sped up by decreasing the input image resolution.
 Not al four classes are as accurate, the 'light' class has the highest accuracy because of the higher amount of training examples.
-If we would training longer, and with more examples for the other three classes, the accuracy would increase.
+If we would train longer, and with more examples for the other three classes, the accuracy would increase.
 
-The two vanishing point detection methods using the segmentation network, take a bit longer to calculate then the other method.
-Here also, the resolution of the input image has a big influence on the inference time of the network.
+The two vanishing point detection methods using the segmentation network, take longer to calculate then the other method due to its convolutional nature.
+Here also, decreasing the resolution of the input image can reduce the inference time of the network by half.
 Generally the highest floor pixel segmentation method has the highest accuracy.
 But with the tweaking of some parameters and combining these techniques, the accuracy can still be improved.
 
@@ -62,9 +62,12 @@ The speed of calculation for the tracking of the robots position, should in theo
 object detector and the segmentation network.
 We found out the time to calculate 1 frame was almost 4 times as long.
 This is due to a slow implemented library for rendering the semantic map.
-The accuracy of the localization is not very good.
+The localization is not very accurate but this isn't necessarily a problem.
+The position of the robot does not need to be accurate, the most important information is the progress of the robot inside the corridors.
 Due to issues with the information on the semantic map, which are only estimates of the object locations based on the dataset instead of
 ground truth location data, we cannot rely on the results of our detector at this point.
+A possible solution would be to generate simulated input data with known ground truth, and run the pipeline on this data.
+
 
 %
 %\section*{Conclusion}

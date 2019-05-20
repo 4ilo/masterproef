@@ -70,11 +70,13 @@
 | 05/05/19 | Hoofdstuk over lokalisatie |
 | 09/05/19 | Verwerken opmerkingen + aanpassen titel |
 | 10/05/19 | Yolo resultaten hoofdstuk schrijven |
-| 11/15/19 | VP resultaten hoofdstuk schrijven |
-| 12/15/19 | Hoofdstuk over localisatie resultaten |
-| 15/15/19 | Aanpassen opmerkingen Filip + abstract + voorwoord |
-| 16/15/19 | Schrijven besluit |
-| 17/15/19 | Samenvatting in engels |
+| 11/05/19 | VP resultaten hoofdstuk schrijven |
+| 12/05/19 | Hoofdstuk over localisatie resultaten |
+| 15/05/19 | Aanpassen opmerkingen Filip + abstract + voorwoord |
+| 16/05/19 | Schrijven besluit |
+| 17/05/19 | Samenvatting in engels |
+| 19/05/19 | Aanpassingen na opmerkingen |
+| 20/05/19 | Aanpassingen na opmerkingen |
 
 ## Originele omschrijving
 Het doel van deze thesis is om een set van feature detectors te selecteren en configureren om de samenstellende componenten/onderdelen van objecten te herkennen. 

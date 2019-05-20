@@ -45,7 +45,7 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
             \item Deurklinken.
         \end{itemize}
 
-        Voor deze objecten gaan we kijken naar detectietechnieken uit de traditionele beeldverwerking, en naar meer \textit{state-of-the-art} technieken.
+        Voor deze objecten gaan we kijken naar detectietechnieken uit de traditionele beeldverwerking, en naar deep-learning gebaseerde technieken.
 
 
         \subsection{Traditionele beeldverwerking} \label{sec:trad_obj_det}
@@ -57,7 +57,7 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
             Een recenter onderzoek~\cite{Zabihi2017} bouwt voort op deze technieken, maar hier berekenen ze de \gls{hog} features van het beeld.
             Vervolgens wordt er gebruik gemaakt van een \gls{svm} om te bepalen waar er zich een match bevindt.
 
-            Een \gls{svm} is een binaire classificatie techniek die gebruikt kan worden om na te kijken bij welk klasse een feature het dichtst aanleunt.
+            Een \gls{svm} is volgens~\cite{fradkin2006support} een binaire classificatie techniek die gebruikt kan worden om na te kijken bij welk klasse een feature het dichtst aanleunt.
             De scheiding tussen de 2 klassen wordt voorgesteld door een hypervlak dat bepaald wordt door middel van voorbeelden in de trainingsfase.
             Een feature wordt geclassificeerd door te kijken aan welke kant van het hypervlak hij het beste past.
 
@@ -78,7 +78,7 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
             Een \gls{cnn} is een supervised deep learning techniek die gebruikt kan worden om verschillende beeldverwerkende taken uit te voeren.
             Als een traditioneel neuraal netwerk gebruikt zou worden voor een afbeelding van 448 bij 448 pixels, zou er bij elke inwendige laag van 40 neuronen ongeveer 8 miljoen variabele gewichten aanwezig moeten zijn,
             dit zou leiden tot een veel te complex netwerk.
-            Daarom wordt er gebruikgemaakt van een \gls{cnn}, dit is eigenlijk een neuraal netwerk waarbij niet alle neuronen met elkaar verbonden zijn.
+            Daarom wordt er gebruikgemaakt van een \gls{cnn}, dit is eigenlijk een neuraal netwerk waarbij niet alle neuronen met elkaar verbonden zijn.~\cite{lecun1990handwritten}
 
             Een \gls{cnn} kan bestaan uit meerdere lagen die meestal een combinatie zijn van 'convolutional-layers' en 'fully connected-layers'.
             Elk van deze lagen bevat een aantal neuronen met elk een eigen set van gewichten.
@@ -105,12 +105,12 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
             Om uiteindelijk een classificatie te verkrijgen moet er een dimensievermindering doorgevoerd worden, dit wordt gedaan door 'pooling layers' aan het netwerk toe te voegen na elke convolutie laag.
             Dit heeft ook als effect dat de featuremaps vereenvoudigd worden, en het aantal gewichten beperkt blijft.
 
-            Een CNN kan pas gebruikt worden nadat het getraind is. Voor de training van een netwerk zijn er 2 dingen noodzakelijk: veel voorbeeld data en per voorbeeld de verwachte output (label).
+            Een CNN kan pas gebruikt worden nadat het getraind is. Voor de training van een netwerk zijn er 2 dingen noodzakelijk: voorbeeld data en per voorbeeld de verwachte output (label).
             Bij het trainingsproces wordt alle inputdata aangelegd, en wordt er gekeken wat het netwerk aan zijn output heeft.
             De loss functie is een maat van hoe goed een netwerk een voorspelling kan doen van de input data, met andere woorden een vergelijking tussen de input en de output.
             Trainen van een netwerk is het optimaliseren van de gewichten bij de neuronen in elke laag van het netwerk, bij een optimaal resultaat is de loss functie minimaal.
             Dit is een complex probleem dat enkel kan lukken indien er genoeg trainingsdata ter beschikking is.
-            Trainen kan gedaan worden d.m.v 'backprogagation'.
+            Trainen kan gedaan worden d.m.v 'backprogagation'\cite{lecun2012efficient}.
 
             De kost van een netwerk is afhankelijk van alle gewichten die zich in het netwerk bevinden.
             Om de kost te minimaliseren dienen al deze gewichten zo goed mogelijk afgestemd te worden op basis van de trainingsvoorbeelden.
@@ -120,7 +120,7 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
             Doordat de gewichten zich in lagen bevinden, en dus onderling afhankelijk zijn, moet de kettingregel toegepast worden om de waarden te corrigeren.
             Een meer gedetailleerde uitleg over de wiskunde achter backpropagation is beschreven door~\cite{nielsenneural}.
 
-            Een belangrijke laag in een \gls{cnn} is de \gls{relu}.
+            Een belangrijke laag in een \gls{cnn} is de \gls{relu}~\cite{NIPS2012_4824}.
             Deze laag voegt een niet lineaire functie toe tussen de convolutielagen, dit is nodig omdat de convolutie een lineaire operatie is, en een eigenschap van lineaire operators laat toe om deze te combineren tot 1 operator.
             Dit zou willen zeggen dat alle convoluties in een netwerk gereduceerd kunnen worden tot 1 laag, en dus het voordeel van meerdere lagen wegnemen.
             Het toevoegen van een \gls{relu} laag tussen elke convolutielaag voorkomt dit probleem.
@@ -149,7 +149,7 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
         Het correct segmenteren van de beelden zal een belangrijke rol spelen in dit onderzoek.
         Het segmenteren van een beeld wil zeggen dat we pixels gaan groeperen in een aantal klassen.
         Niet in elk beeld van ziekenhuisgangen zal er een distinctief object aanwezig zijn om te detecteren. Daarom is het belangrijk om de vloer van
-        de muren te kunnen onderscheiden. Een eenvoudige aanpak zou kunnen zijn om via K-means een verdeling van een beeld te doen en met een soort regressie de regio's te labelen. 
+        de muren te kunnen onderscheiden. Een eenvoudige aanpak zou kunnen zijn om via K-means een verdeling van een beeld te doen en met regressie de regio's te labelen.
         Volgens~\cite{zhangwall} werkt de K-means aanpak met een op textuur en kleur gebaseerde aanpak redelijk goed, maar wordt steeds de muur verbonden met het plafond omwille van kleur en textuurgelijkenissen.
         Hun regressie gebaseerde labeling techniek blijkt dus een slechte oplossing.
         Een mogelijke verbetering zou kunnen zijn om de kennis toe te voegen dat een plafond zich steeds boven de vloer bevindt, hierbij zou de blob in 2 delen gesplitst kunnen worden om de vloer te verkrijgen.

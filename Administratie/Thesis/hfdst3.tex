@@ -93,7 +93,7 @@ De output van de \gls{cvat} tool is een XML-bestand met voor elke afbeelding de 
 </image>
    \end{lstlisting}
 
-De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een volledig ander formaat dan het verkregen XML bestand, daarom hebben we een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
+De trainingsdata die aan het \gls{yolo} netwerk geleverd moet worden is in een ander formaat dan het verkregen XML bestand, daarom hebben we een conversiescript geschreven om dit om te zetten naar het \gls{yolo} formaat.
 Het formaat dat \gls{yolo} verwacht is per input afbeelding een .txt bestand met daarin per lijn een bounding box. Het \gls{yolo} formaat is beschreven in~\ref{eq:yolo} waarbij $<x>$ en $<y>$ het centerpunt van een bounding box zijn.
 Alle waarden zijn genormaliseerd, dit wil zeggen dat om het absolute $(x, y)$ co\"{o}rdinaat te bekomen, de waardes vermenigvuldigd moeten worden met de breedte en de hoogte zoals ge\"{i}llustreerd in~\ref{eq:yolo_abs}.
 
@@ -131,7 +131,7 @@ Het trainen gebeurt nu op basis van de trainingsset zoals weergegeven in tabel~\
 
 \section{Perspectiefpunt detectie}\label{sec:perspectiefpunt_detectie}
 
-Ik hoofdstuk~\ref{sec:omgevingsmeting} zullen we bespreken hoe het lokaliseren werkt, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
+In hoofdstuk~\ref{sec:omgevingsmeting} zullen we bespreken hoe we de locatie van de robot gaan volgen, om dit te realiseren wordt er gebruik gemaakt van het perspectiefpunt.
 Het detecteren van het vluchtpunt of perspectiefpunt kan gebeuren op verschillende manieren, voor dit onderzoek hebben we drie verschillende technieken uitgevonden en ge\"{i}mplementeerd, en deze zullen verder besproken worden.
 
 De performantie en nauwkeurigheid van de 3 methoden zal besproken worden in hoofdstuk~\ref{ch:resultaten}.
@@ -147,6 +147,11 @@ Het resultaat van de segmentatie is te zien in figuur~\ref{fig:floor_seg} waarbi
 
 In eerste instantie nemen we van de gesegmenteerde data de hoogste vloerpixel, en deze gebruiken we als perspectiefpunt.
 Dit illustreren we in figuur~\ref{fig:floor_seg}
+
+Deze methode is mooi in theorie omdat het hoogste punt van de vloer het perspectiefpunt zou moeten zijn.
+Het probleem is echter dat als de vloersegmentatie niet perfect is, de hoogste pixel op een andere plaats kan liggen.
+Als bijvoorbeeld het segmentatie netwerk een deel van de muur hetzelfde classificeert als de vloer, zal dit deel vaak hoger liggen dan het
+effectieve perspectiefpunt, en zorgen voor een totaal verkeerde detectie.
 
 \begin{figure}
     \centering
@@ -171,6 +176,10 @@ Dit gebeurt door de richtingsco\"{e}ffici\"{e}nt van alle lijnen met elkaar te v
 richtingsco\"{e}ffici\"{e}nt verwijderd.
 Het optimale resultaat is dat er 1 lijn overblijft aan elke kant van de vloer, zodat deze de vluchtlijnen voorstellen.
 Indien dit het geval is, is de kruising van de 2 rechten het perspectiefpunt.
+
+Deze techniek werkt goed als de rand van de vloer mooi de perspectieflijnen volgt.
+Indien er teveel objecten zoals karren of paletten aanwezig zijn op de vloer, kan dit zorgen voor een grillige vloersegmentatie.
+Deze grillige vormen kunnen ervoor zorgen dat de lijnen niet samenvallen met de perspectieflijnen waardoor de kruispunten niet het perspectiefpunt zullen aanduiden.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{uitwerking/hough_floor.png}
@@ -369,7 +378,7 @@ zodat het eenvoudig is om later te verwerken.
 De kaart kan gevisualiseerd worden met behulp van een Python \gls{osm} bibliotheek\footnote{https://github.com/gboeing/osmnx}.
 
 
-\section{Lokalisatie}\label{sec:lokalisatie}
+\section{Robot positie tracking}\label{sec:lokalisatie}
 Nu we alle stappen afzonderlijk besproken hebben, is het tijd om alles te combineren tot \'{e}\'{e}n geheel.
 Zoals in figuur~\ref{fig:pipeline1} al weergegeven werd, worden de input beelden van de camera frame per frame verwerkt.
 E\'{e}n input afbeelding wordt eerst geanalyseerd door de YOLO object detector waarna het perspectiefpunt gedetecteerd kan worden.
