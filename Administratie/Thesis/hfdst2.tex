@@ -15,20 +15,20 @@ Het laatste onderwerp dat we zullen bekijken is image segmentation (\ref{sec:ima
     \section{Indoor navigatie \& visie} \label{sec:nav_visie}
         Op visie gebaseerde navigatie is een onderwerp dat zeer vaak onderzocht wordt. Oudere onderzoeken zoals~\cite{Tomono2000} maken gebruik van een robot met een \gls{rgb} camera die zonder kaart informatie navigeert.
         De enige informatie die gegeven wordt is een eenvoudige object beschrijving van de gang en een beschrijving van een deur met een deurnummer ernaast.
-        Met enkel een deurnummer als doel vertrekt de robot door de gang, en houdt zichzelf parallel met de muren door gebruik te maken van andere sensoren. Eens er een deur in beeld komt, worden er een aantal features(randen)
-        herkend in het beeld.
+        Met enkel een deurnummer als doel vertrekt de robot door de gang, en houdt zichzelf parallel met de muren door gebruik te maken van andere sensoren.
+        Eens er een deur in beeld komt, worden er features zoals randen herkend in het beeld.
         Nadat hun algoritme de deuren herkent kan er via \gls{ocr} op het deurnummer worden nagegaan of het doel bereikt is.
         Dit is uiteraard een zeer eenvoudige techniek omdat de robot geen begrip heeft van de omgeving, en moeilijk plaatsen t.o.v elkaar kan onderscheiden.
-        Bovendien zijn in onze ziekenhuisgangbeelden de deurnummers afwezig of moeilijk zichtbaar waardoor we dit niet kunnen gebruiken als feature.
+        Bovendien zijn in onze ziekenhuisgangbeelden weinig deuren zichtbaar waar we de deurnummers niet kunnen gebruiken als feature.
 
-        Nieuwere technieken zoals~\cite{Henry10rgb-dmapping} maken gebruik van RGB-D camera's zoals bijvoorbeeld een kinect waardoor ze ook over diepte-informatie beschikken.
-        Die diepte info kan dan gebruikt worden om heel de omgeving in 3d te mappen en op basis van de effectief gemeten positie te navigeren.
-        Een andere manier om een 3d representatie van de omgeving te verkrijgen zoals~\cite{schmid2013} is gebruik te maken van stereovisie.
-        Hierbij wordt de informatie van 2 \gls{rgb} camera's die op een vaste afstand van elkaar staan gecombineerd om diepte informatie te verzamelen.
+%        Nieuwere technieken zoals~\cite{Henry10rgb-dmapping} maken gebruik van RGB-D camera's zoals bijvoorbeeld een kinect waardoor ze ook over diepte-informatie beschikken.
+%        Die diepte info kan dan gebruikt worden om heel de omgeving in 3d te mappen en op basis van de effectief gemeten positie te navigeren.
+%        Een andere manier om een 3d representatie van de omgeving te verkrijgen zoals~\cite{schmid2013} is gebruik te maken van stereovisie.
+%        Hierbij wordt de informatie van 2 \gls{rgb} camera's die op een vaste afstand van elkaar staan gecombineerd om diepte informatie te verzamelen.
+%        In dit onderzoek gaan we ons echter beperken tot \'{e}\'{e}n enkele \gls{rgb} camera.
 
-        In dit onderzoek gaan we ons echter beperken tot \'{e}\'{e}n enkele \gls{rgb} camera.
-
-        Goedem\'{e} et al~\cite{goedeme2007omnidirectional} gebruikte ook een topologische kaart, maar zonder semantische aanduidingen.
+        Goedem\'{e} et al~\cite{goedeme2007omnidirectional} gebruikte een topologische kaart, wat ook semantische informatie is.
+        De informatie op onze kaart is echter verschillend.
         Bovendien maakten deze auteurs gebruik van omnidirectionele camera's zodat de detectie van het vluchtpunt vermeden werd.
         
         
