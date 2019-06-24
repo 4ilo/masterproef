@@ -120,7 +120,7 @@ if __name__ == "__main__":
     plt.ylabel("Euclidean error")
     plt.legend([
         'Hough transform: error: {}, σ: {}'.format(round(np.mean(e1), 3), round(np.std(e1), 3)),
-        'Seg Highest pixel: error: {}, σ: {}'.format(round(np.mean(e2),3), round(np.std(e1), 3)),
-        'Seg Hough: error: {}, σ: {}'.format(round(np.mean(e3),3), round(np.std(e1), 3))
+        'Seg Highest pixel: error: {}, σ: {}'.format(round(np.mean(e2),3), round(np.std(e2), 3)),
+        'Seg Hough: error: {}, σ: {}'.format(round(np.mean(e3),3), round(np.std(e3), 3))
     ])
     plt.show()
