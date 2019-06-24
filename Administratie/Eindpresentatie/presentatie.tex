@@ -75,6 +75,10 @@
 			\item Zelfstandige navigatie doorheen ziekenhuisgangen
 			\item Uitgerust met sensoren en een RGB camera
 			\item Semantische kaart voor navigatie
+			\begin{itemize}
+				\item Kaart met aanduidingen van zichtbare objecten
+				\item Afmetingen, positie en ori\"{e}ntatie van deze objecten
+			\end{itemize}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -86,6 +90,14 @@
 			\item Gangen zijn zeer monotoon
 			\item Weinig visuele kenmerken aanwezig
 		\end{itemize}
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.8\textwidth]{graphics/gang.png}
+	\end{figure}
+\end{frame}
+\begin{frame}{Doel masterproef}
+	\begin{itemize}
 		\item Zoeken naar geschikte beeldverwerkingstechnieken voor detectie van deze features
 		\item Tracken van de robotpositie op basis van:
 		\begin{itemize}
@@ -93,14 +105,6 @@
 			\item De informatie op een semantische kaart
 		\end{itemize}
 	\end{itemize}
-\end{frame}
-\begin{frame}{Doel masterproef}
-	\vspace{-12pt}
-		\begin{figure}
-			\centering
-			\includegraphics[width=\textwidth]{graphics/gang.png}
-			\caption{Voorbeeld van een gang uit de dataset.}
-		\end{figure}
 \end{frame}
 
 
@@ -128,7 +132,7 @@
 	\begin{itemize}
 		\item \textbf{Object detectie}
 		\item Perspectiefpunt detectie
-		\item Omgevingsmeting
+		\item Omgevingsrepresentatie
 		\item Semantische kaart
 		\item Robot positie tracking
 	\end{itemize}
@@ -147,6 +151,10 @@
 		\item Annotatie beeldmateriaal
 		\item Training YOLOv2
 	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{graphics/yolo_cnn.jpeg}
+	\end{figure}
 \end{frame}
 
 \begin{frame}[fragile]{Datasets}
@@ -157,13 +165,13 @@
 		\item Eerste deel is validatieset, 2de deel is trainingsset
 		\item 1920x1080 pixels @30Hz
 		\item Herschaald naar 1280x720 pixels @15Hz
+		\item 899 en 711 frames
 	\end{itemize}
 
 	Visuele kenmerken in dataset:
 	\begin{itemize}
 		\item Lampen
 		\item Rookdetectoren
-		\item (Deurklinken)
 		\item Nooduitgang bordjes
 	\end{itemize}
 \end{frame}
@@ -204,14 +212,14 @@
 	\begin{itemize}
 		\item Object detectie
 		\item \textbf{Perspectiefpunt detectie}
-		\item Omgevingsmeting
+		\item Omgevingsrepresentatie
 		\item Semantische kaart
 		\item Robot positie tracking
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Perspectiefpunt detectie}
-	Perspectiefpunt nodig in volgende stap van de pipeline. Het perspectiefpunt kan gedetecteerd worden d.m.v. 3 verschillende methoden:
+	Perspectiefpunt nodig in volgende stap van de pipeline om hoeken tot de optische as te berekenen. Het punt kan gedetecteerd worden d.m.v. 3 verschillende methoden:
 	\begin{itemize}
 		\item Hoogste vloerpixel segmentatie
 		\item Vloerlijn kruising
@@ -291,19 +299,20 @@
 \end{frame}
 
 %
-% Omgevingsmeting
+% Omgevingsrepresentatie
 %
+
 \begin{frame}[fragile]{Uitwerking}
 	\begin{itemize}
 		\item Object detectie
 		\item Perspectiefpunt detectie
-		\item \textbf{Omgevingsmeting}
+		\item \textbf{Omgevingsrepresentatie}
 		\item Semantische kaart
 		\item Robot positie tracking
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Omgevingsmeting}
+\begin{frame}[fragile]{Omgevingsrepresentatie}
 	\begin{columns}[t]
 		\begin{column}{.5\textwidth}
 			\begin{itemize}
@@ -334,7 +343,7 @@
 	\begin{itemize}
 		\item Object detectie
 		\item Perspectiefpunt detectie
-		\item Omgevingsmeting
+		\item Omgevingsrepresentatie
 		\item \textbf{Semantische kaart}
 		\item Robot positie tracking
 	\end{itemize}
@@ -379,7 +388,7 @@
 	\begin{itemize}
 		\item Object detectie
 		\item Perspectiefpunt detectie
-		\item Omgevingsmeting
+		\item Omgevingsrepresentatie
 		\item Semantische kaart
 		\item \textbf{Robot positie tracking}
 	\end{itemize}
@@ -394,7 +403,7 @@
 			\item Enkel de actuele en volgende locatie-nodes worden vergeleken
 		\end{itemize}
 		
-		\item Vergelijken omgevingsmeting en hoeken op de kaart
+		\item Vergelijken Omgevingsrepresentatie en hoeken op de kaart
 		\begin{itemize}
 			\item Bereken score hoeveel het huidige frame lijkt op de 2 theoretische locatie-nodes
 			\item Koppel gedetecteerde objecten aan objecten uit de kaart d.m.v. de hoeken
@@ -410,17 +419,27 @@
 			score = \sum_{i=1}^{n}\big[a - |\alpha_{mi} - \alpha_{di}|\big] \cdot f_w(\alpha_{mi}) + \sum_{i=1}^{m}\big[b \cdot f_w(\alpha_{mi})\big]
 		\]
 		\centering
-		Met $n$ het aantal gelinkte objecten, en $m$ het aantal niet gelinkte objecten. En $a$ een positieve belingingsfactor en $b$ een afstraffactor.
+		Met $n$ het aantal gelinkte objecten, en $m$ het aantal niet gelinkte objecten. En $a$ een positieve beloningsfactor en $b$ een afstraffactor.
 	\end{block}
-	\begin{block}{Berekening van de wegingsfactor}
-		\[
-			f_w(\alpha) = \left\{\begin{array}{lr}
-				1 & \text{for } 30 < |\alpha|\\
-				\frac{7\alpha + 10}{220} & \text{for } 0 \leq |\alpha| \leq 30\\
-			\end{array}
-			\right\}
-		\]
-	\end{block}
+	\begin{columns}[t]
+		\begin{column}{.7\textwidth}
+		\begin{block}{Berekening van de wegingsfactor}
+			\[
+				f_w(\alpha) = \left\{\begin{array}{lr}
+					1 & \text{for } 30 < |\alpha|\\
+					\frac{7\alpha + 10}{220} & \text{for } 0 \leq |\alpha| \leq 30\\
+				\end{array}
+				\right\}
+			\]
+		\end{block}
+		\end{column}
+		\begin{column}{.3\textwidth}
+			\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{graphics/wegingsfactor.png}
+			\end{figure}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 %%
@@ -553,8 +572,8 @@
 \begin{frame}[fragile]{Lokalisatie}
 	\begin{itemize}
 		\item Algoritme wil te snel gaan
-		\item Keuze objectdetector be\"{i}nvloed nauwkeurigheid
-		\item Keuze perspectiefpuntdetector be\"{i}nvloed nauwkeurigheid
+		\item Keuze objectdetector be\"{i}nvloedt nauwkeurigheid
+		\item Keuze perspectiefpuntdetector be\"{i}nvloedt nauwkeurigheid
 		\item Resultaten niet accuraat omdat semantische kaart opgesteld is op basis van schattingen uit het beeldmateriaal
 		\item Geen exacte gegevens beschikbaar
 	\end{itemize}
@@ -565,20 +584,22 @@
 	\end{figure}
 \end{frame}
 
-%%
-%%  SECTION 4 - Besluit
-%%
-\section{Besluit}
-\begin{frame}[fragile]{Besluit}
+
+\section{Demo}
+\begin{frame}[fragile]{Demo}
 	\begin{figure}
 		\centering
 		\includegraphics[width=\linewidth]{graphics/result.png}
 	\end{figure}
 \end{frame}
 
+%%
+%%  SECTION 4 - Besluit
+%%
+\section{Besluit}
 \begin{frame}[fragile]{Besluit}
 	\begin{itemize}
-		\item Positie traking van een mobiele robot op basis van RGB camera en semantische kaart
+		\item Doel: Positie traking van een mobiele robot op basis van RGB camera en semantische kaart
 		\item Vergelijking van verschillende detectietechnieken
 		\item Opstellen en implementatie van pipeline en algoritme
 		\item Resultaten van lokalisatie minder nauwkeurig door gebrek aan data
